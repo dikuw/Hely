@@ -1,4 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
+import Router from './components/Router';
 
-render(<h1>Hely Cosmetics</h1>, document.querySelector('#root'));
+render(<Router />, document.querySelector('#root'));
