@@ -1,0 +1,14 @@
+
+.navbar-brand {
+  display: inline-block;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-right: auto;
+  font-size: 1rem;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.navbar-brand:hover-focus {
+  text-decoration: none;
+}
