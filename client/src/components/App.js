@@ -5,6 +5,8 @@ import Navigation from './Navigation';
 import Grid from './Grid';
 import Footer from './Footer';
 
+import '../style/styles.css';
+
 class App extends React.Component {
 
   render() {
