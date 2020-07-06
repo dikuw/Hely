@@ -1,7 +1,8 @@
 import React from 'react';
 import Banner from './Banner';
 import Header from './Header';
-import ProductGrid from './ProductGrid';
+import Navigation from './Navigation';
+import Grid from './Grid';
 import Footer from './Footer';
 
 class App extends React.Component {
@@ -11,7 +12,8 @@ class App extends React.Component {
       <main>
         <Banner />
         <Header />
-        <ProductGrid />
+        <Navigation />
+        <Grid />
         <Footer />
       </main>
     )
