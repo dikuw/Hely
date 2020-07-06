@@ -3,10 +3,6 @@ import styled from 'styled-components';
 
 import logo from '../logo.jpg';
 
-const Wrapper = styled.a.attrs({
-    className: 'navbar-brand',
-})``;
-
 const LogoImage = styled.img`
   display: block;
   width: 500px;
@@ -16,9 +12,9 @@ const LogoImage = styled.img`
 class Logo extends Component {
   render() {
     return (
-      <Wrapper href="/">
+      <a href="/">
         <LogoImage src={logo} alt="Hely Cosmetics dot com" />
-      </Wrapper>
+      </a>
     )
   }
 };
