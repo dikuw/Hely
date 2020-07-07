@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import logo from '../logo.svg';
@@ -10,7 +10,7 @@ const LogoImage = styled.img`
   padding: 15px;
 `;
 
-class Logo extends Component {
+class Logo extends React.Component {
   render() {
     return (
       <a href="/">

@@ -42,7 +42,7 @@ const NavMenu = ({ open }) => {
       <li><Link href="/">Face</Link></li>
       <li><Link href="/">Eyes</Link></li>
       <li><Link href="/">Brushes</Link></li>
-      <li><Link href="/">Cart</Link></li>
+      <li><Link href="/cart">Cart</Link></li>
       <li><Link href="/">Log in</Link></li>
     </Ul>
   );

@@ -15,7 +15,7 @@ class Grid extends React.Component {
     return (
       <StyledGrid>
         {Object.values(this.props.inventory).map((item, i) => 
-          <Card key={item.id} index={item.id} item={item} />)}
+          <Card key={item.id} index={item.id} item={item} addToCart={this.props.addToCart} />)}
       </StyledGrid>
     )
   }

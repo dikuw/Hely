@@ -1,8 +1,10 @@
 import React from 'react';
+import {  Route, Switch } from 'react-router-dom';
 import Banner from './Banner';
 import Header from './Header';
 import Navigation from './navigation/Navigation';
 import Grid from './Grid';
+import Cart from './Cart';
 import Footer from './Footer';
 import inventory from '../data/inventory';
 
@@ -14,13 +16,38 @@ class App extends React.Component {
     cart: {},
   };
 
+  addToCart = (key) => {
+    this.setState(prevState => ({
+      cart: { ...prevState.cart, [key]: prevState.cart[key] + 1 || 1 }
+    }))
+  };
+
+  deleteFromCart = (key) => {
+    // const cart = { ...this.state.cart };
+    // delete cart[key];
+    // this.setState({ cart });
+    this.setState(prevState => {
+      let cart = { ...prevState.cart }; 
+      delete cart[key];                                 
+      return { cart };
+    });
+  }
+
   render() {
     return (
       <main>
         <Banner />
         <Header />
         <Navigation />
-        <Grid inventory={this.state.inventory}/>
+        <Switch>
+          <Route 
+            exact path="/" 
+            render={() => (
+              <Grid inventory={this.state.inventory} addToCart={this.addToCart} />
+            )}
+          />
+          <Route exact path="/cart" component={Cart} />
+        </Switch>
         <Footer />
       </main>
     )

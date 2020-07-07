@@ -27,7 +27,8 @@ const StyledGridPhotoImg = styled.img`
 
 class Card extends React.Component {
   render() {
-    const { item } = this.props;
+    const { item, index } = this.props;
+    const isAvailable = item.available;
     return (
       <StyledGridFigure>
         <StyledGridPhotoWrapDiv>
@@ -37,6 +38,7 @@ class Card extends React.Component {
           <p>{item.description}</p>
           <p>{formatPrice(item.price)}</p>
         </figcaption>
+        <button disabled={!isAvailable} onClick={() => this.props.addToCart(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</button>
       </StyledGridFigure>
     );
   };
