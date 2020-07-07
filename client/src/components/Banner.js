@@ -14,7 +14,7 @@ class Banner extends React.Component {
   render() {
     return (
       <BannerDiv>
-        Due to high volume processing time is 5-10 business days
+        Welcome! Bienviendo!
       </BannerDiv>
     )
   }
