@@ -6,7 +6,7 @@
       "src": "images/hely.jpg",
       "type": "image/jpg",
       "sizes": "192x192"
-    },
+    }
   ],
   "start_url": ".",
   "display": "standalone",
