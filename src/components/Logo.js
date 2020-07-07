@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import logo from '../logo.jpg';
+import logo from '../logo.svg';
 
 const LogoImage = styled.img`
   display: block;
   width: 500px;
   margin: auto;
+  padding: 15px;
 `;
 
 class Logo extends Component {

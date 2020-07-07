@@ -18,31 +18,21 @@ class Links extends React.Component {
   render() {
     return (
       <Collapse className="Collapse">
-          <List className="List">
+          <List id="navMenu" className="List">
               <Item className="Item">
-                <Link to="/" className="nav-link">
-                  Home
-                </Link>
+                <Link to="/" className="nav-link">Home</Link>
               </Item>
               <Item className="Item">
-                <Link to="/face" className="nav-link">
-                  Face
-                </Link>
+                <Link to="/face" className="nav-link">Face</Link>
               </Item>
               <Item className="Item">
-                <Link to="/eyes" className="nav-link">
-                  Eyes
-                </Link>
+                <Link to="/eyes" className="nav-link">Eyes</Link>
               </Item>
               <Item className="Item">
-                <Link to="/brushes" className="nav-link">
-                  Brushes
-                </Link>
+                <Link to="/brushes" className="nav-link">Brushes</Link>
               </Item>
               <Item className="Item">
-                <Link to="/cart" className="nav-link">
-                  Cart
-                </Link>
+                <Link to="/cart" className="nav-link">Cart</Link>
               </Item>
           </List>
       </Collapse>
