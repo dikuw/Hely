@@ -56,6 +56,9 @@ const StyledLegal = styled.div`
   flex-wrap: wrap;
   color: #999;
   flex:  1 100%;
+  a {
+    color: #999999;
+  }
   @media (min-width: 40.375em) {
     margin-left: auto;
   }
