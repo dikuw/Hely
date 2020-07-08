@@ -5,8 +5,6 @@ import NavMenu from './NavMenu';
 const StyledBurger = styled.div`
   width: 2rem;
   height: 2rem;
-  position: fixed;
-  right: 20px;
   z-index: 20;
   display: none;
   @media (max-width: 768px) {
@@ -17,34 +15,33 @@ const StyledBurger = styled.div`
   div {
     width: 2rem;
     height: 0.25rem;
-    background-color: ${({ open }) => open ? '#ccc' : '#333'};
+    background-color: ${({ menuOpen }) => menuOpen ? '#ccc' : '#333'};
     border-radius: 10px;
     transform-origin: 1px;
     transition: all 0.3s linear;
     &:nth-child(1) {
-      transform: ${({ open }) => open ? 'rotate(45deg)' : 'rotate(0)'};
+      transform: ${({ menuOpen }) => menuOpen ? 'rotate(45deg)' : 'rotate(0)'};
     }
     &:nth-child(2) {
-      transform: ${({ open }) => open ? 'translateX(100%)' : 'translateX(0)'};
-      opacity: ${({ open }) => open ? 0 : 1};
+      transform: ${({ menuOpen }) => menuOpen ? 'translateX(100%)' : 'translateX(0)'};
+      opacity: ${({ menuOpen }) => menuOpen ? 0 : 1};
     }
     &:nth-child(3) {
-      transform: ${({ open }) => open ? 'rotate(-45deg)' : 'rotate(0)'};
+      transform: ${({ menuOpen }) => menuOpen ? 'rotate(-45deg)' : 'rotate(0)'};
     }
   }
 `;
 
-const Burger = () => {
-  const [open, setOpen] = useState(false);
-  
+const Burger = (props) => {
+  const [menuOpen, setOpen] = useState(false);
   return (
     <>
-      <StyledBurger open={open} onClick={() => setOpen(!open)}>
+      <StyledBurger menuOpen={menuOpen} onClick={() => setOpen(!menuOpen)}>
         <div />
         <div />
         <div />
       </StyledBurger>
-      <NavMenu open={open}/>
+      <NavMenu history={props.history} menuOpen={menuOpen} />
     </>
   );
 };

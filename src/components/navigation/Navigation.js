@@ -11,12 +11,14 @@ const Nav = styled.nav`
   justify-content: space-between;
 `
 
-const Navigation = () => {
-  return (
-    <Nav>
-      <Burger />
-    </Nav>
-  )
-}
+class Navigation extends React.Component {
+  render() {
+    return (
+      <Nav>
+        <Burger history={this.props.history} />
+      </Nav>
+    );
+  }
+};
 
-export default Navigation
+export default Navigation;
