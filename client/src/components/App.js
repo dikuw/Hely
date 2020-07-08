@@ -1,10 +1,10 @@
 import React from 'react';
-import {  Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Banner from './Banner';
 import Header from './Header';
 import Navigation from './navigation/Navigation';
 import Grid from './Grid';
-import Cart from './Cart';
+import Cart from './cart/Cart';
 import Footer from './Footer';
 import inventory from '../data/inventory';
 
@@ -13,7 +13,8 @@ import '../style/styles.css';
 class App extends React.Component {
   state = {
     inventory: {...inventory},
-    cart: {},
+    cart: { },
+    menuOpen: false
   };
 
   addToCart = (key) => {
@@ -38,7 +39,7 @@ class App extends React.Component {
       <main>
         <Banner />
         <Header />
-        <Navigation />
+        <Navigation history={this.props.history} />
         <Switch>
           <Route 
             exact path="/" 
@@ -46,7 +47,12 @@ class App extends React.Component {
               <Grid inventory={this.state.inventory} addToCart={this.addToCart} />
             )}
           />
-          <Route exact path="/cart" component={Cart} />
+          <Route 
+            exact path="/cart" 
+            render={() => (
+              <Cart inventory={this.state.inventory} cart={this.state.cart} addToCart={this.addToCart} deleteFromCart={this.deleteFromCart} />
+            )}
+          />
         </Switch>
         <Footer />
       </main>
