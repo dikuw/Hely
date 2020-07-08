@@ -50,12 +50,12 @@ class NavMenu extends React.Component {
   render() {
     return (
       <Ul ref={this.myUl}  menuOpen={this.props.menuOpen}>
-        <li><Link href="/">Home</Link></li>
-        <li><Link href="/">Face</Link></li>
-        <li><Link href="/">Eyes</Link></li>
-        <li><Link href="/">Brushes</Link></li>
+        <li><Link onClick={() => this.handleClick('/', this.props.menuOpen) } >Home</Link></li>
+        <li><Link onClick={() => this.handleClick('/face', this.props.menuOpen) } >Face</Link></li>
+        <li><Link onClick={() => this.handleClick('/eyes', this.props.menuOpen) } >Eyes</Link></li>
+        <li><Link onClick={() => this.handleClick('/brushes', this.props.menuOpen) } >Brushes</Link></li>
         <li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart</Link></li>
-        <li><Link href="/">Log in</Link></li>
+        <li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></li>
       </Ul>
     );
   }

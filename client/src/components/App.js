@@ -5,6 +5,9 @@ import Header from './Header';
 import Navigation from './navigation/Navigation';
 import Grid from './Grid';
 import Cart from './cart/Cart';
+import Login from './Login';
+import Privacy from './Privacy';
+import Terms from './Terms';
 import Footer from './Footer';
 import inventory from '../data/inventory';
 
@@ -16,6 +19,10 @@ class App extends React.Component {
     cart: { },
     menuOpen: false
   };
+
+  authenticate = (provider) => {
+    console.log('authenticate in App.js', provider);
+  }
 
   addToCart = (key) => {
     this.setState(prevState => ({
@@ -53,8 +60,45 @@ class App extends React.Component {
               <Cart inventory={this.state.inventory} cart={this.state.cart} addToCart={this.addToCart} deleteFromCart={this.deleteFromCart} />
             )}
           />
+          <Route 
+            exact path="/face" 
+            render={() => (
+              <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="face")} addToCart={this.addToCart} />
+            )}
+          />
+          <Route 
+            exact path="/eyes" 
+            render={() => (
+              <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="eyes")} addToCart={this.addToCart} />
+            )}
+          />
+          <Route 
+            exact path="/brushes" 
+            render={() => (
+              <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="brushes")} addToCart={this.addToCart} />
+            )}
+          />
+          <Route 
+            exact path="/login" 
+            render={() => (
+              <Login authenticate={this.authenticate} />
+            )}
+          />
+          <Route 
+            exact path="/privacy" 
+            render={() => (
+              <Privacy />
+            )}
+          />
+          <Route 
+            exact 
+            path="/terms" 
+            render={() => (
+              <Terms />
+            )}
+          />
         </Switch>
-        <Footer />
+        <Footer history={this.props.history}/>
       </main>
     )
   }
