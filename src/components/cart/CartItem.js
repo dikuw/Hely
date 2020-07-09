@@ -2,43 +2,97 @@ import React from 'react';
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
-const StyledGridFigure = styled.figure`
+const StyledGridWrapperDiv = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  margin: 0 2rem;
-  padding: 2rem;
+  margin: 0px;
+  padding: 0.5rem;
   border: 1px solid lightgray;
   background: white;
   position: relative;
 `;
 
-const StyledGridPhotoWrapDiv = styled.div`
-  position: relative;
+const StyledItemDiv = styled.div`
+
 `;
 
 const StyledGridPhotoImg = styled.img`
-  width: 4rem;
-  margin-left: -2rem;
-  margin-top: -2rem;
-  max-width: none;
+  width: 140px;
+  @media (max-width: 768px) {
+    width: 80px;
+  }
+`;
+
+const StyledGridNameDiv = styled.div`
+  width: 10vw;
+`;
+
+const StyledItemQuanityGroupDiv = styled.div`
+  flex-grow: 1;
+  display: flex;
+`;
+
+const StyledGridPriceDiv = styled.div`
+  width: 4vw;
+`;
+
+const StyledQuantityDiv = styled.div`
+ border: 1px solid rgba(0,0,0,0.3);
+ padding: 8px 12px;
+ font-size: 0.8em;
+`;
+
+const StyledButton = styled.button`
+  background: none;
+  border: none;
+  width: 20px;
+  color: #ec419f;
 `;
 
 class CartItem extends React.Component {
   render() {
     const { item, index } = this.props;
-    console.log(item);
     const isAvailable = item.available;
+    const total = formatPrice(this.props.qty * item.price );
+    if (!isAvailable) {
+      return (
+        <StyledGridWrapperDiv>
+          <StyledItemDiv>
+            <StyledGridPhotoImg src={item.image} alt={item.name} />
+          </StyledItemDiv>
+          <StyledItemDiv>Sorry <em>{item ? item.name : 'this'}</em> is no longer available.</StyledItemDiv>
+          <StyledItemDiv>
+          <StyledButton onClick={() => this.props.deleteFromCart(index)}>&times;</StyledButton>
+        </StyledItemDiv>
+        </StyledGridWrapperDiv>
+      )
+    }
     return (
-      <StyledGridFigure>
-        <StyledGridPhotoWrapDiv>
+      <StyledGridWrapperDiv>
+        <StyledItemDiv>
           <StyledGridPhotoImg src={item.image} alt={item.name} />
-        </StyledGridPhotoWrapDiv>
-        <figcaption>
-          <p>{item.name}</p>
-          <p>{formatPrice(item.price)}</p>
-        </figcaption>
-        <button disabled={!isAvailable} onClick={() => this.props.addToCart(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</button>
-      </StyledGridFigure>
+        </StyledItemDiv>
+        <StyledItemDiv>
+          <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
+        </StyledItemDiv>
+        <StyledItemDiv>
+          <StyledItemQuanityGroupDiv>
+            <StyledButton onClick={() => this.props.removeFromCart(index)}>-</StyledButton>
+            <StyledQuantityDiv>
+              {this.props.qty}
+            </StyledQuantityDiv>
+            <StyledButton onClick={() => this.props.addToCart(index)}>+</StyledButton>
+          </StyledItemQuanityGroupDiv>
+        </StyledItemDiv>
+        <StyledItemDiv>
+          <StyledGridPriceDiv>{total}</StyledGridPriceDiv>
+        </StyledItemDiv>
+        <StyledItemDiv>
+          <StyledButton onClick={() => this.props.deleteFromCart(index)}>&times;</StyledButton>
+        </StyledItemDiv>
+      </StyledGridWrapperDiv>
     );
   };
 };

@@ -4,11 +4,13 @@ import Burger from './Burger.js';
 
 const Nav = styled.nav`
   width: 100%;
-  height: 55px;
-  border-bottom: 2px solid #f1f1f1;
-  padding: 0 20px;
+  height: 2em;
   display: flex;
-  justify-content: space-between;
+  padding: 0px 12vw;
+  @media (max-width: 768px) {
+    padding-left: 16px;
+    padding-bottom: 40px;
+  }
 `
 
 class Navigation extends React.Component {

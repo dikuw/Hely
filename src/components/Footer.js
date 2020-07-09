@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
@@ -43,10 +44,11 @@ const StyledContacth2 = styled.h2`
 `;
 
 const StyledNavh2 = styled.h2`
-  font-weight: 400;
+  font-weight: 600;
   font-size: 15px;
   flex: 1 50%;
   margin-right: 1.25em;
+  margin-top: 1.3em;
 `;
 
 const StyledLegal = styled.div`
@@ -80,14 +82,6 @@ const StyledNavLi = styled.li`
   }
 `;
 
-const Link = styled.a`
-  color: black;
-  cursor: pointer;
-  :hover {
-    text-decoration: none;
-  }
-`;
-
 class Footer extends React.Component {
   render() {
     return (
@@ -111,19 +105,15 @@ class Footer extends React.Component {
           <StyledNavLi>
             <StyledNavh2>Information</StyledNavh2>
             <ul>
-              <li>
-                <Link to='/shipping'>Shipping</Link>
-              </li>
-              <li>
-                <Link to='/returns'>Returns</Link>
-              </li>
+              <li><Link to="/shipping">Shipping </Link></li>
+              <li><Link to="/returns">Returns </Link></li>
             </ul>
           </StyledNavLi>
           <StyledNavLi>
             <StyledNavh2>Legal</StyledNavh2>
             <ul>
-              <li><Link onClick={() => this.props.history.push('/privacy')}>Privacy Policy</Link></li>
-              <li><Link onClick={() => this.props.history.push('/terms') }>Terms of Use</Link></li>
+              <li><Link to="/privacy">Privacy Policy </Link></li>
+              <li><Link to="/terms">Terms of Use </Link></li>
             </ul>
           </StyledNavLi>
         </StyledNavUl>

@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const BannerDiv = styled.div`
-  display: block;
+const StyledBannerDiv = styled.div`
   width: 100%;
-  background-color: #ec419f;
-  color: white;
-  padding: 7px 10px;
+  color: #272727;
+  background-color: #ffd7d7;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 5px 20px;
   text-align: center;
 `;
 
 class Banner extends React.Component {
   render() {
     return (
-      <BannerDiv>
-        Welcome! Bienviendo!
-      </BannerDiv>
+      <StyledBannerDiv>{this.props.bannerString}</StyledBannerDiv>
     )
   }
 }
