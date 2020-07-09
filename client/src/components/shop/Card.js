@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { formatPrice } from '../helpers.js';
+import { formatPrice } from '../../helpers.js';
 
 const StyledGridFigure = styled.figure`
   flex-basis: calc(33.333% - 4rem);

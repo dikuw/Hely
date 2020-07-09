@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const Ul = styled.ul`
   list-style: none;
   display: flex;
   width: 100%;
-  justify-content: space-around;
-  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center; /* align vertical */
   z-index: 10;
-  li {
-    padding: 18px 10px;
-  }
+  margin-bottom: 0px;
   @media (max-width: 768px) {
     flex-flow: column nowrap;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: flex-end;
     background-color: #fafafa;
     position: fixed;
     transform: ${({ menuOpen }) => menuOpen ? 'translateX(0)' : 'translateX(-100%)'};
@@ -21,7 +21,7 @@ const Ul = styled.ul`
     left: 0;
     height: 100vh;
     width: 150px;
-    padding-top: 3.5rem;
+    padding: 20vh 4px;
     transition: transform 0.3s ease-in-out;
     li {
       color: black;
@@ -30,7 +30,20 @@ const Ul = styled.ul`
   }
 `;
 
+const Li = styled.li`
+  text-align: center;
+  flex-grow: 1;
+  height: 100%;
+  @media (min-width: 768px) {
+    :hover {
+      background-color: #ffd7d7;
+    }
+  }
+`;
+
 const Link = styled.a`
+  display:block;
+  width: 100%;
   color: black;
   cursor: pointer;
   :hover {
@@ -50,12 +63,13 @@ class NavMenu extends React.Component {
   render() {
     return (
       <Ul ref={this.myUl}  menuOpen={this.props.menuOpen}>
-        <li><Link onClick={() => this.handleClick('/', this.props.menuOpen) } >Home</Link></li>
-        <li><Link onClick={() => this.handleClick('/face', this.props.menuOpen) } >Face</Link></li>
-        <li><Link onClick={() => this.handleClick('/eyes', this.props.menuOpen) } >Eyes</Link></li>
-        <li><Link onClick={() => this.handleClick('/brushes', this.props.menuOpen) } >Brushes</Link></li>
-        <li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart</Link></li>
-        <li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></li>
+        <Li><Link onClick={() => this.handleClick('/', this.props.menuOpen) } >Home</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/face', this.props.menuOpen) } >Face</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/eyes', this.props.menuOpen) } >Eyes</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/brushes', this.props.menuOpen) } >Brushes</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/Inventory', this.props.menuOpen) } >Inventory</Link></Li>
       </Ul>
     );
   }

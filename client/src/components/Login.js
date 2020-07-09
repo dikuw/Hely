@@ -2,15 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const StyledBannerDiv = styled.div`
-  width: 100%;
-  color: #272727;
-  background-color: #ffd7d7;
-  text-transform: uppercase;
-  font-weight: 600;
-  padding: 5px 20px;
-`;
-
 const StyledWrapperDiv = styled.div`
   min-height: 500px;
   max-width: 1200px;
@@ -47,18 +38,15 @@ const StyledButtonTW = styled.button`
 class Login extends React.Component {
   render() {
     return (
-      <React.Fragment>
-        <StyledBannerDiv>Log In</StyledBannerDiv>
-        <StyledWrapperDiv>
-          <p>Sign in to view your account</p>
-          <StyledButtonFB onClick={() => this.props.authenticate('Facebook')}>
-            Log in with Facebook
-          </StyledButtonFB>
-          <StyledButtonTW onClick={() => this.props.authenticate('Twitter')}>
-            Log in with Twitter
-          </StyledButtonTW>
-        </StyledWrapperDiv>
-      </React.Fragment>
+      <StyledWrapperDiv>
+        <p>Sign in to view your account</p>
+        <StyledButtonFB onClick={() => this.props.authenticate('Facebook')}>
+          Log in with Facebook
+        </StyledButtonFB>
+        <StyledButtonTW onClick={() => this.props.authenticate('Twitter')}>
+          Log in with Twitter
+        </StyledButtonTW>
+      </StyledWrapperDiv>
     )
   }
 };

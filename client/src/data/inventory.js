@@ -74,7 +74,7 @@ const inventoryItems = {
   item9: {
     id: "9",
     name: "AOA Fat Lash Mascara",
-    image: "/images/Eyes03.JPG",
+    image: "/images/Eyes04.JPG",
     category: "eyes",
     description: "AOA Fat Lash Mascara le da longitud y volumen a tus pestañas. Es una fórmula duradera que nunca correrá sobre ti. Esta máscara a prueba de manchas es buena para los ojos sensibles y no deja grumos.",
     price: 550,
