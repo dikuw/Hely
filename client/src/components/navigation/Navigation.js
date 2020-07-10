@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Burger from './Burger.js';
+import CartIcon from './CartIcon.js';
 
 const Nav = styled.nav`
   width: 100%;
@@ -10,6 +11,9 @@ const Nav = styled.nav`
   @media (max-width: 768px) {
     padding-left: 16px;
     padding-bottom: 40px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
   }
 `
 
@@ -18,6 +22,7 @@ class Navigation extends React.Component {
     return (
       <Nav>
         <Burger history={this.props.history} />
+        <CartIcon />
       </Nav>
     );
   }

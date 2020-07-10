@@ -43,6 +43,10 @@ const StyledContacth2 = styled.h2`
   font-weight: 400;
 `;
 
+const StyledDiv = styled.div`
+  display: flex;
+`;
+
 const StyledNavh2 = styled.h2`
   font-weight: 600;
   font-size: 15px;
@@ -63,6 +67,17 @@ const StyledLegal = styled.div`
   @media (min-width: 40.375em) {
     margin-left: auto;
   }
+`;
+
+const StyledIGDiv = styled.div`
+  display: flex;
+  font-size: 1rem;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  background: url('images/instagram.svg') center no-repeat;
+  background-size: contain;
+  padding: 0 1rem;
 `;
 
 const StyledNavUl = styled.ul`
@@ -89,17 +104,17 @@ class Footer extends React.Component {
         <StyledContactDiv >
           <StyledContacth1 >Hely Cosmetics</StyledContacth1>        
           <StyledContacth2>Email</StyledContacth2>    
-          <div>
+          <StyledDiv>
             <a rel="noopener noreferrer" href="mailto:info@helycosmetics.com" target="_blank">info@helycosmetics.com</a>
-          </div>
+          </StyledDiv>
           <StyledContacth2>Phone</StyledContacth2>    
-          <div>
+          <StyledDiv>
             <a rel="noopener noreferrer" href="https://api.whatsapp.com/send?div=5804148025111" target="_blank">+58 414-8025111</a>
-          </div>  
+          </StyledDiv>  
           <StyledContacth2>Socials</StyledContacth2>  
-          <div>
-            <a rel="noopener noreferrer" href="https://www.instagram.com/helycosmetics/" target="_blank">Instagram</a>
-          </div>
+          <StyledDiv>
+            <a rel="noopener noreferrer" href="https://www.instagram.com/helycosmetics/" target="_blank"><StyledIGDiv></StyledIGDiv> </a>
+          </StyledDiv>
         </StyledContactDiv>
         <StyledNavUl>
           <StyledNavLi>

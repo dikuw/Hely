@@ -41,7 +41,7 @@ const Burger = (props) => {
         <div />
         <div />
       </StyledBurger>
-      <NavMenu history={props.history} menuOpen={menuOpen} />
+      <NavMenu history={props.history} menuOpen={menuOpen} setOpen={setOpen} />
     </>
   );
 };
