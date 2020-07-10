@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const Ul = styled.ul`
   list-style: none;
@@ -15,13 +14,14 @@ const Ul = styled.ul`
     justify-content: space-between;
     align-items: flex-end;
     background-color: #fafafa;
+    border-right: solid 1px black;
     position: fixed;
     transform: ${({ menuOpen }) => menuOpen ? 'translateX(0)' : 'translateX(-100%)'};
     top: 0;
     left: 0;
     height: 100vh;
     width: 150px;
-    padding: 20vh 4px;
+    padding: 20vh 12px;
     transition: transform 0.3s ease-in-out;
     li {
       color: black;
@@ -55,9 +55,8 @@ class NavMenu extends React.Component {
   myUl = React.createRef();
 
   handleClick(link, menuOpen) {
+    this.props.setOpen(!menuOpen)
     this.props.history.push(link);
-    this.myUl.current.style.transform='translateX(-100%)';
-    this.myUl.current.style.removeProperty('transform');
   }
 
   render() {

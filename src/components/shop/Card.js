@@ -22,7 +22,34 @@ const StyledGridPhotoImg = styled.img`
   width: calc(100% + 4rem);
   margin-left: -2rem;
   margin-top: -2rem;
+  margin-bottom: 1rem;
   max-width: none;
+`;
+
+const StyledAddToCartWrapperDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const StyledAddToCartButton = styled.button`
+  font-size: 1.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-style: normal;
+  background: #ec419f;
+  border-color: #ebebeb;
+  border-radius: 2px;
+  border: 0;
+  color: #ffffff;
+  display: inline-block;
+  height: 45px;
+  letter-spacing: 1px;
+  line-height: 45px;
+  margin: 0;
+  padding: 0 25px;
+  transition: background-color 300ms ease-out;
+  width: auto;
 `;
 
 class Card extends React.Component {
@@ -38,7 +65,9 @@ class Card extends React.Component {
           <p>{item.description}</p>
           <p>{formatPrice(item.price)}</p>
         </figcaption>
-        <button disabled={!isAvailable} onClick={() => this.props.addToCart(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</button>
+        <StyledAddToCartWrapperDiv>
+          <StyledAddToCartButton disabled={!isAvailable} onClick={() => this.props.addToCart(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</StyledAddToCartButton>
+        </StyledAddToCartWrapperDiv>
       </StyledGridFigure>
     );
   };
