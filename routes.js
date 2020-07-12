@@ -5,16 +5,9 @@ const router = express.Router();
 const aboutController = require('./controllers/aboutController');
 
 //  TODO: create controller exports
-router.get('/', aboutController.aboutPage); 
-router.get('/about', aboutController.aboutPage);
-router.get('/faq', aboutController.faqPage);
-router.get('/contact', aboutController.contactPage);
-router.get('/privacy', aboutController.privacyPage);
-router.get('/terms', aboutController.termsPage);
-router.get('/returns', aboutController.returnsPage);
-router.get('/shipping', aboutController.shippingPage);
-router.post('/message', aboutController.validateMessage, aboutController.saveMessage, aboutController.sendMessage);
-
+// router.post('/message', aboutController.validateMessage, aboutController.saveMessage, aboutController.sendMessage);
+router.post('/message', aboutController.createMessage);
+// router.post('/message', aboutController.createMessage);
 // //  CREATE
 // router.post('/movie', movieController.createMovie);
 // //  UPDATE
