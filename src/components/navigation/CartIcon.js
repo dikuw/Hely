@@ -3,33 +3,35 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledWrapperDiv = styled.div`
-  position: relative;
-`;
-
-const SytledLinkWrapperDiv = styled.div`
-  position: absolute;
-  top: -10px;
-`;
-
-const StyledCartIconDiv = styled.div`
-  display: flex;
-  font-size: 1rem;
-  height: 20px;
-  background: url('images/cart.svg') center no-repeat;
-  background-size: contain;
-  padding: 0 1rem;
   display: none;
   @media (max-width: 768px) {
     display: flex;
-    justify-content: center;
-     align-items: center;
+    position: relative;
   }
 `;
 
-const CartIcon = () => {
+const StyledLinkWrapperDiv = styled.div`
+  display: flex;
+  position: absolute;
+  top: -10px;
+  left: -26px;
+`;
+
+const StyledCountDiv = styled.div`
+  text-indent: 0.5em;
+  color: black;
+  text-decoraction: none;
+`;
+
+const CartIcon = (props) => {
   return (
     <StyledWrapperDiv>
-      <SytledLinkWrapperDiv><Link to="/cart"><StyledCartIconDiv></StyledCartIconDiv></Link></SytledLinkWrapperDiv>     
+      <StyledLinkWrapperDiv>
+        <Link to="/cart" style={{width: '24px'}}>
+          <img src="images/cart.svg" alt="Cart Icon" />
+        </Link>
+        <StyledCountDiv>({props.getCartItemCount()})</StyledCountDiv>
+      </StyledLinkWrapperDiv>     
     </StyledWrapperDiv>
   );
 };

@@ -16,11 +16,11 @@ const StyledButton = styled.button`
   text-transform: uppercase;
   font-weight: 400;
   font-style: normal;
-  background: #ec419f;
-  border-color: #ebebeb;
+  background: var(--vinoTinto);
+  border-color: var(--vinoTinto);
   border-radius: 2px;
   border: 0;
-  color: #ffffff;
+  color: var(--almostWhite);
   display: inline-block;
   height: 45px;
   letter-spacing: 1px;

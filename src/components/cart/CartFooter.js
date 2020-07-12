@@ -33,8 +33,8 @@ const StyledCheckoutButton = styled.button`
   text-transform: uppercase;
   font-weight: 400;
   font-style: normal;
-  background: #ec419f;
-  border-color: #ebebeb;
+  background: var(--rosaVieja);
+  border-color: var(--rosaVieja);
   border-radius: 2px;
   border: 0;
   color: #ffffff;

@@ -5,6 +5,7 @@ import Header from './header/Header';
 import Navigation from './navigation/Navigation';
 import Banner from './Banner';
 import Grid from './shop/Grid';
+import AddedPopup from './shop/AddedPopup';
 import Cart from './cart/Cart';
 import Login from './Login';
 import Inventory from './inventory/Inventory';
@@ -21,7 +22,8 @@ class App extends React.Component {
   state = {
     inventory: {...inventory},
     cart: {},
-    menuOpen: false
+    menuOpen: false,
+    showAddedPopup: false
   };
 
   componentDidMount() {
@@ -35,6 +37,12 @@ class App extends React.Component {
   componentDidUpdate() {
     localStorage.setItem('cart', JSON.stringify(this.state.cart));
   }
+
+  togglePopup = () => {   
+    this.setState(prevState => ({
+      showAddedPopup: !prevState.showAddedPopup
+    }))
+  } 
 
   authenticate = (provider) => {
     console.log('authenticate in App.js', provider);
@@ -55,7 +63,6 @@ class App extends React.Component {
   deleteItem = (key) => {
     const inventory = {...this.state.inventory};
     console.log('before', inventory);
-    // inventoryItems[key] = null;
     delete inventory[key];
     console.log('after', inventory);
     this.setState({ inventory });
@@ -82,9 +89,6 @@ class App extends React.Component {
   };
 
   deleteFromCart = (key) => {
-    // const cart = { ...this.state.cart };
-    // delete cart[key];
-    // this.setState({ cart });
     this.setState(prevState => {
       let cart = { ...prevState.cart }; 
       delete cart[key];                                 
@@ -92,43 +96,50 @@ class App extends React.Component {
     });
   }
 
+  getCartItemCount = () => {
+    return Object.values(this.state.cart).reduce((a, b) => a + b, 0);
+  }
+
   render() {
     return (
       <main>
         <TopBanner />
         <Header />
-        <Navigation history={this.props.history} />
+        <Navigation history={this.props.history} getCartItemCount={this.getCartItemCount} />
         <Switch>
           <Route  exact path="/" 
             render={() => (
-              <Grid inventory={this.state.inventory} addToCart={this.addToCart} />
+              <React.Fragment>
+                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                <Grid inventory={this.state.inventory} addToCart={this.addToCart} togglePopup={this.togglePopup} />
+              </React.Fragment>
             )}
           />
           <Route path="/face" 
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Products for your face" />
-                <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="face")} addToCart={this.addToCart} />
+                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="face")} addToCart={this.addToCart} togglePopup={this.togglePopup} />
               </React.Fragment>
-              
             )}
           />
           <Route path="/eyes" 
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Products for your eyes" />
-                <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="eyes")} addToCart={this.addToCart} />
+                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="eyes")} addToCart={this.addToCart} togglePopup={this.togglePopup} />
               </React.Fragment>
-              
             )}
           />
           <Route path="/brushes" 
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Brushes" />
-                <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="brushes")} addToCart={this.addToCart} />
+                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="brushes")} addToCart={this.addToCart}  togglePopup={this.togglePopup} />
               </React.Fragment>
-              
             )}
           />
           <Route path="/cart" 
@@ -137,7 +148,6 @@ class App extends React.Component {
                 <Banner bannerString="Your Cart" />
                 <Cart inventory={this.state.inventory} cart={this.state.cart} addToCart={this.addToCart} removeFromCart={this.removeFromCart} deleteFromCart={this.deleteFromCart} />
               </React.Fragment>
-              
             )}
           />
           <Route path="/login" 
@@ -146,7 +156,6 @@ class App extends React.Component {
                 <Banner bannerString="Log In (or Register)" />
                 <Login authenticate={this.authenticate} />
               </React.Fragment>
-              
             )}
           />
           <Route path="/inventory" 
