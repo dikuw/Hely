@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// mongoose.Promise = global.Promise;
 
 const messageSchema = new mongoose.Schema({
   name: {
@@ -11,10 +10,6 @@ const messageSchema = new mongoose.Schema({
     type: String, 
     trim: true, 
     required: true 
-  },
-  messageDate: {
-    type: Date,
-    default: Date.now
   },
   messageText: {
     type: String,

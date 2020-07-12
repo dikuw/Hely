@@ -21,12 +21,6 @@ const userSchema = new Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  userType: {
-    type: String,
-    enum: ['held', 'keyholder'],
-    required: 'Please select a user type',
-    default: 'held'
-  },
   image: {
     type: String,
     default: "default.png"
@@ -46,10 +40,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     trim: true
-  },
-  is18: {
-    type: Boolean,
-    default: true
   },
   added: {
     type: Date,
