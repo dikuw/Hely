@@ -9,7 +9,7 @@ const StyledGridFigure = styled.figure`
   margin: 0 2rem 2rem 2rem;
   padding: 2rem;
   border: 1px solid lightgray;
-  background: white;
+  background: var(--almostWhite);
   box-shadow: 0 0 0 5px rgba(0,0,0,0.03);
   position: relative;
 `;
@@ -37,11 +37,11 @@ const StyledAddToCartButton = styled.button`
   text-transform: uppercase;
   font-weight: 400;
   font-style: normal;
-  background: #ec419f;
-  border-color: #ebebeb;
+  background: var(--vinoTinto);
+  border-color: var(--vinoTinto);
   border-radius: 2px;
   border: 0;
-  color: #ffffff;
+  color: var(--almostWhite);
   display: inline-block;
   height: 45px;
   letter-spacing: 1px;
@@ -53,9 +53,16 @@ const StyledAddToCartButton = styled.button`
 `;
 
 class Card extends React.Component {
+
+  handleClick = (key) => {
+    this.props.addToCart(key);
+    this.props.togglePopup();
+  };
+
   render() {
     const { item, index } = this.props;
     const isAvailable = item.available;
+
     return (
       <StyledGridFigure>
         <StyledGridPhotoWrapDiv>
@@ -66,7 +73,7 @@ class Card extends React.Component {
           <p>{formatPrice(item.price)}</p>
         </figcaption>
         <StyledAddToCartWrapperDiv>
-          <StyledAddToCartButton disabled={!isAvailable} onClick={() => this.props.addToCart(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</StyledAddToCartButton>
+          <StyledAddToCartButton disabled={!isAvailable} onClick={() => this.handleClick(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</StyledAddToCartButton>
         </StyledAddToCartWrapperDiv>
       </StyledGridFigure>
     );

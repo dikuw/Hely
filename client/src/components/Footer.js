@@ -6,16 +6,16 @@ const StyledFooter = styled.footer`
   display: flex;
   flex-flow: row wrap;
   padding: 30px 30px 0px 30px;
-  color: #272727;
-  background-color: #ffd7d7;
-  border-top: 1px solid #ffe6e6;
+  color: var(--almostWhite);
+  background-color: var(--vinoTinto);
+  border-top: 1px solid var(--vinoTinto);
   font-size: 0.8rem;
   ul {
     list-style: none;
     padding-left: 0;
   }
   a {
-    color: #272727;
+    color: var(--almostWhite);
     :hover {
       text-decoration: none;
     }

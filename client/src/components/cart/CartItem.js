@@ -48,7 +48,7 @@ const StyledButton = styled.button`
   background: none;
   border: none;
   width: 20px;
-  color: #ec419f;
+  color: var(--rosaVieja);
 `;
 
 class CartItem extends React.Component {

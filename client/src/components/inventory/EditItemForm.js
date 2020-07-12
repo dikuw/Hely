@@ -5,11 +5,11 @@ const StyledButton = styled.button`
   text-transform: uppercase;
   font-weight: 400;
   font-style: normal;
-  background: #ec419f;
-  border-color: #ebebeb;
+  background: var(--vinoTinto);
+  border-color: var(--vinoTinto);
   border-radius: 2px;
   border: 0;
-  color: #ffffff;
+  color: var(--almostWhite);
   display: inline-block;
   letter-spacing: 1px;
   margin: 0;
@@ -52,12 +52,46 @@ const StyledDiv = styled.div`
   }
 `;
 
+const StyledImageUploadDiv = styled.div`
+  > input {
+    display: none;
+  }
+`;
+
+const StyledImageUploadImg = styled.img`
+  max-width: 50px;
+`;
+
 class EditItemForm extends React.Component {
   handleChange = (e) => {
     let updatedValue = e.currentTarget.value;
     if (updatedValue === "true" || updatedValue === "false") {
         updatedValue = JSON.parse(updatedValue);
     }
+    if (e.currentTarget.name === "image") {
+      console.log('upload new pic bro');
+      // const files = Array.from(e.target.files);
+      // this.setState({ uploading: true });
+
+      // const formData = new FormData();
+
+      // files.forEach((file, i) => {
+      //   formData.append(i, file)
+      // });
+
+      // fetch(`${API_URL}/image-upload`, {
+      //   method: 'POST',
+      //   body: formData
+      // })
+      // .then(res => res.json())
+      // .then(images => {
+      //   this.setState({ 
+      //     uploading: false,
+      //     images
+      //   });
+      // });
+    };
+    
     const updatedItem = {
         ...this.props.item,
         [e.currentTarget.name]: updatedValue
@@ -80,7 +114,12 @@ class EditItemForm extends React.Component {
           <option value={true}>Available</option>
           <option value={false}>Not Available</option>
         </select>
-        <input type="text" name="image" onChange={this.handleChange} value={this.props.item.image}/>
+        <StyledImageUploadDiv>
+          <label htmlFor="file-input">
+            <StyledImageUploadImg src={this.props.item.image} alt={this.props.item.image}/>
+          </label>
+          <input name="image" id="file-input" type="file" onChange={this.handleChange} />
+        </StyledImageUploadDiv>
         <textarea name="description" onChange={this.handleChange} value={this.props.item.description} />
         <StyledButton onClick={() => this.props.deleteItem(this.props.index)} >Remove Item</StyledButton>
       </StyledDiv>

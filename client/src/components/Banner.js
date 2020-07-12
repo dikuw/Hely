@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 const StyledBannerDiv = styled.div`
   width: 100%;
-  color: #272727;
-  background-color: #ffd7d7;
+  color: var(--almostWhite);
+  background-color: var(--rosaVieja);
   text-transform: uppercase;
   font-size: 0.9em;
-  font-weight: 600;
+  font-weight: 400;
   padding: 5px 20px;
   text-align: center;
 `;

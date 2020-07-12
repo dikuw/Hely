@@ -66,7 +66,7 @@ class NavMenu extends React.Component {
         <Li><Link onClick={() => this.handleClick('/face', this.props.menuOpen) } >Face</Link></Li>
         <Li><Link onClick={() => this.handleClick('/eyes', this.props.menuOpen) } >Eyes</Link></Li>
         <Li><Link onClick={() => this.handleClick('/brushes', this.props.menuOpen) } >Brushes</Link></Li>
-        <Li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart</Link></Li>
+        <Li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart ({this.props.getCartItemCount()})</Link></Li>
         <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></Li>
         <Li><Link onClick={() => this.handleClick('/Inventory', this.props.menuOpen) } >Inventory</Link></Li>
       </Ul>
