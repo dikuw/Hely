@@ -13,6 +13,7 @@ const inventoryItems = {
     id: "2",
     name: "AOA Studio Wonder Brow",
     image: "/images/Eyes01.JPG",
+    category: "eyes",
     description: "!La pomada AOA Studio Wonder Brow es una fórmula libre de manchas que definirá perfectamente tus cejas!",
     price: 300,
     available: false
