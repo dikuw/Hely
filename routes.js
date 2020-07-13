@@ -3,11 +3,19 @@ const router = express.Router();
 
 //  TODO: update for all Schemas
 const aboutController = require('./controllers/aboutController');
+const inventoryController = require('./controllers/inventoryController');
 
 //  TODO: create controller exports
-// router.post('/message', aboutController.validateMessage, aboutController.saveMessage, aboutController.sendMessage);
 router.post('/message', aboutController.createMessage);
-// router.post('/message', aboutController.createMessage);
+
+router.post('/uploadImage', inventoryController.uploadImage)
+
+//  ** Inventory Routes **  //
+//  CREATE
+router.post('/item', inventoryController.createInventoryItem);
+//  GET
+router.get('/inventory', inventoryController.getInventory);
+
 // //  CREATE
 // router.post('/movie', movieController.createMovie);
 // //  UPDATE
