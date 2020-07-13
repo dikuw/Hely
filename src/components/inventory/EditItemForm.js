@@ -65,108 +65,30 @@ const StyledImageUploadImg = styled.img`
 
 class EditItemForm extends React.Component {
 
-  onChange = async e => {
-    const formData = new FormData(); 
-    formData.append('file', e.target.files[0]);
-    for (var pair of formData.entries()) {
-      console.log(pair[1]); 
-    }
-    try {
-      await axios.post('http://localhost:8000/api/uploadImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   handleChange = async (e) => {
     let updatedValue = e.currentTarget.value;
+    let propName = e.currentTarget.name;
+
     if (updatedValue === "true" || updatedValue === "false") {
         updatedValue = JSON.parse(updatedValue);
     }
-    if (e.currentTarget.name === "image") {
-      // const formData = new FormData(); 
-      // formData.append('file', e.target.files[0]);
-  
-      // try {
-      //   await axios.post('http://localhost:8000/api/uploadImage', formData, {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     }
-      //   });
-  
-      // } catch (err) {
-      //   console.log(err);
-      // }
-      // // start attempt from https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
-      // let formData = new FormData();
-      // formData.append("file", e.target.files[0]);
-      // var request = new XMLHttpRequest();
-      // request.open("POST", "http://localhost:8000/api/uploadImage");
-      // request.send(formData);
-      // // end attempt from https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
-      // // start attempt from https://github.com/bradtraversy/react_file_uploader
-      // const formData = new FormData();
-      // const file = e.target.files[0];
-      // console.log(file);
-      // formData.append('file', file);
-  
-      // try {
-      //   const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     }
-      //   });
-      //   console.log(res);
-      //   const { fileName, filePath } = res.data;
-      // } catch (err) {
-      //   if (err.response.status === 500) {
-      //     console.log('There was a problem with the server');
-      //   } else {
-      //     console.log(err.response.data.msg);
-      //   }
-      // }
-      // // end attempt from https://github.com/bradtraversy/react_file_uploader
-      // start attempt from https://github.com/funador/react-image-upload/
-      // const files = Array.from(e.target.files);
 
-      // this.setState({ uploading: true });
-
-      // const formData = new FormData();
-
-      // files.forEach((file, i) => {
-      //   formData.append(i, file);
-      // });
-
-      // formData.append(1, {"test" : "test123"});
-
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[1]); 
-      // }
-
-      // fetch(`http://localhost:8000/api/uploadImage`, {
-      //   method: 'POST',
-      //   body: formData
-      // })
-      // .then(res => res.json())
-      // .then(() => {
-      //   this.setState({ 
-      //     uploading: false
-      //   });
-      // });
-      // end attempt from https://github.com/funador/react-image-upload/
+    if (propName === "image") {
+      const formData = new FormData(); 
+      formData.append('file', e.target.files[0]);
+      const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      updatedValue = `/images/${res.data.fileName}`;
     };
-    
+
     const updatedItem = {
         ...this.props.item,
-        [e.currentTarget.name]: updatedValue
+        [propName]: updatedValue
     }
+
     this.props.updateItem(this.props.index, updatedItem);
-}
+  }
 
   render() {
     return (
@@ -184,10 +106,10 @@ class EditItemForm extends React.Component {
           <option value={false}>Not Available</option>
         </select>
         <StyledImageUploadDiv>
-          <label htmlFor="file-input">
+          <label key={this.props.index} htmlFor={`file-input${this.props.index}`}>
             <StyledImageUploadImg src={this.props.item.image} alt={this.props.item.image}/>
           </label>
-          <input name="image" id="file-input" type="file" accept="image/png, image/jpeg" onChange={this.onChange} />
+          <input name="image" id={`file-input${this.props.index}`} type="file" accept="image/png, image/jpeg" onChange={this.handleChange} />
         </StyledImageUploadDiv>
         <textarea name="description" onChange={this.handleChange} value={this.props.item.description} />
         <StyledButton onClick={() => this.props.deleteItem(this.props.index)} >Remove Item</StyledButton>

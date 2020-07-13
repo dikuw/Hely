@@ -9,24 +9,35 @@ import AddedPopup from './shop/AddedPopup';
 import Cart from './cart/Cart';
 import Login from './Login';
 import Inventory from './inventory/Inventory';
-import Privacy from './information/Privacy';
-import Terms from './information/Terms';
-import Shipping from './information/Shipping';
-import Returns from './information/Returns';
+import { Privacy, Terms, Shipping, Returns } from './information/index';
 import Footer from './Footer';
 import inventory from '../data/inventory';
+import apis from '../api/index';
 
 import '../style/styles.css';
 
 class App extends React.Component {
   state = {
-    inventory: {...inventory},
+    inventory: {},
     cart: {},
     menuOpen: false,
-    showAddedPopup: false
+    showAddedPopup: false,
+    isLoading: false,
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    //  TODO show a loading div while isLoading is true //
+    //  ** ⏰ ⏰ ⏰  ** //
+    this.setState({ isLoading: true });
+
+    await apis.getInventory().then(inventory => {
+      console.log(inventory.data.data.length);
+      this.setState({
+        inventory: inventory.data.data,
+        isLoading: false,
+      });
+    });
+
     const localStorageRef = localStorage.getItem('cart');
     
     if (localStorageRef) {
@@ -48,10 +59,16 @@ class App extends React.Component {
     console.log('authenticate in App.js', provider);
   }
 
-  addItem = (inventoryItem) => {
+  addItem = async (inventoryItem) => {
     const inventory = { ...this.state.inventory };
     inventory[`item${Date.now()}`] = inventoryItem;
     this.setState({ inventory });
+
+    const payload = { ...inventoryItem };
+    console.log(payload);
+    await apis.insertInventoryItem(payload).then(res => {
+      console.log(`item inserted successfully`);
+    });
   };
 
   updateItem = (key, updatedItem) => {
@@ -61,6 +78,7 @@ class App extends React.Component {
   }
 
   deleteItem = (key) => {
+    console.log(key);
     const inventory = {...this.state.inventory};
     console.log('before', inventory);
     delete inventory[key];
@@ -119,7 +137,7 @@ class App extends React.Component {
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Products for your face" />
-                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="face")} addToCart={this.addToCart} togglePopup={this.togglePopup} />
               </React.Fragment>
             )}
@@ -128,7 +146,7 @@ class App extends React.Component {
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Products for your eyes" />
-                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="eyes")} addToCart={this.addToCart} togglePopup={this.togglePopup} />
               </React.Fragment>
             )}
@@ -137,7 +155,7 @@ class App extends React.Component {
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Brushes" />
-                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="brushes")} addToCart={this.addToCart}  togglePopup={this.togglePopup} />
               </React.Fragment>
             )}
@@ -163,7 +181,7 @@ class App extends React.Component {
               <React.Fragment>
                 <Banner bannerString="Inventory" />
                 <Inventory 
-                  inventory={this.state.inventory} 
+                  inventory={Object.values(this.state.inventory).filter(item => item.show===true)} 
                   authenticate={this.authenticate} 
                   addItem={this.addItem}
                   updateItem={this.updateItem}

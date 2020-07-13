@@ -1,7 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 import AddItemForm from './AddItemForm';
 import EditItemForm from './EditItemForm';
-import styled from 'styled-components';
+import apis from '../../api/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -35,15 +36,22 @@ class Inventory extends React.Component {
   state = {
     uid: "admin",
     isAuthorized: null,
+    //  TODO add spinner and show it on add and edit forms when photo is uploading  //
+    //  **  🎡  🎡  🎡  ** //
     uploadingPhoto: false
   }
 
   authHandler = async () => {
-    //  TODO Authenticate and update
+    //  TODO Authenticate and update  //
+    //  ** 🔑🔑🔑 **  //
     this.setState({
       uid: "1",
       isAuthorized: true
     })
+  }
+ 
+  componentWillUnmount = async () => {
+    await apis.putInventory({ ...this.props.inventory });
   }
 
   render() {
