@@ -8,13 +8,15 @@ const inventoryController = require('./controllers/inventoryController');
 //  TODO: create controller exports
 router.post('/message', aboutController.createMessage);
 
-router.post('/uploadImage', inventoryController.uploadImage)
-
 //  ** Inventory Routes **  //
-//  CREATE
-router.post('/item', inventoryController.createInventoryItem);
 //  GET
-router.get('/inventory', inventoryController.getInventory);
+router.get('/getInventory', inventoryController.getInventory);
+//  CREATE
+router.post('/postItem', inventoryController.postItem);
+//  UPDATE
+router.put('/putInventory', inventoryController.archiveInventory, inventoryController.putInventory);
+//  POST IMAGE
+router.post('/uploadImage', inventoryController.uploadImage)
 
 // //  CREATE
 // router.post('/movie', movieController.createMovie);
