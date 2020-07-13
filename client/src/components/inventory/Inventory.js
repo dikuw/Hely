@@ -34,7 +34,8 @@ const StyledButton = styled.button`
 class Inventory extends React.Component {
   state = {
     uid: "admin",
-    isAuthorized: null
+    isAuthorized: null,
+    uploadingPhoto: false
   }
 
   authHandler = async () => {
@@ -59,8 +60,9 @@ class Inventory extends React.Component {
             item={this.props.inventory[key]} 
             updateItem={this.props.updateItem}
             deleteItem={this.props.deleteItem}
+            uploadingPhoto={this.state.uploadingPhoto}
           />)}
-        <AddItemForm addItem={this.props.addItem}/>
+        <AddItemForm addItem={this.props.addItem} uploadingPhoto={this.state.uploadingPhoto} />
         <StyledButton onClick={this.props.loadSampleInventory}>Load Sample Data</StyledButton>
       </StyledWrapperDiv>
     );
