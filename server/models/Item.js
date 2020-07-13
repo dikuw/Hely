@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const itemSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    trim: true,
+    required: 'Please enter an item number'
+  },
   name: {
     type: String,
     trim: true,
@@ -32,7 +37,11 @@ const itemSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.ObjectId,
     ref: 'User'
-  }
+  },
+  show: {
+    type: Boolean,
+    default: true
+  },
 }, { timestamps: true });
   
 module.exports = mongoose.model('Item', itemSchema);

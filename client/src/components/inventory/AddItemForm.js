@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
@@ -35,6 +36,16 @@ const StyledForm = styled.form`
   }
 `;
 
+const StyledImageUploadDiv = styled.div`
+  > input {
+    border: none;
+  }
+`;
+
+const StyledImageUploadImg = styled.img`
+  max-width: 50px;
+`;
+
 const StyledButton = styled.button`
   text-transform: uppercase;
   font-weight: 400;
@@ -69,12 +80,25 @@ class AddItemForm extends React.Component {
       price: parseFloat(this.priceRef.current.value),
       category: this.categoryRef.current.value,
       status: this.statusRef.current.value,
-      image: this.imageRef.current.value,
+      image: this.imageRef.current.getAttribute('data-path'),
       description: this.descriptionRef.current.value,
+      show: true
     };
     this.props.addItem(item);
     event.currentTarget.reset();
   };
+
+  handleChange = async (e) => {
+    const formData = new FormData(); 
+
+    formData.append('file', e.target.files[0]);
+
+    const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+
+    this.imageRef.current.setAttribute('data-path', `/images/${res.data.fileName}`);
+  }
 
   render() {
     return (
@@ -91,8 +115,13 @@ class AddItemForm extends React.Component {
           <option value={true}>Available</option>
           <option value={false}>Not Available</option>
         </select>
-        <input name="image" ref={this.imageRef} type="text" placeholder="Image" />
-        <textarea name="description" ref={this.descriptionRef} />
+        <StyledImageUploadDiv>
+          <label htmlFor='file-input'>
+            <StyledImageUploadImg />
+          </label>
+          <input name="image" id='file-input' type="file" accept="image/png, image/jpeg" data-path="" ref={this.imageRef} onChange={this.handleChange} />
+        </StyledImageUploadDiv>
+        <textarea name="description" ref={this.descriptionRef} placeholder="Please enter a description"/>
         <StyledButton type="submit">+ Add Item</StyledButton>
       </StyledForm>
     );
