@@ -17,11 +17,8 @@ const StyledUl = styled.ul`
 
 class Cart extends React.Component {
   render() {
-    //  TODO Fix this: cartItemIds is item1, item2, etc; it should be the actual ids
-    const cartItemIds = Object.keys(this.props.cart);
-    const total = cartItemIds.reduce((prevTotal, key) => {
-      //  TODO find cartItem based on id, not key
-      const cartItem = this.props.inventory[`item${key}`];
+    const total = Object.keys(this.props.cart).reduce((prevTotal, key) => {
+      const cartItem = Object.values(this.props.inventory).filter(item => item.id===key)[0];
       const count = this.props.cart[key];
       if (cartItem && cartItem.available) {
         return prevTotal + (count * cartItem.price);
@@ -37,7 +34,7 @@ class Cart extends React.Component {
       <StyledWrapperDiv>
         <StyledUl>
           {Object.keys(this.props.cart).map((key, i) => (
-            <CartItem key={key} index={key} qty={this.props.cart[key]} item={this.props.inventory[`item${key}`]} addToCart={this.props.addToCart} removeFromCart={this.props.removeFromCart} deleteFromCart={this.props.deleteFromCart} />
+            <CartItem key={key} index={key} qty={this.props.cart[key]} item={Object.values(this.props.inventory).filter(item => item.id===key)[0]} addToCart={this.props.addToCart} removeFromCart={this.props.removeFromCart} deleteFromCart={this.props.deleteFromCart} />
           ))}
         </StyledUl>
         <CartFooter total={total} />

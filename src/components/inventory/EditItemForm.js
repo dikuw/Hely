@@ -74,12 +74,14 @@ class EditItemForm extends React.Component {
     }
 
     if (propName === "image") {
+      this.props.togglePopup();
       const formData = new FormData(); 
       formData.append('file', e.target.files[0]);
       const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       updatedValue = `/images/${res.data.fileName}`;
+      this.props.togglePopup();
     };
 
     const updatedItem = {
@@ -93,7 +95,7 @@ class EditItemForm extends React.Component {
   render() {
     return (
       <StyledDiv>
-        <div>{this.props.item.id}</div>
+        <input type="text" name="id" value={this.props.item.id} readOnly />
         <input type="text" name="name" onChange={this.handleChange} value={this.props.item.name} />
         <input type="text" name="price" onChange={this.handleChange} value={this.props.item.price} />
         <select name="category" onChange={this.handleChange} value={this.props.item.category} >
@@ -107,7 +109,7 @@ class EditItemForm extends React.Component {
         </select>
         <StyledImageUploadDiv>
           <label key={this.props.index} htmlFor={`file-input${this.props.index}`}>
-            <StyledImageUploadImg src={this.props.item.image} alt={this.props.item.image}/>
+            <StyledImageUploadImg src={`https://res.cloudinary.com/dikuw/image/upload/${this.props.item.image}`} alt={this.props.item.image}/>
           </label>
           <input name="image" id={`file-input${this.props.index}`} type="file" accept="image/png, image/jpeg" onChange={this.handleChange} />
         </StyledImageUploadDiv>

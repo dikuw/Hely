@@ -66,7 +66,7 @@ class Card extends React.Component {
     return (
       <StyledGridFigure>
         <StyledGridPhotoWrapDiv>
-          <StyledGridPhotoImg src={item.image} alt={item.name} />
+          <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
         </StyledGridPhotoWrapDiv>
         <figcaption>
           <p>{item.description}</p>
