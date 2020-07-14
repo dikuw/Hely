@@ -31,7 +31,6 @@ class App extends React.Component {
     this.setState({ isLoading: true });
 
     await apis.getInventory().then(inventory => {
-      console.log(inventory.data.data.length);
       this.setState({
         inventory: inventory.data.data,
         isLoading: false,
@@ -65,7 +64,6 @@ class App extends React.Component {
     this.setState({ inventory });
 
     const payload = { ...inventoryItem };
-    console.log(payload);
     await apis.insertInventoryItem(payload).then(res => {
       console.log(`item inserted successfully`);
     });

@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 const Item = require('../models/Item');
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUD_API_KEY, 
+  api_secret: process.env.CLOUD_API_SECRET
+});
 
 exports.getInventory = async (req, res) => {
   await Item.find({ "show": true }, (err, inventory) => {
@@ -54,9 +61,9 @@ exports.putInventory = async (req, res) => {
   return res.send(body);
 };
 
-exports.uploadImage = async (req, res) => {
+exports.uploadImage = async (req, res, next) => {
   if (!req.files) {
-    return res.status(400).json({ msg: 'No file uploaded son' });
+    return res.status(400).json({ msg: 'No file to upload' });
   }
 
   const file = req.files.file;
@@ -74,6 +81,18 @@ exports.uploadImage = async (req, res) => {
       console.error(err);
       return res.status(500).send(err);
     }
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+    req.body.photo = file.name;
+    next();
+    // res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+  });
+};
+
+exports.uploadImagetoCloudinary = async (req, res, next) => {
+  let imageFile = `../client/public/images/${req.body.photo}`;
+  cloudinary.uploader.upload(imageFile, {"crop":"limit", "use_filename":"true"}, function(error, result) { 
+    if (error) {
+      console.log('error', error);
+    }
+    res.json({ fileName: result.public_id });
   });
 };

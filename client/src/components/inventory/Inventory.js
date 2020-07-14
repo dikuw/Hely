@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import AddItemForm from './AddItemForm';
 import EditItemForm from './EditItemForm';
+import LoadingPopup from './LoadingPopup';
 import apis from '../../api/index';
 
 const StyledWrapperDiv = styled.div`
@@ -54,6 +55,12 @@ class Inventory extends React.Component {
     await apis.putInventory({ ...this.props.inventory });
   }
 
+  togglePopup = () => {   
+    this.setState(prevState => ({
+      uploadingPhoto: !prevState.uploadingPhoto
+    }))
+  } 
+
   render() {
     //  TODO replace -- this is for testing purposes
     if (!this.state.uid) {
@@ -61,6 +68,8 @@ class Inventory extends React.Component {
     }
     return (
       <StyledWrapperDiv>
+        {this.state.uploadingPhoto ? <LoadingPopup /> : null}
+        <AddItemForm addItem={this.props.addItem} uploadingPhoto={this.state.uploadingPhoto} togglePopup={this.togglePopup} />
         {Object.keys(this.props.inventory).map(key => 
           <EditItemForm 
             key={key} 
@@ -69,8 +78,8 @@ class Inventory extends React.Component {
             updateItem={this.props.updateItem}
             deleteItem={this.props.deleteItem}
             uploadingPhoto={this.state.uploadingPhoto}
+            togglePopup={this.togglePopup}
           />)}
-        <AddItemForm addItem={this.props.addItem} uploadingPhoto={this.state.uploadingPhoto} />
         <StyledButton onClick={this.props.loadSampleInventory}>Load Sample Data</StyledButton>
       </StyledWrapperDiv>
     );

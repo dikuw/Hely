@@ -89,6 +89,7 @@ class AddItemForm extends React.Component {
   };
 
   handleChange = async (e) => {
+    this.props.togglePopup();
     const formData = new FormData(); 
 
     formData.append('file', e.target.files[0]);
@@ -97,7 +98,8 @@ class AddItemForm extends React.Component {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
 
-    this.imageRef.current.setAttribute('data-path', `/images/${res.data.fileName}`);
+    this.imageRef.current.setAttribute('data-path', `${res.data.fileName}`);
+    this.props.togglePopup();
   }
 
   render() {

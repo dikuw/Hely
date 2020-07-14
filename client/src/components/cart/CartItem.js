@@ -60,7 +60,7 @@ class CartItem extends React.Component {
       return (
         <StyledGridWrapperDiv>
           <StyledItemDiv>
-            <StyledGridPhotoImg src={item.image} alt={item.name} />
+            <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
           </StyledItemDiv>
           <StyledItemDiv>Sorry <em>{item ? item.name : 'this'}</em> is no longer available.</StyledItemDiv>
           <StyledItemDiv>
@@ -72,7 +72,7 @@ class CartItem extends React.Component {
     return (
       <StyledGridWrapperDiv>
         <StyledItemDiv>
-          <StyledGridPhotoImg src={item.image} alt={item.name} />
+          <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
         </StyledItemDiv>
         <StyledItemDiv>
           <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
