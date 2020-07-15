@@ -18,7 +18,7 @@ import '../style/styles.css';
 
 class App extends React.Component {
   state = {
-    inventory: {},
+    inventory: [],
     cart: {},
     menuOpen: false,
     showAddedPopup: false,
@@ -59,8 +59,9 @@ class App extends React.Component {
   }
 
   addItem = async (inventoryItem) => {
-    const inventory = { ...this.state.inventory };
-    inventory[`item${Date.now()}`] = inventoryItem;
+    const inventory = [ ...this.state.inventory ];
+    inventory.push(inventoryItem);
+    // inventory[`item${Date.now()}`] = inventoryItem;
     this.setState({ inventory });
 
     const payload = { ...inventoryItem };
@@ -70,17 +71,14 @@ class App extends React.Component {
   };
 
   updateItem = (key, updatedItem) => {
-    const inventory = {...this.state.inventory};
+    const inventory = [ ...this.state.inventory ];
     inventory[key] = updatedItem;
     this.setState({ inventory });
   }
 
   deleteItem = (key) => {
-    console.log(key);
-    const inventory = {...this.state.inventory};
-    console.log('before', inventory);
-    delete inventory[key];
-    console.log('after', inventory);
+    const inventory = [ ...this.state.inventory ];
+    inventory.splice(key, 1);
     this.setState({ inventory });
   }
 
