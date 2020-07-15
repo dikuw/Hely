@@ -37,8 +37,6 @@ class Inventory extends React.Component {
   state = {
     uid: "admin",
     isAuthorized: null,
-    //  TODO add spinner and show it on add and edit forms when photo is uploading  //
-    //  **  🎡  🎡  🎡  ** //
     uploadingPhoto: false
   }
 
@@ -70,11 +68,11 @@ class Inventory extends React.Component {
       <StyledWrapperDiv>
         {this.state.uploadingPhoto ? <LoadingPopup /> : null}
         <AddItemForm addItem={this.props.addItem} uploadingPhoto={this.state.uploadingPhoto} togglePopup={this.togglePopup} />
-        {Object.keys(this.props.inventory).map(key => 
+        {Object.values(this.props.inventory).map( (item, i) => 
           <EditItemForm 
-            key={key} 
-            index={key} 
-            item={this.props.inventory[key]} 
+            key={i} 
+            index={i} 
+            item={item} 
             updateItem={this.props.updateItem}
             deleteItem={this.props.deleteItem}
             uploadingPhoto={this.state.uploadingPhoto}
