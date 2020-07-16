@@ -16,6 +16,6 @@ router.post('/postItem', inventoryController.postItem);
 //  UPDATE
 router.put('/putInventory', inventoryController.archiveInventory, inventoryController.putInventory);
 //  POST IMAGE
-router.post('/uploadImage', inventoryController.uploadImage, inventoryController.uploadImagetoCloudinary)
+router.post('/uploadImage', inventoryController.uploadImage);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Item = require('../models/Item');
-var cloudinary = require('cloudinary').v2;
+const jimp = require('jimp');
+const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({ 
   cloud_name: process.env.CLOUD_NAME, 
@@ -61,37 +62,39 @@ exports.putInventory = async (req, res) => {
   return res.send(body);
 };
 
-exports.uploadImage = async (req, res, next) => {
+// this resizes and uploads, but refreshes the page (sometimes)
+// exports.uploadImage = async (req, res) => {
+//   if (!req.files) {
+//     return res.status(400).json({ msg: 'No file to upload' });
+//   }
+//   const file = req.files.file;
+//   const extension = file.mimetype.split('/')[1];
+//   const filePath = `../client/public/images/${Date.now()}.${extension}`;
+//   const photo = await jimp.read(file.tempFilePath);
+//   await photo.resize(600, jimp.AUTO);
+//   await photo.write(filePath);
+//   cloudinary.uploader.upload(filePath, function(err, result) { 
+//     if (err) {
+//       console.log('error', err);
+//     }
+//     res.json({ fileName: result.public_id });
+//   });
+// };
+
+// this uploads, but does not resize and does not refresh the page
+exports.uploadImage = async (req, res) => {
   if (!req.files) {
     return res.status(400).json({ msg: 'No file to upload' });
   }
-
-  const file = req.files.file;
-  const extension = file.mimetype.split('/')[1];
-  file.name = `${Date.now()}.${extension}`;
-  //  TODO resize photo using jimp, e.g:
-  //  ** 😖 right now this just hangs 😖 **
-  //  👍 👍 don't forget to import jimp above 👍 👍 
-  // const photo = await jimp.read(req.files.file.buffer);
-  // await photo.resize(800, jimp.AUTO);
-  // await photo.write(`../client/public/images/${photo}`);
-
-  file.mv(`../client/public/images/${file.name}`, err => {
+  let file = req.files.file;
+  // const extension = file.mimetype.split('/')[1];
+  // const filePath = `../client/public/images/${Date.now()}.${extension}`;
+  // file = await jimp.read(file.tempFilePath);
+  // await file.resize(600, jimp.AUTO);
+  // await photo.write(filePath);
+  cloudinary.uploader.upload(file.tempFilePath, function(err, result) { 
     if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-    req.body.photo = file.name;
-    next();
-    // res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
-  });
-};
-
-exports.uploadImagetoCloudinary = async (req, res, next) => {
-  let imageFile = `../client/public/images/${req.body.photo}`;
-  cloudinary.uploader.upload(imageFile, {"crop":"limit", "use_filename":"true"}, function(error, result) { 
-    if (error) {
-      console.log('error', error);
+      console.log('error', err);
     }
     res.json({ fileName: result.public_id });
   });
