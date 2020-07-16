@@ -72,27 +72,61 @@ class AddItemForm extends React.Component {
   imageRef = React.createRef();
   descriptionRef = React.createRef();
 
-  createItem = (event) => {
-    event.preventDefault();
-    const item = {
-      id: this.idRef.current.value,
-      name: this.nameRef.current.value,
-      price: parseFloat(this.priceRef.current.value),
-      category: this.categoryRef.current.value,
-      status: this.statusRef.current.value,
-      image: this.imageRef.current.getAttribute('data-path'),
-      description: this.descriptionRef.current.value,
-      show: true
-    };
-    this.props.addItem(item);
-    event.currentTarget.reset();
-  };
+  resetValidation = () => {
+    this.nameRef.current.placeholder = "Name";
+    this.nameRef.current.style.background = "#fff";
+    this.descriptionRef.current.placeholder = "Description";
+    this.descriptionRef.current.style.background = "#fff";
+    this.priceRef.current.placeholder = "Price";
+    this.priceRef.current.style.background = "#fff";
+  }
 
-  handleChange = async (e) => {
+  validateForm = () => {
+    let passVal = true;
+    if (!this.nameRef.current.value) {
+      this.nameRef.current.placeholder = "Name is a required field";
+      this.nameRef.current.style.background = "#ffc2c2";
+      passVal = false;
+    }
+    if (!this.descriptionRef.current.value) {
+      this.descriptionRef.current.placeholder = "Description is a required field";
+      this.descriptionRef.current.style.background = "#ffc2c2";
+      passVal = false;
+    }
+    if (!this.priceRef.current.value) {
+      this.priceRef.current.placeholder = "Price is a required field";
+      this.priceRef.current.style.background = "#ffc2c2";
+      passVal = false;
+    }
+    return passVal;
+  }
+
+  formSubmit = (event) => {
+    event.preventDefault();
+    if (this.validateForm()) {
+      const item = {
+        id: this.idRef.current.value,
+        name: this.nameRef.current.value,
+        price: parseFloat(this.priceRef.current.value),
+        category: this.categoryRef.current.value,
+        status: this.statusRef.current.value,
+        image: this.imageRef.current.getAttribute('data-path'),
+        description: this.descriptionRef.current.value,
+        show: true
+      };
+      this.props.addItem(item);
+      event.currentTarget.reset();
+    }
+  }
+
+  handleChange = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.props.togglePopup();
     const formData = new FormData(); 
 
-    formData.append('file', e.target.files[0]);
+    formData.append('file', event.target.files[0]);
 
     const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
@@ -104,10 +138,10 @@ class AddItemForm extends React.Component {
 
   render() {
     return (
-      <StyledForm onSubmit={this.createItem}>
-        <input name="name" ref={this.idRef} type="text" placeholder="ID" defaultValue={Date.now()}/>
-        <input name="name" ref={this.nameRef} type="text" placeholder="Name" />
-        <input name="price" ref={this.priceRef} type="text" placeholder="Price" />
+      <StyledForm onSubmit={this.formSubmit}>
+        <input name="name" ref={this.idRef} type="text" placeholder="ID" defaultValue={Date.now()} />
+        <input name="name" ref={this.nameRef} type="text" placeholder="Name" onFocus={this.resetValidation} />
+        <input name="price" ref={this.priceRef} type="text" placeholder="Price" onFocus={this.resetValidation} />
         <select name="category" ref={this.categoryRef} >
           <option value="face">Face</option>
           <option value="eyes">Eyes</option>
@@ -123,7 +157,7 @@ class AddItemForm extends React.Component {
           </label>
           <input name="image" id='file-input' type="file" accept="image/png, image/jpeg" data-path="" ref={this.imageRef} onChange={this.handleChange} />
         </StyledImageUploadDiv>
-        <textarea name="description" ref={this.descriptionRef} placeholder="Please enter a description"/>
+        <textarea name="description" ref={this.descriptionRef} placeholder="Please enter a description" onFocus={this.resetValidation} />
         <StyledButton type="submit">+ Add Item</StyledButton>
       </StyledForm>
     );

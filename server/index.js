@@ -10,7 +10,9 @@ const app = express();
 
 require('dotenv').config({ path: 'variables.env' });
 
-app.use(fileUpload());
+app.use(fileUpload({
+  useTempFiles: true
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
