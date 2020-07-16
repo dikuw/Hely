@@ -23,6 +23,9 @@ class App extends React.Component {
     menuOpen: false,
     showAddedPopup: false,
     isLoading: false,
+    isLoggedIn: false,
+    name: "",
+    email: "",
   };
 
   componentDidMount = async () => {
@@ -48,15 +51,23 @@ class App extends React.Component {
     localStorage.setItem('cart', JSON.stringify(this.state.cart));
   }
 
+  login = (response) => {
+    this.setState({ 
+      isLoggedIn: true,
+      name: response.name,
+      email: response.email,
+    });
+  }
+
+  logout = () => {
+    this.setState({ isLoggedIn: false });
+  }
+
   togglePopup = () => {   
     this.setState(prevState => ({
       showAddedPopup: !prevState.showAddedPopup
     }))
   } 
-
-  authenticate = (provider) => {
-    console.log('authenticate in App.js', provider);
-  }
 
   addItem = async (inventoryItem) => {
     const inventory = [ ...this.state.inventory ];
@@ -168,7 +179,7 @@ class App extends React.Component {
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Log In (or Register)" />
-                <Login authenticate={this.authenticate} />
+                <Login isLoggedIn={this.state.isLoggedIn} login={this.login} logout={this.logout} />
               </React.Fragment>
             )}
           />

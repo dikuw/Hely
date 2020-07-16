@@ -80,7 +80,7 @@ class EditItemForm extends React.Component {
       const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      updatedValue = `/images/${res.data.fileName}`;
+      updatedValue = `${res.data.fileName}`;
       this.props.togglePopup();
     };
 
