@@ -120,17 +120,10 @@ class AddItemForm extends React.Component {
   }
 
   handleChange = async (event) => {
-    // event.preventDefault();
-    // event.stopPropagation();
-
     this.props.togglePopup();
     const formData = new FormData(); 
 
     formData.append('file', event.target.files[0]);
-
-    // const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
-    //   headers: { 'Content-Type': 'multipart/form-data' }
-    // });
 
     const res = await apis.postImage(formData);
 
