@@ -63,39 +63,39 @@ exports.putInventory = async (req, res) => {
 };
 
 // this resizes and uploads, but refreshes the page (sometimes)
-exports.uploadImage = async (req, res) => {
-  if (!req.files) {
-    return res.status(400).json({ msg: 'No file to upload' });
-  }
-  const file = req.files.file;
-  const extension = file.mimetype.split('/')[1];
-  const filePath = `../client/public/images/${Date.now()}.${extension}`;
-  const photo = await jimp.read(file.tempFilePath);
-  await photo.resize(370, jimp.AUTO).quality(75);
-  await photo.writeAsync(filePath)
-  cloudinary.uploader.upload(filePath, function(err, result) { 
-    if (err) {
-      console.log('error', err);
-    }
-    res.json({ fileName: result.public_id });
-  });
-};
-
-// this uploads, but does not resize and does not refresh the page
 // exports.uploadImage = async (req, res) => {
 //   if (!req.files) {
 //     return res.status(400).json({ msg: 'No file to upload' });
 //   }
-//   let file = req.files.file;
-//   const filePath = file.tempFilePath;
+//   const file = req.files.file;
 //   const extension = file.mimetype.split('/')[1];
-//   file = await jimp.read(file.tempFilePath);
-//   await file.resize(370, jimp.AUTO).quality(75);
-//   await file.writeAsync(`${filePath}.${extension}`);
-//   cloudinary.uploader.upload(`${filePath}.${extension}`, function(err, result) { 
+//   const filePath = `../client/public/images/${Date.now()}.${extension}`;
+//   const photo = await jimp.read(file.tempFilePath);
+//   await photo.resize(370, jimp.AUTO).quality(75);
+//   await photo.writeAsync(filePath)
+//   cloudinary.uploader.upload(filePath, function(err, result) { 
 //     if (err) {
 //       console.log('error', err);
 //     }
 //     res.json({ fileName: result.public_id });
 //   });
 // };
+
+// this uploads, but does not resize and does not refresh the page
+exports.uploadImage = async (req, res) => {
+  if (!req.files) {
+    return res.status(400).json({ msg: 'No file to upload' });
+  }
+  let file = req.files.file;
+  const filePath = file.tempFilePath;
+  const extension = file.mimetype.split('/')[1];
+  file = await jimp.read(file.tempFilePath);
+  await file.resize(370, jimp.AUTO).quality(75);
+  await file.writeAsync(`${filePath}.${extension}`);
+  cloudinary.uploader.upload(`${filePath}.${extension}`, function(err, result) { 
+    if (err) {
+      console.log('error', err);
+    }
+    res.json({ fileName: result.public_id });
+  });
+};
