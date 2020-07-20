@@ -87,11 +87,13 @@ exports.uploadImage = async (req, res) => {
     return res.status(400).json({ msg: 'No file to upload' });
   }
   let file = req.files.file;
+  // ** start uncomment to resize
   // const extension = file.mimetype.split('/')[1];
   // const filePath = `../client/public/images/${Date.now()}.${extension}`;
   // file = await jimp.read(file.tempFilePath);
   // await file.resize(600, jimp.AUTO);
   // await photo.write(filePath);
+  // ** end uncomment to resize
   cloudinary.uploader.upload(file.tempFilePath, function(err, result) { 
     if (err) {
       console.log('error', err);
