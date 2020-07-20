@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import apis from '../../api/index';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
@@ -77,9 +77,7 @@ class EditItemForm extends React.Component {
       this.props.togglePopup();
       const formData = new FormData(); 
       formData.append('file', e.target.files[0]);
-      const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await apis.postImage(formData);
       updatedValue = `${res.data.fileName}`;
       this.props.togglePopup();
     };
