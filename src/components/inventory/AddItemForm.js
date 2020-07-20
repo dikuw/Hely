@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import apis from '../../api/index';
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
@@ -128,9 +128,11 @@ class AddItemForm extends React.Component {
 
     formData.append('file', event.target.files[0]);
 
-    const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
+    // const res = await axios.post('http://localhost:8000/api/uploadImage', formData, {
+    //   headers: { 'Content-Type': 'multipart/form-data' }
+    // });
+
+    const res = await apis.postImage(formData);
 
     this.imageRef.current.setAttribute('data-path', `${res.data.fileName}`);
     this.props.togglePopup();
