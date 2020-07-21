@@ -37,7 +37,7 @@ class Cart extends React.Component {
             <CartItem key={key} index={key} qty={this.props.cart[key]} item={Object.values(this.props.inventory).filter(item => item.id===key)[0]} addToCart={this.props.addToCart} removeFromCart={this.props.removeFromCart} deleteFromCart={this.props.deleteFromCart} />
           ))}
         </StyledUl>
-        <CartFooter total={total} />
+        <CartFooter history={this.props.history} total={total} />
       </StyledWrapperDiv>
     )
   }

@@ -49,12 +49,17 @@ const StyledCheckoutButton = styled.button`
 `;
 
 class CartFooter extends React.Component {
+
+  handleClick = () => {
+    this.props.history.push("/checkout");
+  };
+
   render() {
     return (
       <StyledWrapperDiv>
         <StyledSubTotalDiv>Subtotal: {formatPrice(this.props.total)}</StyledSubTotalDiv>
         <StyledNoteDiv>Shipping and taxes calculated at checkout</StyledNoteDiv>
-        <StyledCheckoutButton onClick={()=>alert('coming soon!')}>Checkout</StyledCheckoutButton>
+        <StyledCheckoutButton onClick={() => this.handleClick()}>Checkout</StyledCheckoutButton>
       </StyledWrapperDiv>
     )
   }
