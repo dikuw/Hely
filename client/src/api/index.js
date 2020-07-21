@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://helybe.herokuapp.com/api',
-    // baseURL: 'http://localhost:8000/api',
+    // baseURL: 'https://helybe.herokuapp.com/api',
+    baseURL: 'http://localhost:8000/api',
 });
 
 export const insertInventoryItem = payload => api.post(`/postItem`, payload);

@@ -27,6 +27,7 @@ const StyledPopupWrapperDiv = styled.div`
   margin: auto;   
   background: var(--almostWhite); 
   z-index: 77;
+  max-width: 400px;
 `;
 
 const StyledPopupHeaderDiv = styled.div`
@@ -39,14 +40,14 @@ const StyledPopupHeaderH1 = styled.h1`
   font-size: 1em;
 `;
 
-const StyleButton = styled.button`
+const StyledButton = styled.button`
   font-size: 0.8em;
   text-transform: uppercase;
   font-weight: 400;
   font-style: normal;
   background: var(--vinoTinto);
   border-color: var(--vinoTinto);
-  border-radius: 2px;
+  border-radius: 4px;
   border: 0;
   color: var(--almostWhite);
   display: inline-block;
@@ -57,9 +58,24 @@ const StyleButton = styled.button`
   width: 75%;
 `;
 
+const StyledButtonInvisible = styled.button`
+  font-size: 0.8em;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--vinoTinto);
+  background: var(--almostWhite); 
+  border: 0;
+  display: inline-block;
+  letter-spacing: 1px;
+  margin: 0px 10px 10px 10px;
+  padding: 5px 5px;
+  width: 75%;
+`;
+
 class AddedPopup extends React.Component {
 
-  handleClick = (key) => {
+  handleClick = () => {
     this.props.togglePopup();
     this.props.history.push("/cart");
   };
@@ -71,8 +87,8 @@ class AddedPopup extends React.Component {
           <StyledPopupHeaderDiv>
             <StyledPopupHeaderH1>Added to Cart!</StyledPopupHeaderH1>  
           </StyledPopupHeaderDiv>
-          <StyleButton onClick={() => this.handleClick()}>Go to Cart</StyleButton>
-          <StyleButton onClick={this.props.togglePopup}>Keep Shopping</StyleButton>
+          <StyledButton onClick={() => this.handleClick()}>Go to Cart</StyledButton>
+          <StyledButtonInvisible onClick={this.props.togglePopup}>Keep Shopping</StyledButtonInvisible>
         </StyledPopupWrapperDiv>  
       </StyledPopupDiv>  
     ); 

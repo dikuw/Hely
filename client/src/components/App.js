@@ -7,6 +7,9 @@ import Banner from './Banner';
 import Grid from './shop/Grid';
 import AddedPopup from './shop/AddedPopup';
 import Cart from './cart/Cart';
+import Checkout from './checkout/Checkout';
+import CheckoutShipping from './checkout/Shipping';
+import Payment from './checkout/Payment';
 import Login from './Login';
 import Inventory from './inventory/Inventory';
 import { Privacy, Terms, Shipping, Returns } from './information/index';
@@ -20,6 +23,18 @@ class App extends React.Component {
   state = {
     inventory: [],
     cart: {},
+    customer: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      address1: "",
+      address2: "",
+      city: "",
+      country: "",
+      postalCode: "",
+      mobile: "",
+    },
+    shipping: "",
     menuOpen: false,
     showAddedPopup: false,
     isLoading: false,
@@ -121,8 +136,30 @@ class App extends React.Component {
     });
   }
 
+  getCartTotal = () => {
+    const total = Object.keys(this.state.cart).reduce((prevTotal, key) => {
+      const cartItem = Object.values(this.state.inventory).filter(item => item.id===key)[0];
+      const count = this.state.cart[key];
+      if (cartItem && cartItem.available) {
+        return prevTotal + (count * cartItem.price);
+      }
+      return prevTotal;
+    }, 0);
+    return total;
+  }
+
   getCartItemCount = () => {
     return Object.values(this.state.cart).reduce((a, b) => a + b, 0);
+  }
+
+  updateCustomer = (updatedProp, update) => {
+    this.setState(prevState => ({
+      customer: { ...prevState.customer, [updatedProp]: update }
+    }))
+  }
+
+  updateShipping = (update) => {
+    this.setState({ shipping: update })
   }
 
   render() {
@@ -171,7 +208,56 @@ class App extends React.Component {
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Your Cart" />
-                <Cart inventory={this.state.inventory} cart={this.state.cart} addToCart={this.addToCart} removeFromCart={this.removeFromCart} deleteFromCart={this.deleteFromCart} />
+                <Cart 
+                  history={this.props.history} 
+                  inventory={this.state.inventory} 
+                  cart={this.state.cart} 
+                  addToCart={this.addToCart} 
+                  removeFromCart={this.removeFromCart} 
+                  deleteFromCart={this.deleteFromCart} 
+                />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/checkout" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Checkout" />
+                <Checkout 
+                  history={this.props.history} 
+                  inventory={this.state.inventory} 
+                  cart={this.state.cart} 
+                  cartTotal={this.getCartTotal()} 
+                  customer={this.state.customer} 
+                  updateCustomer={this.updateCustomer}
+                />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/checkoutShipping" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Shipping" />
+                <CheckoutShipping 
+                  history={this.props.history} 
+                  cartTotal={this.getCartTotal()} 
+                  customer={this.state.customer} 
+                  shipping={this.state.shipping}
+                  updateShipping={this.updateShipping} 
+                />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/payment" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Payment" />
+                <Payment 
+                  history={this.props.history} 
+                  cartTotal={this.getCartTotal()} 
+                  customer={this.state.customer} 
+                  shipping={this.state.shipping}
+                />
               </React.Fragment>
             )}
           />
