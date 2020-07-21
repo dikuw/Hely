@@ -92,7 +92,7 @@ exports.uploadImage = async (req, res) => {
   file = await jimp.read(file.tempFilePath);
   await file.resize(370, jimp.AUTO).quality(75);
   await file.writeAsync(`${filePath}.${extension}`);
-  cloudinary.uploader.upload(`${filePath}.${extension}`, function(err, result) { 
+  cloudinary.uploader.upload(`${filePath}.${extension}`, { "crop":"limit" }, function(err, result) { 
     if (err) {
       console.log('error', err);
     }
