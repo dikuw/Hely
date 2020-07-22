@@ -51,6 +51,11 @@ const StyledDiv = styled.div`
     width: 100%;
     border: 0;
   }
+  @media (max-width: 768px) {
+    div, input, textarea, select {
+      width: 100%;
+    }
+  }
 `;
 
 const StyledImageUploadDiv = styled.div`
