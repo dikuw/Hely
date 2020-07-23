@@ -1,17 +1,8 @@
 const mongoose = require('mongoose');
-// const User = mongoose.model('../models/User');
 const User = require('../models/User');
 // const Order = mongoose.model('../models/Order');
 const Order = require('../models/Order');
 const promisify = require('es6-promisify');
-
-// exports.loginForm = (req, res) => {
-//   res.render('login', { title: 'Login' });
-// };
-
-// exports.registerForm = (req, res) => {
-//   res.render('register', { title: 'Register' });
-// };
 
 exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('name');
@@ -23,13 +14,12 @@ exports.validateRegister = (req, res, next) => {
     gmail_remove_subaddress: false
   });
   req.checkBody('password', 'Password cannot be blank').notEmpty();
-  req.checkBody('password-confirm', 'Confirmed password cannot be blank').notEmpty();
-  req.checkBody('password-confirm', 'Passwords do not match').equals(req.body.password);
+  req.checkBody('confirmPassword', 'Confirmed password cannot be blank').notEmpty();
+  req.checkBody('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
   const errors = req.validationErrors();
   if (errors) {
-    req.flash('error', errors.map(err => err.msg));
-    res.render('register', { title: 'Register', body: req.body, flashes: req.flash() });
+    res.json( { errors });
     return;
   }
   next();
@@ -38,8 +28,7 @@ exports.validateRegister = (req, res, next) => {
 exports.checkAlreadyRegistered = async (req, res, next) => {
   const registered = await User.find({ email: req.body.email });
   if (registered[0] && registered[0]._id) {
-    req.flash('error', 'That email is already registered! Please login or register with another email address.');
-    res.render('register', { title: 'Register', body: req.body, flashes: req.flash() });
+    res.json( { error: 'That email is already registered!' });
     return;
   }
   next();
@@ -49,8 +38,6 @@ exports.register = async (req, res, next) => {
   const user = new User({ 
     email: req.body.email, 
     name: req.body.name,
-    userType: req.body.userType,
-    timezone: req.body.timezone
   });
   const register = promisify(User.register, User);
   await register(user, req.body.password);

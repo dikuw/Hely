@@ -21,31 +21,11 @@ const userSchema = new Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  image: {
-    type: String,
-    default: "default.png"
-  },
-  timezone: {
-    type: String,
-    required: 'Please select a timezone'
-  },
   isAdmin: {
     type: Boolean,
     default: false
   },
-  SSID: {
-    type: String,
-    trim: true
-  },
-  password: {
-    type: String,
-    trim: true
-  },
-  added: {
-    type: Date,
-    default: Date.now
-  }
-});
+}, { timestamps: true });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 // userSchema.plugin(mongodbErrorHandler);
