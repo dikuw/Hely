@@ -57,6 +57,10 @@ const StyledButtonEmail = styled.button`
 `;
 
 class Login extends React.Component {
+
+  localLoginClick = () => {
+    this.props.history.push("/localLogin");
+  };
   
   render() {
     const responseFacebook = (response) => {
@@ -106,7 +110,7 @@ class Login extends React.Component {
           <StyledButtonTW onClick={() => this.props.authenticate('twitter')}>
             Log in with Twitter
           </StyledButtonTW>
-          <StyledButtonEmail onClick={() => this.props.authenticate('email')}>
+          <StyledButtonEmail onClick={() => this.localLoginClick()}>
             Login or Register with email
           </StyledButtonEmail>
         </StyledWrapperDiv>

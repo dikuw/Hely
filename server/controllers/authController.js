@@ -8,10 +8,8 @@ const mail = require('../handlers/mail');
 // const jwt = require('jsonwebtoken');
 
 exports.login = passport.authenticate('local', {
-  failureRedirect: '/login',
-  failureFlash: 'Failed Login',
+  failureRedirect: '/locallogin',
   successRedirect: '/',
-  successFlash: 'You are now logged in'
 });
 
 exports.logout = (req, res) => {

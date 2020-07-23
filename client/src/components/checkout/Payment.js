@@ -10,16 +10,6 @@ const StyledWrapperDiv = styled.div`
   padding: 4px;
 `;
 
-const StyledNoteDiv = styled.div`
-  text-align: left;
-  padding-right: 20px;
-  margin-bottom: 4px;
-  font-size: 0.8em;
-  @media (max-width: 768px) {
-    padding-right: 8wv;
-  }
-`;
-
 const StyledForm = styled.form`
   margin-bottom: 20px;
   display: flex;
@@ -39,22 +29,6 @@ const StyledForm = styled.form`
   button {
     width: 100%;
     border: 0;
-  }
-`;
-
-const StyledGroupDiv = styled.div`
-  display: flex;
-  margin: 0;
-  padding: 0;
-  input {
-    width: 50%;
-  }
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-    input {
-      width: auto;
-    }
   }
 `;
 
