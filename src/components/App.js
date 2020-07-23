@@ -7,10 +7,8 @@ import Banner from './Banner';
 import Grid from './shop/Grid';
 import AddedPopup from './shop/AddedPopup';
 import Cart from './cart/Cart';
-import Checkout from './checkout/Checkout';
-import CheckoutShipping from './checkout/Shipping';
-import Payment from './checkout/Payment';
-import Login from './Login';
+import { Checkout, Shipping as CheckoutShipping, Payment } from './checkout/index';
+import { Login, LocalLogin, Register } from './login/index';
 import Inventory from './inventory/Inventory';
 import { Privacy, Terms, Shipping, Returns } from './information/index';
 import Footer from './Footer';
@@ -64,6 +62,13 @@ class App extends React.Component {
 
   componentDidUpdate() {
     localStorage.setItem('cart', JSON.stringify(this.state.cart));
+  }
+
+  registerUser = async (user) => {
+    const payload = { ...user };
+    await apis.registerUser(payload).then(res => {
+      console.log(`user registered successfully`);
+    });
   }
 
   login = (response) => {
@@ -265,7 +270,37 @@ class App extends React.Component {
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Log In (or Register)" />
-                <Login isLoggedIn={this.state.isLoggedIn} login={this.login} logout={this.logout} />
+                <Login 
+                  history={this.props.history} 
+                  isLoggedIn={this.state.isLoggedIn} 
+                  login={this.login} 
+                  logout={this.logout} 
+                />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/locallogin" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Log In" />
+                <LocalLogin 
+                  history={this.props.history} 
+                  isLoggedIn={this.state.isLoggedIn} 
+                  login={this.login} 
+                  logout={this.logout} 
+                />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/register" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Register a New Account" />
+                <Register 
+                  history={this.props.history} 
+                  registerUser={this.registerUser}
+                  isLoggedIn={this.state.isLoggedIn} 
+                />
               </React.Fragment>
             )}
           />
