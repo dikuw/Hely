@@ -41,7 +41,7 @@ const Burger = (props) => {
         <div />
         <div />
       </StyledBurger>
-      <NavMenu history={props.history} menuOpen={menuOpen} setOpen={setOpen} getCartItemCount={props.getCartItemCount} />
+      <NavMenu isLoggedIn={props.isLoggedIn} history={props.history} menuOpen={menuOpen} setOpen={setOpen} getCartItemCount={props.getCartItemCount} />
     </>
   );
 };
