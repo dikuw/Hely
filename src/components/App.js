@@ -171,8 +171,8 @@ class App extends React.Component {
     return (
       <main>
         <TopBanner />
-        <Header />
-        <Navigation history={this.props.history} getCartItemCount={this.getCartItemCount} />
+        <Header  />
+        <Navigation isLoggedIn={this.state.isLoggedIn} history={this.props.history} getCartItemCount={this.getCartItemCount} />
         <Switch>
           <Route  exact path="/" 
             render={() => (
