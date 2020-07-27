@@ -6,8 +6,11 @@ const MongoStore = require('connect-mongo')(session);
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const promisify = require('es6-promisify');
 //  import all models
 require('./models/User');
+
+//  use passport for authentication
 const passport = require('passport');
 require('./handlers/passport');
 
@@ -16,14 +19,21 @@ const router = require('./routes');
 
 const app = express();
 
+//  create .env file for enviromental variables
+//  all these must be set on the server
 require('dotenv').config({ path: 'variables.env' });
 
+//  allow fileUpload to use temporary files location for upload to server before uploading to Cloudinary
 app.use(fileUpload({
   useTempFiles: true
 }));
-app.use(bodyParser.urlencoded({ extended: true }));
+
+//  enable CORS for all origins to allow development with local server
 app.use(cors());
+
+// use bodyParser to allow req.params and req.query
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // express-validator to validate data used in userController.validateRegister
 app.use(expressValidator());
@@ -39,6 +49,19 @@ app.use(session({
 // passport.js to handle logins
 app.use(passport.initialize());
 app.use(passport.session());
+
+// pass variables on all requests
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  res.locals.session = req.session;
+  next();
+});
+
+// promisify some callback based APIs
+app.use((req, res, next) => {
+  req.login = promisify(req.login, req);
+  next();
+});
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

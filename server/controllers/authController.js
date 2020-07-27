@@ -7,10 +7,17 @@ const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
 // const jwt = require('jsonwebtoken');
 
-exports.login = passport.authenticate('local', {
-  failureRedirect: '/locallogin',
-  successRedirect: '/',
-});
+// exports.login = passport.authenticate('local', {
+//   failureRedirect: '/locallogin',
+//   successRedirect: '/',
+// });
+
+exports.login = (req, res) => {
+  passport.authenticate('local');
+  // res.json(req.body);
+  req.session.email = req.body.email;
+  res.json({ response: "something", 'req.session': req.session });
+};
 
 exports.logout = (req, res) => {
   req.logout();
@@ -35,52 +42,6 @@ exports.isAdmin = (req, res, next) => {
   req.flash('error', 'You must be an admin to do that');
   res.redirect('/Devices');
 };
-
-// exports.authorizeRemoteUser = async (req, res) => {
-//   let token = req.headers['auth-token'];
-//   if (token) {
-//     jwt.verify(token, process.env.SECRET, function(err, response) {
-//       if (err) {
-//         return res.json({'token' : 'invalid'});
-//       } else {
-//         return res.json({'token' : 'valid'});
-//       }
-//     });
-//   } else {
-//     const username = req.body.username;
-//     const password = req.body.password;
-//     const user = await User.findOne({ email: username });
-
-//     if (!user) {
-//       return res.json({'user' : 'invalid'});
-//     }
-
-//     user.authenticate(password, function(err, result) {
-//       if (result) {
-//         token = jwt.sign({ _id: user._id}, process.env.SECRET, { expiresIn: '3d' });
-//         res.header('auth-token', token);
-//         return res.json(user);
-//       } else {
-//         return res.joson({'user' : 'invalid'});
-//       }
-//     });
-//   }
-// };
-
-// exports.isAuthorized =  async (req, res, next) => {
-//   let token = req.headers['auth-token'];
-//   if (token) {
-//     jwt.verify(token, process.env.SECRET, function(err, response) {
-//       if (err) {
-//         return res.json({ 'token' : 'invalid' });
-//       } else {
-//         return next();
-//       }
-//     });
-//   } else {
-//     return res.json({ 'token' : 'invalid' });
-//   }
-// };
 
 exports.forgot = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
