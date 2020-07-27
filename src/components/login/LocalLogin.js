@@ -30,22 +30,6 @@ const StyledForm = styled.form`
   }
 `;
 
-const StyledGroupDiv = styled.div`
-  display: flex;
-  margin: 0;
-  padding: 0;
-  input {
-    width: 50%;
-  }
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-    input {
-      width: auto;
-    }
-  }
-`;
-
 const StyledButton = styled.button`
   font-size: 1.2em;
   text-transform: uppercase;
@@ -82,21 +66,63 @@ const StyledButtonInvisible = styled.button`
   width: 100%;
 `;
 
+const StyledWarningDiv = styled.div`
+  text-align: center;
+  padding: 0vw 3vw;
+  color: red;
+  font-weight: 600;
+`;
+
 class LocalLogin extends React.Component {
+  emailRef = React.createRef();
+  passwordRef = React.createRef();
+  forgotPasswordRef = React.createRef();
+  warningRef = React.createRef();
 
-  handleChange = async (e) => {
-    let updatedValue = e.currentTarget.value;
-    let propName = e.currentTarget.name;
-
-    this.props.updateCustomer(propName, updatedValue);
+  resetValidation = () => {
+    this.emailRef.current.style.background = "#fff";
+    this.passwordRef.current.style.background = "#fff";
+    this.forgotEmailRef.current.style.background = "#fff";
+    this.warningRef.current.innerHTML = "";
   }
-  
-  loginClick = () => {
-    this.props.history.push("/ogin");
-  };
 
-  forgotClick = () => {
-    this.props.history.push("/reset");
+  validateForm = () => {
+    let passVal = true;
+    // TODO Validate email address for format using a library
+    // **  📧 📧 📧  **
+    if (!this.emailRef.current.value) {
+      this.emailRef.current.style.background = "#ffc2c2";
+      this.warningRef.current.innerHTML = "Email is required.";
+      passVal = false;
+    }
+    if (!this.passwordRef.current.value) {
+      this.passwordRef.current.style.background = "#ffc2c2";
+      this.warningRef.current.innerHTML = "Password is required.";
+      passVal = false;
+    }
+    return passVal;
+  }
+
+  loginClick = (event) => {
+    event.preventDefault();
+    if (this.validateForm()) {
+      const user = {
+        email: this.emailRef.current.value,
+        password: this.passwordRef.current.value,
+      };
+      this.props.loginUser(user);
+      event.currentTarget.reset();
+    }
+  };
+  
+  forgotClick = (event) => {
+    event.preventDefault();
+    //  TODO validate forgot password form
+    const user = {
+      email: this.forgotEmailRef.current.value,
+    };
+    this.props.forgotUser(user);
+    event.currentTarget.reset();
   };
 
   registerClick = () => {
@@ -107,15 +133,16 @@ class LocalLogin extends React.Component {
     return (
       <StyledWrapperDiv>
         <div>Login</div>
-        <StyledForm>
-          <input name="email" type="text" placeholder="Email" />
-          <input name="password" type="password" placeholder="Password" />
-          <StyledButton onClick={() => this.loginClick()}>Log in</StyledButton>
+        <StyledForm onSubmit={this.loginClick}>
+          <input name="email" ref={this.emailRef} type="text" placeholder="Email" />
+          <input name="password" ref={this.passwordRef} type="password" placeholder="Password" />
+          <StyledButton type="submit" >Log in</StyledButton>
         </StyledForm>
+        <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
         <div>Forgot your password?</div>
-        <StyledForm>
-          <input name="email" type="text" placeholder="Email"  />
-          <StyledButton onClick={() => this.forgotClick()}>Send a Reset</StyledButton>
+        <StyledForm onSubmit={this.forgotClick}>
+          <input name="forgotEmail" ref={this.forgotEmailRef} type="text" placeholder="Email"  />
+          <StyledButton type="submit" >Send a Reset</StyledButton>
         </StyledForm>
         <StyledForm>
           <StyledButtonInvisible onClick={() => this.registerClick()}>No account? Register here!</StyledButtonInvisible>

@@ -71,17 +71,38 @@ class App extends React.Component {
     });
   }
 
-  login = (response) => {
-    this.setState({ 
-      isLoggedIn: true,
-      name: response.name,
-      email: response.email,
+  loginUser = async (user) => {
+    const payload = { ...user };
+    await apis.login(payload).then(res => {
+      console.log(res);
     });
   }
 
-  logout = () => {
-    this.setState({ isLoggedIn: false });
+  logoutUser = async (user) => {
+    const payload = { ...user };
+    await apis.logout(payload).then(res => {
+      console.log(`user logged out successfully`);
+    });
   }
+
+  forgotUser = async (user) => {
+    const payload = { ...user };
+    await apis.forgot(payload).then(res => {
+      console.log(`user forgot email sent successfully`);
+    });
+  }
+
+  // login = (response) => {
+  //   this.setState({ 
+  //     isLoggedIn: true,
+  //     name: response.name,
+  //     email: response.email,
+  //   });
+  // }
+
+  // logout = () => {
+  //   this.setState({ isLoggedIn: false });
+  // }
 
   togglePopup = () => {   
     this.setState(prevState => ({
@@ -273,8 +294,6 @@ class App extends React.Component {
                 <Login 
                   history={this.props.history} 
                   isLoggedIn={this.state.isLoggedIn} 
-                  login={this.login} 
-                  logout={this.logout} 
                 />
               </React.Fragment>
             )}
@@ -286,8 +305,8 @@ class App extends React.Component {
                 <LocalLogin 
                   history={this.props.history} 
                   isLoggedIn={this.state.isLoggedIn} 
-                  login={this.login} 
-                  logout={this.logout} 
+                  loginUser={this.loginUser}
+                  forgotUser={this.forgotUser} 
                 />
               </React.Fragment>
             )}
