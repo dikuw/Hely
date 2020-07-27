@@ -11,15 +11,15 @@ const inventoryController = require('./controllers/inventoryController');
 router.post('/message', aboutController.createMessage);
 
 //  ** User Routes **  //
-// router.get('/login', userController.loginForm);
-router.post('/login', authController.login);
-// router.get('/register', userController.registerForm);
 router.post('/register', 
   userController.validateRegister,
   userController.checkAlreadyRegistered,
   userController.register,
   authController.login
 );
+router.post('/login', authController.login);
+router.post('/logout', authController.logout);
+router.post('/forgot', authController.forgot);
 
 //  ** Inventory Routes **  //
 //  GET
