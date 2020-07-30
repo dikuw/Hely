@@ -198,7 +198,7 @@ class App extends React.Component {
           <Route  exact path="/" 
             render={() => (
               <React.Fragment>
-                {this.state.showAddedPopup ?  <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
+                {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={this.state.inventory} addToCart={this.addToCart} togglePopup={this.togglePopup} />
               </React.Fragment>
             )}
