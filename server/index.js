@@ -20,7 +20,6 @@ const router = require('./routes');
 const app = express();
 
 //  create .env file for enviromental variables
-//  all these must be set on the server
 require('dotenv').config({ path: 'variables.env' });
 
 //  allow fileUpload to use temporary files location for upload to server before uploading to Cloudinary
