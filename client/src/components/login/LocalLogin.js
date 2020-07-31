@@ -50,7 +50,6 @@ const StyledButton = styled.button`
   width: auto;
 `;
 
-
 const StyledButtonInvisible = styled.button`
   font-size: 0.8em;
   text-transform: uppercase;

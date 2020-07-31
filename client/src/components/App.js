@@ -37,14 +37,16 @@ class App extends React.Component {
     showAddedPopup: false,
     isLoading: false,
     isLoggedIn: false,
-    name: "",
-    email: "",
+    name: null,
+    email: null,
   };
 
   componentDidMount = async () => {
     //  TODO show a loading div while isLoading is true //
     //  ** ⏰ ⏰ ⏰  ** //
     this.setState({ isLoading: true });
+
+    this.getUser();
 
     await apis.getInventory().then(inventory => {
       this.setState({
@@ -64,24 +66,65 @@ class App extends React.Component {
     localStorage.setItem('cart', JSON.stringify(this.state.cart));
   }
 
+  getUser = async () => {
+    await apis.getUser().then(res => {
+      if (res.data.email) {
+        this.setState({ 
+          isLoggedIn: true,
+          name: res.data.name,
+          email: res.data.email,
+         });
+        console.log('found user', res);
+      } else {
+        console.log('no user found', res);
+      }
+    });
+  }
+
   registerUser = async (user) => {
     const payload = { ...user };
-    await apis.registerUser(payload).then(res => {
-      console.log(`user registered successfully`);
+    await apis.register(payload).then(res => {
+      if (res.data.email) {
+        this.setState({ 
+          isLoggedIn: true,
+          name: res.data.name,
+          email: res.data.email,
+         });
+        console.log('user registered successfully', res);
+      } else {
+        console.log('error', res);
+      }
     });
   }
 
   loginUser = async (user) => {
     const payload = { ...user };
+    console.log('payload', payload);
     await apis.login(payload).then(res => {
-      console.log(res);
+      if (res.data.email) {
+        this.setState({ 
+          isLoggedIn: true,
+          name: res.data.name,
+          email: res.data.email,
+         });
+        console.log('user logged in successfully', res);
+        this.props.history.push("/");
+      } else {
+        console.log('error', res);
+      }
     });
   }
 
   logoutUser = async (user) => {
     const payload = { ...user };
     await apis.logout(payload).then(res => {
-      console.log(`user logged out successfully`);
+      this.setState({
+        isLoggedIn: false,
+        username: null,
+        password: null
+      });
+      this.props.history.push("/");
+      console.log('user logged out successfully', res);
     });
   }
 
@@ -91,18 +134,6 @@ class App extends React.Component {
       console.log(`user forgot email sent successfully`);
     });
   }
-
-  // login = (response) => {
-  //   this.setState({ 
-  //     isLoggedIn: true,
-  //     name: response.name,
-  //     email: response.email,
-  //   });
-  // }
-
-  // logout = () => {
-  //   this.setState({ isLoggedIn: false });
-  // }
 
   togglePopup = () => {   
     this.setState(prevState => ({
@@ -191,9 +222,9 @@ class App extends React.Component {
   render() {
     return (
       <main>
-        <TopBanner />
+        <TopBanner isLoggedIn={this.state.isLoggedIn} name={this.state.name}/>
         <Header  />
-        <Navigation isLoggedIn={this.state.isLoggedIn} history={this.props.history} getCartItemCount={this.getCartItemCount} />
+        <Navigation isLoggedIn={this.state.isLoggedIn} history={this.props.history} getCartItemCount={this.getCartItemCount} logoutUser={this.logoutUser} />
         <Switch>
           <Route  exact path="/" 
             render={() => (

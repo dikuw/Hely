@@ -6,7 +6,6 @@ const StyledDiv = styled.div`
   margin-bottom: 12px;
 `;
 
-
 class Header extends React.Component {
 
   render() {

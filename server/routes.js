@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const passport = require('passport');
 //  TODO: update for all Schemas
 const userController = require('./controllers/userController');
 const authController = require('./controllers/authController');
@@ -11,13 +11,15 @@ const inventoryController = require('./controllers/inventoryController');
 router.post('/message', aboutController.createMessage);
 
 //  ** User Routes **  //
+router.get('/getUser', userController.getCurrentUser);
 router.post('/register', 
   userController.validateRegister,
   userController.checkAlreadyRegistered,
   userController.register,
+  passport.authenticate('local'),
   authController.login
 );
-router.post('/login', authController.login);
+router.post('/login', passport.authenticate('local'), authController.login);
 router.post('/logout', authController.logout);
 router.post('/forgot', authController.forgot);
 

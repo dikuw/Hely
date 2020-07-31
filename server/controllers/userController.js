@@ -4,6 +4,14 @@ const User = require('../models/User');
 const Order = require('../models/Order');
 const promisify = require('es6-promisify');
 
+exports.getCurrentUser = (req, res) => {
+  if (req.user) {
+    return res.send(req.user);
+  } else {
+    res.json({ error: 'No user found' });
+  };
+};
+
 exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('name');
   req.checkBody('name', 'Please enter a name').notEmpty();
