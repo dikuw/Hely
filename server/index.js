@@ -55,11 +55,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // pass variables on all requests
-// app.use((req, res, next) => {
-//   res.locals.user = req.user || null;
-//   res.locals.session = req.session;
-//   next();
-// });
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  res.locals.session = req.session;
+  next();
+});
 
 // promisify some callback based APIs
 // app.use((req, res, next) => {
