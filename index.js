@@ -71,9 +71,9 @@ app.use(passport.session());
 
 app.use('/api', router);
 
-// app.get('/', (req, res) => {
-//     res.send('This is the Hely Cosmetics website backend/API');
-// })
+app.get('/', (req, res) => {
+    res.send('This is the Hely Cosmetics website backend/API');
+})
 
 app.set('port', process.env.PORT || 8000);
 const server = app.listen(app.get('port'), () => {
