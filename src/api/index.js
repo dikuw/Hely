@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://helybe.herokuapp.com/api',
-    // baseURL: 'http://localhost:8000/api',
+  withCredentials: true,
+  // baseURL: 'https://helybe.herokuapp.com/api',
+  baseURL: 'http://localhost:8000/api',
 });
 
 export const getUser = () => api.get('/getUser');
