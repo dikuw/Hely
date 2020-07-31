@@ -14,7 +14,7 @@ class TopBanner extends React.Component {
   render() {
     return (
       <BannerDiv>
-        Welcome! Bienviendo!
+        Welcome {this.props.isLoggedIn ? this.props.name : 'guest'}! Bienviendo!
       </BannerDiv>
     )
   }

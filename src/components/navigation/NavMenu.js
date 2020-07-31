@@ -64,7 +64,7 @@ class NavMenu extends React.Component {
     if (this.props.isLoggedIn) {
       // TODO log out onClick //
       // ** 🚪🚪🚪 ** //
-      listItem = <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log Out</Link></Li>
+      listItem = <Li><Link onClick={() => this.props.logoutUser() } >Log Out</Link></Li>
     } else {
       listItem = <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></Li>
     }
