@@ -1,28 +1,24 @@
 const passport = require('passport');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-// const User = mongoose.model('User');
 const User = require('../models/User');
 const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
-// const jwt = require('jsonwebtoken');
-
-// exports.login = passport.authenticate('local', {
-//   failureRedirect: '/locallogin',
-//   successRedirect: '/',
-// });
 
 exports.login = (req, res) => {
-  passport.authenticate('local');
-  // res.json(req.body);
-  req.session.email = req.body.email;
-  res.json({ response: "something", 'req.session': req.session });
+  req.login(req.user, function(err) {
+    if (err) { res.json({ error: err }); }
+    return res.send(req.user);
+  });
 };
 
 exports.logout = (req, res) => {
-  req.logout();
-  req.flash('success', 'You are now logged out');
-  res.redirect('/');
+  if (req.user) {
+    req.logout();
+    res.send({ msg: 'logged out' });
+  } else {
+    res.send({ msg: 'no user to log out' })
+  };
 };
 
 exports.isLoggedIn = (req, res, next) => {
