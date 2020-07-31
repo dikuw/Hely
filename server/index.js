@@ -11,8 +11,9 @@ const promisify = require('es6-promisify');
 require('./models/User');
 
 //  use passport for authentication
-const passport = require('passport');
-require('./handlers/passport');
+// const passport = require('passport');
+// require('./handlers/passport');
+const passport = require('./handlers/passport');
 
 const db = require('./database');
 const router = require('./routes');
@@ -28,18 +29,22 @@ app.use(fileUpload({
 }));
 
 //  enable CORS for all origins to allow development with local server
-app.use(cors());
-
-// use bodyParser to allow req.params and req.query
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(cors({credentials: true}));
+app.use(cors({
+  methods:['GET','POST','PUT','DELETE'],
+  credentials: true // enable set cookie
+ }));
 
 // express-validator to validate data used in userController.validateRegister
 app.use(expressValidator());
 
+// use bodyParser to allow req.params and req.query
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(session({
   secret: process.env.SECRET,
-  key: process.env.KEY,
+  // key: process.env.KEY,
   resave: false,
   saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
@@ -50,25 +55,25 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // pass variables on all requests
-app.use((req, res, next) => {
-  res.locals.user = req.user || null;
-  res.locals.session = req.session;
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.user = req.user || null;
+//   res.locals.session = req.session;
+//   next();
+// });
 
 // promisify some callback based APIs
-app.use((req, res, next) => {
-  req.login = promisify(req.login, req);
-  next();
-});
+// app.use((req, res, next) => {
+//   req.login = promisify(req.login, req);
+//   next();
+// });
 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/api', router);
 
-app.get('/', (req, res) => {
-    res.send('This is the Hely Cosmetics website backend/API');
-})
+// app.get('/', (req, res) => {
+//     res.send('This is the Hely Cosmetics website backend/API');
+// })
 
 app.set('port', process.env.PORT || 8000);
 const server = app.listen(app.get('port'), () => {

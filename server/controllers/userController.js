@@ -5,6 +5,7 @@ const Order = require('../models/Order');
 const promisify = require('es6-promisify');
 
 exports.getCurrentUser = (req, res) => {
+  console.log('current user: ', req.user);
   if (req.user) {
     return res.send(req.user);
   } else {

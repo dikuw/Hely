@@ -91,6 +91,7 @@ class App extends React.Component {
           email: res.data.email,
          });
         console.log('user registered successfully', res);
+        this.props.history.push("/");
       } else {
         console.log('error', res);
       }
@@ -99,7 +100,6 @@ class App extends React.Component {
 
   loginUser = async (user) => {
     const payload = { ...user };
-    console.log('payload', payload);
     await apis.login(payload).then(res => {
       if (res.data.email) {
         this.setState({ 
