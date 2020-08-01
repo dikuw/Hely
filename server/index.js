@@ -29,7 +29,8 @@ app.use(fileUpload({
 }));
 
 //  enable CORS for all origins to allow development with local server
-app.use(cors({credentials: true}));
+app.use(cors({credentials: true, origin: 'http://localhost:3002'}));
+// app.use(cors({credentials: true}));
 // app.use(cors({
 //   methods:['GET','POST','PUT','DELETE'],
 //   credentials: true // enable set cookie
