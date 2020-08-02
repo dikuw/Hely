@@ -54,6 +54,19 @@ exports.register = async (req, res, next) => {
   next();
 };
 
+exports.findOrCreate = async (req, res, next) => {
+  const registered = await User.find({ email: req.body.email });
+  if (registered[0] && registered[0]._id) {
+    next();
+  } else {
+    await new User({ 
+      email: req.body.email, 
+      name: req.body.name,
+    }).save();
+    next();
+  }
+};
+
 exports.account = async (req, res) => {
   const orders = await Order.find({ user: req.user._id });
   res.render('account', { title: 'Edit Your Account', orders });

@@ -16,6 +16,33 @@ exports.passportLocal = (req, res, next) => {
   })(req, res, next);
 }
 
+exports.passportFB = (req, res, next) => {
+  passport.authenticate('facebook'),
+  function(req, res){
+    // The request will be redirected to Instagram for authentication, so this
+    // function will not be called.
+  };
+  next();
+}
+
+exports.passportIG = (req, res, next) => {
+  passport.authenticate('instagram'),
+  function(req, res){
+    // The request will be redirected to Instagram for authentication, so this
+    // function will not be called.
+  };
+  next();
+}
+
+exports.passportTW = (req, res, next) => {
+  passport.authenticate('twitter'),
+  function(req, res){
+    // The request will be redirected to Twitter for authentication, so this
+    // function will not be called.
+  };
+  next();
+}
+
 exports.login = (req, res) => {
   req.login(req.user, function(err) {
     if (err) { res.json({ error: err }); }
