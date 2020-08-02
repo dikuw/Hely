@@ -21,7 +21,7 @@ class Navigation extends React.Component {
   render() {
     return (
       <Nav>
-        <Burger isLoggedIn={this.props.isLoggedIn} history={this.props.history} getCartItemCount={this.props.getCartItemCount} logoutUser={this.props.logoutUser} />
+        <Burger isLoggedIn={this.props.isLoggedIn} isAdmin={this.props.isAdmin} history={this.props.history} getCartItemCount={this.props.getCartItemCount} logoutUser={this.props.logoutUser} />
         <CartIcon getCartItemCount={this.props.getCartItemCount} />
       </Nav>
     );

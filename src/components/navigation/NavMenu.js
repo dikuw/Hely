@@ -60,14 +60,6 @@ class NavMenu extends React.Component {
   }
  
   render() {
-    let listItem;
-    if (this.props.isLoggedIn) {
-      // TODO log out onClick //
-      // ** 🚪🚪🚪 ** //
-      listItem = <Li><Link onClick={() => this.props.logoutUser() } >Log Out</Link></Li>
-    } else {
-      listItem = <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></Li>
-    }
     return (
       <Ul ref={this.myUl}  menuOpen={this.props.menuOpen}>
         <Li><Link onClick={() => this.handleClick('/', this.props.menuOpen) } >Home</Link></Li>
@@ -75,8 +67,22 @@ class NavMenu extends React.Component {
         <Li><Link onClick={() => this.handleClick('/eyes', this.props.menuOpen) } >Eyes</Link></Li>
         <Li><Link onClick={() => this.handleClick('/brushes', this.props.menuOpen) } >Brushes</Link></Li>
         <Li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart ({this.props.getCartItemCount()})</Link></Li>
-        {listItem}
-        <Li><Link onClick={() => this.handleClick('/Inventory', this.props.menuOpen) } >Inventory</Link></Li>
+        {this.props.isAdmin ? (
+          <React.Fragment>
+            <Li><Link onClick={() => this.handleClick('/inventory', this.props.menuOpen) } >Inventory</Link></Li>
+            <Li><Link onClick={() => this.handleClick('/orders', this.props.menuOpen) } >Orders</Link></Li>
+          </React.Fragment>
+          ) : ( "" )
+        }
+        {this.props.isLoggedIn ? (
+            <React.Fragment>
+              <Li><Link onClick={() => this.handleClick('/account', this.props.menuOpen) } >Account</Link></Li>
+              <Li><Link onClick={() => this.props.logoutUser() } >Log Out</Link></Li>
+            </React.Fragment>
+          ) : (
+            <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></Li>
+          )
+        }
       </Ul>
     );
   }

@@ -14,6 +14,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   input, select {
+    flex-basis: 100%;
     margin: 0.25rem;
     padding: 10px;
     font-size: 1rem;
@@ -27,6 +28,19 @@ const StyledForm = styled.form`
   }
   button {
     border: 0;
+  }
+`;
+
+const StyledFormRowDiv = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 1vw;
+`;
+
+const StyledLabel = styled.label`
+  flex-basis: 10%;
+  @media (max-width: 768px) {
+    flex-basis: 20%;
   }
 `;
 
@@ -50,21 +64,6 @@ const StyledButton = styled.button`
   width: auto;
 `;
 
-const StyledButtonInvisible = styled.button`
-  font-size: 0.8em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  color: var(--vinoTinto);
-  background: white; 
-  border: 0;
-  display: inline-block;
-  letter-spacing: 1px;
-  margin-top: 0.5rem;
-  padding: 5px 5px;
-  width: 100%;
-`;
-
 const StyledWarningDiv = styled.div`
   text-align: center;
   padding: 0vw 3vw;
@@ -72,16 +71,23 @@ const StyledWarningDiv = styled.div`
   font-weight: 600;
 `;
 
-class LocalLogin extends React.Component {
+const StyledNoPermissionsDiv = styled.div`
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 30px auto;
+  padding: 4px;
+`;
+
+class Account extends React.Component {
   emailRef = React.createRef();
   passwordRef = React.createRef();
-  forgotEmailRef = React.createRef();
   warningRef = React.createRef();
 
   resetValidation = () => {
     this.emailRef.current.style.background = "#fff";
     this.passwordRef.current.style.background = "#fff";
-    this.forgotEmailRef.current.style.background = "#fff";
     this.warningRef.current.innerHTML = "";
     this.props.resetPasswordIncorrect();
   }
@@ -95,62 +101,49 @@ class LocalLogin extends React.Component {
       this.warningRef.current.innerHTML = "Email is required.";
       passVal = false;
     }
-    if (!this.passwordRef.current.value) {
-      this.passwordRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Password is required.";
+    if (!this.nameRef.current.value) {
+      this.nameRef.current.style.background = "#ffc2c2";
+      this.warningRef.current.innerHTML = "Name is required.";
       passVal = false;
     }
     return passVal;
   }
 
-  loginClick = (event) => {
+  updateClick = (event) => {
     event.preventDefault();
     if (this.validateForm()) {
       const user = {
+        name: this.nameRef.current.value,
         email: this.emailRef.current.value,
-        password: this.passwordRef.current.value,
       };
-      this.props.loginUser(user);
-      event.currentTarget.reset();
+      this.props.updateUser(user);
     }
   };
   
-  forgotClick = (event) => {
-    event.preventDefault();
-    //  TODO validate forgot password form
-    const user = {
-      email: this.forgotEmailRef.current.value,
-    };
-    this.props.forgotUser(user);
-    event.currentTarget.reset();
-  };
-
-  registerClick = () => {
-    this.props.history.push("/register");
-  };
-
   render() {
+    if (!this.props.isLoggedIn) {
+      return <StyledNoPermissionsDiv>Please log in to view this page.</StyledNoPermissionsDiv>
+    }
     return (
       <StyledWrapperDiv>
-        <div>Login</div>
-        <StyledForm onSubmit={this.loginClick}>
-          <input name="email" ref={this.emailRef} type="text" placeholder="Email" onFocus={this.resetValidation} />
-          <input name="password" ref={this.passwordRef} type="password" placeholder="Password" onFocus={this.resetValidation} />
-          <StyledButton type="submit" >Log in</StyledButton>
+        <div>Update Your Account</div>
+        <StyledForm onSubmit={this.updateClick}>
+          <StyledFormRowDiv>
+            <StyledLabel htmlFor="name">Name: </StyledLabel>
+            <input name="name" ref={this.nameRef} type="text" onFocus={this.resetValidation} value={this.props.name}/>
+          </StyledFormRowDiv>
+          <StyledFormRowDiv>
+            <StyledLabel htmlFor="email">Email: </StyledLabel>
+            <input name="email" ref={this.emailRef} type="text" onFocus={this.resetValidation} value={this.props.email}/>
+          </StyledFormRowDiv>
+          <StyledButton type="submit" >Update</StyledButton>
         </StyledForm>
         <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
-        {this.props.passwordIncorrect ? (<StyledWarningDiv>Email or password is incorrect. Please try again</StyledWarningDiv>) : ( "" )}
-        <div>Forgot your password?</div>
-        <StyledForm onSubmit={this.forgotClick}>
-          <input name="forgotEmail" ref={this.forgotEmailRef} type="text" placeholder="Email"  />
-          <StyledButton type="submit" >Send a Reset</StyledButton>
-        </StyledForm>
-        <StyledForm>
-          <StyledButtonInvisible onClick={() => this.registerClick()}>No account? Register here!</StyledButtonInvisible>
-        </StyledForm>
+        <div>Your Orders</div>
       </StyledWrapperDiv>
+        
     )
   }
 };
 
-export default LocalLogin;
+export default Account;
