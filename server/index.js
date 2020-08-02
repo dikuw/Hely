@@ -11,8 +11,6 @@ const promisify = require('es6-promisify');
 require('./models/User');
 
 //  use passport for authentication
-// const passport = require('passport');
-// require('./handlers/passport');
 const passport = require('./handlers/passport');
 
 const db = require('./database');
@@ -30,11 +28,6 @@ app.use(fileUpload({
 
 //  enable CORS for all origins to allow development with local server
 app.use(cors({credentials: true, origin: 'http://localhost:3002'}));
-// app.use(cors({credentials: true}));
-// app.use(cors({
-//   methods:['GET','POST','PUT','DELETE'],
-//   credentials: true // enable set cookie
-//  }));
 
 // express-validator to validate data used in userController.validateRegister
 app.use(expressValidator());
@@ -67,8 +60,6 @@ app.use((req, res, next) => {
   req.login = promisify(req.login, req);
   next();
 });
-
-// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/api', router);
 

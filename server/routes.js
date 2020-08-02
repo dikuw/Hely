@@ -19,7 +19,7 @@ router.post('/register',
   passport.authenticate('local'),
   authController.login
 );
-router.post('/login', passport.authenticate('local'), authController.login);
+router.post('/login', authController.passportLocal, authController.login);
 router.post('/logout', authController.logout);
 router.post('/forgot', authController.forgot);
 

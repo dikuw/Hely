@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AddItemForm from './AddItemForm';
 import EditItemForm from './EditItemForm';
-import LoadingPopup from './LoadingPopup';
-import apis from '../../api/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -42,44 +39,25 @@ const StyledNoPermissionsDiv = styled.div`
   padding: 4px;
 `;
 
-
-class Inventory extends React.Component {
-  state = {
-    uploadingPhoto: false
-  }
-
-  componentWillUnmount = async () => {
-    await apis.putInventory({ ...this.props.inventory });
-  }
-
-  togglePopup = () => {   
-    this.setState(prevState => ({
-      uploadingPhoto: !prevState.uploadingPhoto
-    }))
-  } 
-
+class Orders extends React.Component {
   render() {
     if (!this.props.isLoggedIn) {
       return <StyledNoPermissionsDiv>You do not have permission to view this page.</StyledNoPermissionsDiv>
     }
     return (
       <StyledWrapperDiv>
-        {this.state.uploadingPhoto ? <LoadingPopup /> : null}
-        <AddItemForm addItem={this.props.addItem} uploadingPhoto={this.state.uploadingPhoto} togglePopup={this.togglePopup} />
-        {Object.values(this.props.inventory).map( (item, i) => 
+        {Object.values(this.props.orders).map( (item, i) => 
           <EditItemForm 
             key={i} 
             index={i} 
             item={item} 
             updateItem={this.props.updateItem}
             deleteItem={this.props.deleteItem}
-            uploadingPhoto={this.state.uploadingPhoto}
-            togglePopup={this.togglePopup}
           />)}
-        <StyledButton onClick={this.props.loadSampleInventory}>Load Sample Data</StyledButton>
+        <StyledButton onClick={this.props.loadSampleOrders}>Load Sample Orders</StyledButton>
       </StyledWrapperDiv>
     );
   }
 }
 
-export default Inventory;
+export default Orders;

@@ -9,10 +9,13 @@ import AddedPopup from './shop/AddedPopup';
 import Cart from './cart/Cart';
 import { Checkout, Shipping as CheckoutShipping, Payment } from './checkout/index';
 import { Login, LocalLogin, Register } from './login/index';
+import Account from './account/Account';
 import Inventory from './inventory/Inventory';
+import Orders from './orders/Orders';
 import { Privacy, Terms, Shipping, Returns } from './information/index';
 import Footer from './Footer';
 import inventory from '../data/inventory';
+import orders from '../data/orders';
 import apis from '../api/index';
 
 import '../style/styles.css';
@@ -20,6 +23,7 @@ import '../style/styles.css';
 class App extends React.Component {
   state = {
     inventory: [],
+    orders: [],
     cart: {},
     customer: {
       email: "",
@@ -37,8 +41,10 @@ class App extends React.Component {
     showAddedPopup: false,
     isLoading: false,
     isLoggedIn: false,
+    isAdmin: false,
     name: null,
     email: null,
+    passwordIncorrect: false,
   };
 
   componentDidMount = async () => {
@@ -68,11 +74,13 @@ class App extends React.Component {
 
   getUser = async () => {
     await apis.getUser().then(res => {
-      if (res.data.email) {
+      console.log(res);
+      if (res.data.user) {
         this.setState({ 
           isLoggedIn: true,
-          name: res.data.name,
-          email: res.data.email,
+          isAdmin: res.data.user.isAdmin,
+          name: res.data.user.name,
+          email: res.data.user.email,
          });
         console.log('found user', res);
       } else {
@@ -87,6 +95,7 @@ class App extends React.Component {
       if (res.data.email) {
         this.setState({ 
           isLoggedIn: true,
+          isAdmin: res.data.isAdmin,
           name: res.data.name,
           email: res.data.email,
          });
@@ -104,12 +113,16 @@ class App extends React.Component {
       if (res.data.email) {
         this.setState({ 
           isLoggedIn: true,
+          isAdmin: res.data.isAdmin,
           name: res.data.name,
           email: res.data.email,
          });
         console.log('user logged in successfully', res);
         this.props.history.push("/");
       } else {
+        this.setState({ 
+          passwordIncorrect: true,
+         });
         console.log('error', res);
       }
     });
@@ -120,6 +133,7 @@ class App extends React.Component {
     await apis.logout(payload).then(res => {
       this.setState({
         isLoggedIn: false,
+        isAdmin: false,
         username: null,
         password: null
       });
@@ -133,6 +147,12 @@ class App extends React.Component {
     await apis.forgot(payload).then(res => {
       console.log(`user forgot email sent successfully`);
     });
+  }
+
+  resetPasswordIncorrect = () => {
+    this.setState({ 
+      passwordIncorrect: false,
+     });
   }
 
   togglePopup = () => {   
@@ -219,12 +239,16 @@ class App extends React.Component {
     this.setState({ shipping: update })
   }
 
+  loadSampleOrders = () => {
+    this.setState({ orders: orders });
+  }
+
   render() {
     return (
       <main>
         <TopBanner isLoggedIn={this.state.isLoggedIn} name={this.state.name}/>
         <Header  />
-        <Navigation isLoggedIn={this.state.isLoggedIn} history={this.props.history} getCartItemCount={this.getCartItemCount} logoutUser={this.logoutUser} />
+        <Navigation isLoggedIn={this.state.isLoggedIn} isAdmin={this.state.isAdmin} history={this.props.history} getCartItemCount={this.getCartItemCount} logoutUser={this.logoutUser} />
         <Switch>
           <Route  exact path="/" 
             render={() => (
@@ -336,6 +360,8 @@ class App extends React.Component {
                 <LocalLogin 
                   history={this.props.history} 
                   isLoggedIn={this.state.isLoggedIn} 
+                  passwordIncorrect={this.state.passwordIncorrect}
+                  resetPasswordIncorrect={this.resetPasswordIncorrect}
                   loginUser={this.loginUser}
                   forgotUser={this.forgotUser} 
                 />
@@ -354,13 +380,26 @@ class App extends React.Component {
               </React.Fragment>
             )}
           />
+          <Route path="/account" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Your Account" />
+                <Account 
+                  history={this.props.history} 
+                  isLoggedIn={this.state.isLoggedIn} 
+                  name={this.state.name}
+                  email={this.state.email}
+                />
+              </React.Fragment>
+            )}
+          />
           <Route path="/inventory" 
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Inventory" />
                 <Inventory 
+                  isLoggedIn={this.state.isLoggedIn} 
                   inventory={Object.values(this.state.inventory).filter(item => item.show===true)} 
-                  authenticate={this.authenticate} 
                   addItem={this.addItem}
                   updateItem={this.updateItem}
                   deleteItem={this.deleteItem}
@@ -368,6 +407,18 @@ class App extends React.Component {
                 />
               </React.Fragment>
               
+            )}
+          />
+          <Route path="/orders" 
+            render={() => (
+              <React.Fragment>
+                <Banner bannerString="Orders" />
+                <Orders 
+                  isLoggedIn={this.state.isLoggedIn} 
+                  orders={Object.values(this.state.orders)} 
+                  loadSampleOrders={this.loadSampleOrders}
+                />
+              </React.Fragment>
             )}
           />
           <Route path="/privacy" 

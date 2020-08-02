@@ -4,10 +4,11 @@ const User = require('../models/User');
 const Order = require('../models/Order');
 const promisify = require('es6-promisify');
 
-exports.getCurrentUser = (req, res) => {
+exports.getCurrentUser = async (req, res) => {
   console.log('current user: ', req.user);
   if (req.user) {
-    return res.send(req.user);
+    const user = await User.findOne({ _id: req.user._id });
+    res.json({ user: user });
   } else {
     res.json({ error: 'No user found' });
   };
