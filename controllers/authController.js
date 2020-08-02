@@ -5,6 +5,17 @@ const User = require('../models/User');
 const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
 
+exports.passportLocal = (req, res, next) => {
+  passport.authenticate('local', function(err, user) {
+    if (err) { return next(err); }
+    if (!user) { return res.json({ error: err }); }
+    req.logIn(user, function(err) {
+      if (err) { return res.json({ error: err }); }
+      return next();
+    });
+  })(req, res, next);
+}
+
 exports.login = (req, res) => {
   req.login(req.user, function(err) {
     if (err) { res.json({ error: err }); }
