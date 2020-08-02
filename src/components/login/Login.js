@@ -1,60 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
-import FacebookLogin from 'react-facebook-login';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
   align-items: center;
   margin: 30px auto;
 `;
 
-const StyledButtonIG = styled.button`
+const StyledButton = styled.button`
+  font-family: Helvetica,sans-serif;
+  text-transform: uppercase;
   border: 0;
   display: block;
-  margin-bottom: 2rem;
-  border-radius: 4px;
-  width: 50%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   color: var(--almostWhite);
-  padding: 2rem;
-  background: #f09433; 
-  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
-  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
-  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
-  :after {
-    background darken(#5EA9DD, 20%)
-  }
+  padding: calc(.34435vw + 13.38843px) calc(.34435vw + 18.38843px);
 `;
 
-const StyledButtonTW = styled.button`
-  border: 0;
-  display: block;
-  margin-bottom: 2rem;
-  border-radius: 4px;
-  width: 50%;
-  color: var(--almostWhite);
-  padding: 2rem;
-  background: #1DA1F2;
-  :after {
-    background darken(#5EA9DD, 20%)
-  }
-`;
-
-const StyledButtonEmail = styled.button`
-  border: 0;
-  display: block;
-  margin-bottom: 2rem;
-  border-radius: 4px;
-  width: 50%;
-  color: var(--almostWhite);
-  padding: 2rem;
-  background: #657786;
-  :after {
-    background darken(#5EA9DD, 20%)
-  }
-`;
+const styleIG = {
+  background: '#f09433',
+  background: '-moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+  background: '-webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+  background: 'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+  filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#f09433", endColorstr="#bc1888",GradientType=1 )',
+};
 
 class Login extends React.Component {
 
@@ -63,31 +37,21 @@ class Login extends React.Component {
   };
   
   render() {
-    const responseFacebook = (response) => {
-      console.log(response);
-    }
 
-    const componentClicked = () => {
-      console.log('clicked');
-    }
-    
     return (
       <StyledWrapperDiv>
-        <FacebookLogin
-          appId="3838169406199896"
-          fields="name,email"
-          onClick={componentClicked}
-          callback={responseFacebook} 
-        />
-        <StyledButtonIG onClick={() => this.props.authenticate('instagram')}>
-          Log in with Instagram
-        </StyledButtonIG>
-        <StyledButtonTW onClick={() => this.props.authenticate('twitter')}>
-          Log in with Twitter
-        </StyledButtonTW>
-        <StyledButtonEmail onClick={() => this.localLoginClick()}>
+        <StyledButton style={{background: '#4267B2'}} onClick={() => this.props.authenticate('facebook')}>
+          Login with Facebook
+        </StyledButton>
+        <StyledButton style={styleIG} onClick={() => this.props.authenticate('instagram')}>
+          Login with Instagram
+        </StyledButton>
+        <StyledButton style={{background: '#1DA1F2'}} onClick={() => this.props.authenticate('twitter')}>
+          Login with Twitter
+        </StyledButton>
+        <StyledButton style={{background: '#657786'}} onClick={() => this.localLoginClick()}>
           Login or Register with email
-        </StyledButtonEmail>
+        </StyledButton>
       </StyledWrapperDiv>
     )
   }

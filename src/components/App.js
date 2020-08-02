@@ -348,7 +348,7 @@ class App extends React.Component {
                 <Banner bannerString="Log In (or Register)" />
                 <Login 
                   history={this.props.history} 
-                  isLoggedIn={this.state.isLoggedIn} 
+                  isLoggedIn={this.state.isLoggedIn}
                 />
               </React.Fragment>
             )}

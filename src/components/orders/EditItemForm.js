@@ -1,5 +1,4 @@
 import React from 'react';
-import apis from '../../api/index';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
@@ -73,7 +72,7 @@ class EditItemForm extends React.Component {
         [propName]: updatedValue
     }
 
-    // this.props.updateItem(this.props.index, updatedItem);
+    this.props.updateItem(this.props.index, updatedItem);
   }
 
   render() {
