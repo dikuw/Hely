@@ -6,6 +6,7 @@ const userController = require('./controllers/userController');
 const authController = require('./controllers/authController');
 const aboutController = require('./controllers/aboutController');
 const inventoryController = require('./controllers/inventoryController');
+const orderController = require('./controllers/orderController');
 
 //  TODO: create controller exports
 router.post('/message', aboutController.createMessage);
@@ -38,5 +39,14 @@ router.post('/postItem', inventoryController.postItem);
 router.put('/putInventory', inventoryController.archiveInventory, inventoryController.putInventory);
 //  POST IMAGE
 router.post('/uploadImage', inventoryController.uploadImage);
+
+//  ** Order Routes **  //
+//  GET
+router.get('/getOrders', orderController.getOrders);
+router.get('/getUserOrders', orderController.getUserOrders);
+//  CREATE
+router.post('/postOrder', orderController.postOrder);
+//  UPDATE
+router.put('/putOrder', orderController.putOrder);
 
 module.exports = router;

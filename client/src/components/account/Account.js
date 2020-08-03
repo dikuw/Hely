@@ -1,4 +1,5 @@
 import React from 'react';
+import Orders from './Orders';
 import styled from 'styled-components';
 
 const StyledWrapperDiv = styled.div`
@@ -144,8 +145,8 @@ class Account extends React.Component {
         </StyledForm>
         <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
         <div>Your Orders</div>
+        <Orders getUserOrders={this.props.getUserOrders} />
       </StyledWrapperDiv>
-        
     )
   }
 };

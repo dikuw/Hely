@@ -51,8 +51,8 @@ class Orders extends React.Component {
             key={i} 
             index={i} 
             item={item} 
-            updateItem={this.props.updateItem}
-            deleteItem={this.props.deleteItem}
+            inventory={this.props.inventory} 
+            updateOrder={this.props.updateOrder}
           />)}
         <StyledButton onClick={this.props.loadSampleOrders}>Load Sample Orders</StyledButton>
       </StyledWrapperDiv>

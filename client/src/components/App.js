@@ -8,7 +8,7 @@ import Grid from './shop/Grid';
 import AddedPopup from './shop/AddedPopup';
 import Cart from './cart/Cart';
 import { Checkout, Shipping as CheckoutShipping, Payment } from './checkout/index';
-import { Login, LocalLogin, Register } from './login/index';
+import { LocalLogin, Register } from './login/index';
 import Account from './account/Account';
 import Inventory from './inventory/Inventory';
 import Orders from './orders/Orders';
@@ -24,6 +24,7 @@ class App extends React.Component {
   state = {
     inventory: [],
     orders: [],
+    userOrders: [],
     cart: {},
     customer: {
       email: "",
@@ -235,6 +236,13 @@ class App extends React.Component {
     }))
   }
 
+  getUserOrders = async (userID) => {
+    await apis.getUserOrders(userID).then(res => {
+      this.setState({ userOrders: res.data.orders });
+      return res.data.success;
+    });
+  }
+
   updateShipping = (update) => {
     this.setState({ shipping: update })
   }
@@ -342,7 +350,7 @@ class App extends React.Component {
               </React.Fragment>
             )}
           />
-          <Route path="/login" 
+          {/* <Route path="/login" 
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Log In (or Register)" />
@@ -352,8 +360,8 @@ class App extends React.Component {
                 />
               </React.Fragment>
             )}
-          />
-          <Route path="/locallogin" 
+          /> */}
+          <Route path="/login" 
             render={() => (
               <React.Fragment>
                 <Banner bannerString="Log In" />
@@ -389,6 +397,7 @@ class App extends React.Component {
                   isLoggedIn={this.state.isLoggedIn} 
                   name={this.state.name}
                   email={this.state.email}
+                  getUserOrders={this.getUserOrders}
                 />
               </React.Fragment>
             )}
@@ -415,7 +424,8 @@ class App extends React.Component {
                 <Banner bannerString="Orders" />
                 <Orders 
                   isLoggedIn={this.state.isLoggedIn} 
-                  orders={Object.values(this.state.orders)} 
+                  inventory={this.state.inventory} 
+                  orders={this.state.orders} 
                   loadSampleOrders={this.loadSampleOrders}
                 />
               </React.Fragment>
