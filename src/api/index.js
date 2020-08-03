@@ -15,6 +15,7 @@ export const insertInventoryItem = payload => api.post('/postItem', payload);
 export const getInventory = () => api.get('/getInventory');
 export const putInventory = payload => api.put('/putInventory', payload);
 export const postImage = payload => api.post('/uploadImage', payload, { headers: { 'Content-Type': 'multipart/form-data' } });
+export const getUserOrders = payload => api.get('/getUserOrders', payload);
 
 const apis = {
   getUser,
@@ -26,6 +27,7 @@ const apis = {
   getInventory,
   putInventory,
   postImage,
+  getUserOrders,
 };
 
 export default apis;

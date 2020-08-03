@@ -1,6 +1,6 @@
 import React from 'react';
-import CartItem from './CartItem'
-import CartFooter from './CartFooter'
+import CartItem from './CartItem';
+import CartFooter from './CartFooter';
 import styled from 'styled-components';
 
 const StyledWrapperDiv = styled.div`
