@@ -53,7 +53,8 @@ class App extends React.Component {
     //  ** ⏰ ⏰ ⏰  ** //
     this.setState({ isLoading: true });
 
-    this.getUser();
+    const userID = this.getUser();
+    await this.getUserOrders(userID);
 
     await apis.getInventory().then(inventory => {
       this.setState({
@@ -75,7 +76,6 @@ class App extends React.Component {
 
   getUser = async () => {
     await apis.getUser().then(res => {
-      console.log(res);
       if (res.data.user) {
         this.setState({ 
           isLoggedIn: true,
@@ -84,6 +84,7 @@ class App extends React.Component {
           email: res.data.user.email,
          });
         console.log('found user', res);
+        return res.data.user._id;
       } else {
         console.log('no user found', res);
       }
@@ -230,6 +231,12 @@ class App extends React.Component {
     return Object.values(this.state.cart).reduce((a, b) => a + b, 0);
   }
 
+  postPayment = async (payload) => {
+    await apis.postPayment(payload).then(res => {
+      console.log(`Payment posted successfully`);
+    });
+  };
+
   updateCustomer = (updatedProp, update) => {
     this.setState(prevState => ({
       customer: { ...prevState.customer, [updatedProp]: update }
@@ -239,7 +246,6 @@ class App extends React.Component {
   getUserOrders = async (userID) => {
     await apis.getUserOrders(userID).then(res => {
       this.setState({ userOrders: res.data.orders });
-      return res.data.success;
     });
   }
 
@@ -340,12 +346,15 @@ class App extends React.Component {
           <Route path="/payment" 
             render={() => (
               <React.Fragment>
-                <Banner bannerString="Payment" />
+                <Banner bannerString="Payment Information" />
                 <Payment 
                   history={this.props.history} 
                   cartTotal={this.getCartTotal()} 
                   customer={this.state.customer} 
+                  name={this.state.name}
+                  email={this.state.email}
                   shipping={this.state.shipping}
+                  postPayment={this.postPayment}
                 />
               </React.Fragment>
             )}
@@ -397,7 +406,7 @@ class App extends React.Component {
                   isLoggedIn={this.state.isLoggedIn} 
                   name={this.state.name}
                   email={this.state.email}
-                  getUserOrders={this.getUserOrders}
+                  userOrders={this.state.userOrders}
                 />
               </React.Fragment>
             )}

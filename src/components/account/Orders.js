@@ -16,7 +16,9 @@ const StyledUl = styled.ul`
 
 class Orders extends React.Component {
   render() {
-    if (!orders) {
+    const userOrders = this.props.userOrders;
+
+    if (!userOrders) {
       return (
         <StyledWrapperDiv>No orders found.</StyledWrapperDiv>
       )
@@ -24,7 +26,7 @@ class Orders extends React.Component {
     return (
       <StyledWrapperDiv>
         <StyledUl>
-          {Object.keys(orders).map((key, i) => (
+          {Object.keys(userOrders).map((key, i) => (
             <Order />
           ))}
         </StyledUl>

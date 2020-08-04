@@ -145,7 +145,7 @@ class Account extends React.Component {
         </StyledForm>
         <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
         <div>Your Orders</div>
-        <Orders getUserOrders={this.props.getUserOrders} />
+        <Orders userOrders={this.props.userOrders} />
       </StyledWrapperDiv>
     )
   }
