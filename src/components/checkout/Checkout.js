@@ -107,13 +107,14 @@ class Checkout extends React.Component {
           <input name="address2" type="text" placeholder="Apartment, suite, etc. (if applicable)" onChange={this.handleChange} value={this.props.customer.address2} />
           <StyledGroupDiv>
             <input name="city" type="text" placeholder="City" onChange={this.handleChange} value={this.props.customer.city} />
-            <select name="country" onChange={this.handleChange} value={this.props.customer.country} >
-              <option value="colombia">Colombia</option>
-              <option value="USA">USA</option>
-              <option value="venezuela">Venezuela</option>
-            </select>
+            <input name="state" type="text" placeholder="State" onChange={this.handleChange} value={this.props.customer.state} />
             <input name="postalCode" type="text" placeholder="Postal Code" onChange={this.handleChange} value={this.props.customer.postalCode} />
           </StyledGroupDiv>
+            <select name="country" onChange={this.handleChange} value={this.props.customer.country} >
+              <option value="CO">Colombia</option>
+              <option value="US">USA</option>
+              <option value="VE">Venezuela</option>
+            </select>
           <input name="mobile" type="text" placeholder="Mobile" onChange={this.handleChange} value={this.props.customer.mobile} />
           <StyledCheckoutButton onClick={() => this.handleClick()}>Continue to Shipping</StyledCheckoutButton>
         </StyledForm>
