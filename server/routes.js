@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-//  TODO: update for all Schemas
 const userController = require('./controllers/userController');
 const authController = require('./controllers/authController');
 const aboutController = require('./controllers/aboutController');
 const inventoryController = require('./controllers/inventoryController');
 const orderController = require('./controllers/orderController');
+const paymentController = require('./controllers/paymentController');
 
 //  TODO: create controller exports
 router.post('/message', aboutController.createMessage);
@@ -48,5 +48,8 @@ router.get('/getUserOrders', orderController.getUserOrders);
 router.post('/postOrder', orderController.postOrder);
 //  UPDATE
 router.put('/putOrder', orderController.putOrder);
+
+//  ** Payment Routes **  //
+router.post('/stripe/charge', paymentController.postCharge);
 
 module.exports = router;
