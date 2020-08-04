@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Order = mongoose.model('Order');
 
-const uuid = require('uuid');
-
 //  Stripe payments setup
 // *** ALSO UPDATE THE KEY IN CART.PUG!! *** //
 //  ** start test keys ** //
@@ -19,17 +17,14 @@ const stripe = require('stripe')(keySecret);
 var customer;
 
 exports.postCharge = async (req, res) => {
-  const { amount, source, receipt_email } = req.body;
-  const charge = await stripe.charges.create({
-    amount,
-    currency: 'usd',
-    source,
-    receipt_email
+  const { amount } = req.body;
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount,
+    currency: "usd"
   });
-  res.status(200).json({ message: 'charge posted successfully', charge })
+  res.send({ clientSecret: paymentIntent.client_secret });
 };
 
- 
 exports.createCustomer = async (req, res, next) => {
   //  create customer in Stripe
   customer = await stripe.customers.create({
