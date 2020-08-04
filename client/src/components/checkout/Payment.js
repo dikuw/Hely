@@ -124,6 +124,7 @@ class CheckoutForm extends React.Component {
   address1Ref = React.createRef();
   address2Ref = React.createRef();
   cityRef = React.createRef();
+  stateRef = React.createRef();
   countryRef = React.createRef();
   postalCodeRef = React.createRef();
   checkboxRef = React.createRef();
@@ -135,6 +136,7 @@ class CheckoutForm extends React.Component {
       this.address1Ref.current.value = this.props.customer.address1;
       this.address2Ref.current.value = this.props.customer.address2;
       this.cityRef.current.value = this.props.customer.city;
+      this.stateRef.current.value = this.props.customer.state;
       this.countryRef.current.value = this.props.customer.country;
       this.postalCodeRef.current.value = this.props.customer.postalCode;
     } else {
@@ -143,6 +145,7 @@ class CheckoutForm extends React.Component {
       this.address1Ref.current.value = "";
       this.address2Ref.current.value = "";
       this.cityRef.current.value = "";
+      this.stateRef.current.value = "";
       this.countryRef.current.value = "";
       this.postalCodeRef.current.value = "";
     }
@@ -165,15 +168,15 @@ class CheckoutForm extends React.Component {
       card: cardElement,
       billing_details: {
         address: {
-          city: this.props.customer.city,
-          // ** TODO get country code **
-          country: "US",
-          line1: this.props.customer.address1,
-          line2: this.props.customer.address2,
-          state: this.props.customer.state
+          city: this.cityRef.current.value,
+          country: this.countryRef.current.value,
+          line1: this.address1Ref.current.value,
+          line2: this.address2Ref.current.value,
+          state: this.stateRef.current.value,
+          postal_code: this.postalCodeRef.current.value,
         },
         email: this.props.email,
-        name: this.props.name
+        name: `${this.firstNameRef.current.value} ${this.lastNameRef.current.value}`
       },
     });
 
@@ -205,18 +208,20 @@ class CheckoutForm extends React.Component {
         <input name="address2" ref={this.address2Ref} type="text" placeholder="Apartment, suite, etc. (if applicable)" onChange={this.handleChange} />
         <StyledGroupDiv>
           <input name="city" ref={this.cityRef} type="text" placeholder="City" onChange={this.handleChange} />
-          <select name="country" ref={this.countryRef} onChange={this.handleChange} >
-            <option value="colombia">Colombia</option>
-            <option value="USA">USA</option>
-            <option value="venezuela">Venezuela</option>
-          </select>
+          <input name="state" ref={this.stateRef} type="text" placeholder="State" onChange={this.handleChange} />
           <input name="postalCode" ref={this.postalCodeRef} type="text" placeholder="Postal Code" onChange={this.handleChange} />
         </StyledGroupDiv>
+        <select name="country" ref={this.countryRef} onChange={this.handleChange} >
+          <option value="CO">Colombia</option>
+          <option value="US">USA</option>
+          <option value="VE">Venezuela</option>
+        </select>
       </StyledForm>
         <StyledForm onSubmit={this.handleSubmit}>
           <CardElementContainer>
             <CardElement
               options={{
+                hidePostalCode: true,
                 style: {
                   base: {
                     fontSize: '16px',

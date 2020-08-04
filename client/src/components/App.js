@@ -33,6 +33,7 @@ class App extends React.Component {
       address1: "",
       address2: "",
       city: "",
+      state: "",
       country: "",
       postalCode: "",
       mobile: "",
@@ -64,13 +65,14 @@ class App extends React.Component {
     });
 
     const localStorageRef = localStorage.getItem('cart');
-    
+    console.log('localStorageRef', localStorageRef);
     if (localStorageRef) {
       this.setState({cart: JSON.parse(localStorageRef)});
     }
   }
 
   componentDidUpdate() {
+    console.log('this.state.cart', this.state.cart);
     localStorage.setItem('cart', JSON.stringify(this.state.cart));
   }
 
