@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
-// const Order = mongoose.model('../models/Order');
 const Order = require('../models/Order');
 const promisify = require('es6-promisify');
 
 exports.getCurrentUser = async (req, res) => {
-  console.log('current user: ', req.user);
   if (req.user) {
     const user = await User.findOne({ _id: req.user._id });
     res.json({ user: user });
