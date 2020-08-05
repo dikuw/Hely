@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const api = axios.create({
   withCredentials: true,
-  // baseURL: 'https://helybe.herokuapp.com/api',
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'https://helybe.herokuapp.com/api',
+  // baseURL: 'http://localhost:8000/api',
 });
 
 export const getUser = () => api.get('/getUser');
@@ -15,8 +15,9 @@ export const insertInventoryItem = payload => api.post('/postItem', payload);
 export const getInventory = () => api.get('/getInventory');
 export const putInventory = payload => api.put('/putInventory', payload);
 export const postImage = payload => api.post('/uploadImage', payload, { headers: { 'Content-Type': 'multipart/form-data' } });
-export const getUserOrders = payload => api.get('/getUserOrders', payload);
-export const postPayment = payload => api.post('/stripe/charge', payload);
+export const getUserOrders = id => api.get(`/getUserOrders/${id}`);
+export const postOrder = payload => api.post('/postOrder', payload);
+export const postCreatePaymentIntent = payload => api.post('/stripe/createPaymentIntent', payload);
 
 const apis = {
   getUser,
@@ -29,7 +30,8 @@ const apis = {
   putInventory,
   postImage,
   getUserOrders,
-  postPayment,
+  postOrder,
+  postCreatePaymentIntent,
 };
 
 export default apis;

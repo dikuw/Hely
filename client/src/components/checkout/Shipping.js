@@ -93,7 +93,9 @@ const StyledButtonInvisible = styled.button`
 class CheckoutShipping extends React.Component {
 
   handleChange = async (e) => {
-    this.props.updateShipping(e.currentTarget.value);
+    //  TODO update this so it is not-hardcoded or at least validate prices on the server //
+    //  💰 💰 💰 💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰  //
+    this.props.updateShipping({ method: e.currentTarget.value, price: e.currentTarget.getAttribute("data-price") });
   }
   
   handleClick = () => {
@@ -107,22 +109,23 @@ class CheckoutShipping extends React.Component {
   render() {
     return (
       <StyledWrapperDiv>
+        <div>Cart total: {formatPrice(this.props.cartTotal)}</div>
         <h4>Choose Shipping Method</h4>
         <StyledForm>
           <StyledGroupDiv>
-            <input type="radio" id="USPS" name="shippingMethod" value="USPS" onChange={this.handleChange} checked={this.props.shipping === 'USPS' || !(this.props.shipping) } />
+            <input type="radio" id="USPS" name="shippingMethod" value="USPS" data-price="900" onChange={this.handleChange} checked={this.props.shipping.method === 'USPS' || !(this.props.shipping.method) } />
             <label htmlFor="USPS">USPS Priority Mail</label>
             <StyledDurationDiv>3 business days</StyledDurationDiv>
             <StyledPriceDiv>{formatPrice(900)}</StyledPriceDiv>
           </StyledGroupDiv>
           <StyledGroupDiv>
-            <input type="radio" id="Fedex" name="shippingMethod" value="Fedex" onChange={this.handleChange} checked={this.props.shipping === 'Fedex'} />
+            <input type="radio" id="Fedex" name="shippingMethod" value="Fedex" data-price="1200" onChange={this.handleChange} checked={this.props.shipping.method === 'Fedex'} />
             <label htmlFor="Fedex">Fedex</label>
             <StyledDurationDiv>2 business days</StyledDurationDiv>
             <StyledPriceDiv>{formatPrice(1200)}</StyledPriceDiv>
           </StyledGroupDiv>
           <StyledGroupDiv>
-            <input type="radio" id="UPS" name="shippingMethod" value="UPS" onChange={this.handleChange} checked={this.props.shipping === 'UPS'} />
+            <input type="radio" id="UPS" name="shippingMethod" value="UPS" data-price="1299" onChange={this.handleChange} checked={this.props.shipping.method === 'UPS'} />
             <label htmlFor="UPS">UPS</label>
             <StyledDurationDiv>2 business days</StyledDurationDiv>
             <StyledPriceDiv>{formatPrice(1299)}</StyledPriceDiv>

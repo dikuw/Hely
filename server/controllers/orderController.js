@@ -11,7 +11,7 @@ exports.getOrders = async (req, res) => {
 };
 
 exports.getUserOrders = async (req, res) => {
-  const orders = await Order.find({ _id: req.body.userID });
+  const orders = await Order.find({ "user.id" : req.params.id });
   if (!orders.length) {
     return res.status(200).json({ success: false, error: "No orders found" });
   } else {
@@ -21,15 +21,8 @@ exports.getUserOrders = async (req, res) => {
 
 exports.postOrder = async (req, res) => {
   const body = req.body;
-
-  if (!body) {
-    return res.status(400).json({
-      success: false,
-      error: 'You must provide an order',
-    });
-  }
-
   const order = new Order(body);
+
   if (!order) {
     return res.status(400).json({ success: false, error: err });
   }

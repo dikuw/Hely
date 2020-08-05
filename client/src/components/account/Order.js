@@ -9,11 +9,26 @@ const StyledWrapperDiv = styled.div`
   padding: 4px;
 `;
 
+const StyledHeaderDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid black;
+`;
+
+const StyledDiv = styled.div`
+
+`;
+
 class Order extends React.Component {
   render() {
     return (
       <StyledWrapperDiv>
-        This is an order item
+        <StyledHeaderDiv>
+          <StyledDiv>Order placed: {this.props.order.orderDate}</StyledDiv>
+          <StyledDiv>Total: {this.props.order.status}</StyledDiv>
+          <StyledDiv>Ship to: {this.props.order.firstname}</StyledDiv>
+          <StyledDiv>Order #: {this.props.order._id}</StyledDiv>
+        </StyledHeaderDiv>
       </StyledWrapperDiv>
     )
   }

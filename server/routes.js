@@ -43,13 +43,13 @@ router.post('/uploadImage', inventoryController.uploadImage);
 //  ** Order Routes **  //
 //  GET
 router.get('/getOrders', orderController.getOrders);
-router.get('/getUserOrders', orderController.getUserOrders);
+router.get('/getUserOrders/:id', orderController.getUserOrders);
 //  CREATE
 router.post('/postOrder', orderController.postOrder);
 //  UPDATE
 router.put('/putOrder', orderController.putOrder);
 
 //  ** Payment Routes **  //
-router.post('/stripe/charge', paymentController.postCharge);
+router.post('/stripe/createPaymentIntent', paymentController.postCreatePaymentIntent);
 
 module.exports = router;

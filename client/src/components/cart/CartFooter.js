@@ -58,7 +58,7 @@ class CartFooter extends React.Component {
     return (
       <StyledWrapperDiv>
         <StyledSubTotalDiv>Subtotal: {formatPrice(this.props.total)}</StyledSubTotalDiv>
-        <StyledNoteDiv>Shipping and taxes calculated at checkout</StyledNoteDiv>
+        <StyledNoteDiv>Shipping calculated at checkout</StyledNoteDiv>
         <StyledCheckoutButton onClick={() => this.handleClick()}>Checkout</StyledCheckoutButton>
       </StyledWrapperDiv>
     )
