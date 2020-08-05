@@ -95,7 +95,7 @@ class Checkout extends React.Component {
     return (
       <StyledWrapperDiv>
         <div>Cart total: {formatPrice(this.props.cartTotal)}</div>
-        <StyledNoteDiv>Shipping and taxes calculated in the next step</StyledNoteDiv>
+        <StyledNoteDiv>Shipping added in the next step</StyledNoteDiv>
         <div>Contact Information</div>
         <StyledForm>
           <input name="email" type="text" placeholder="Email" onChange={this.handleChange} value={this.props.customer.email} />

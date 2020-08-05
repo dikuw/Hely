@@ -86,6 +86,11 @@ class Account extends React.Component {
   passwordRef = React.createRef();
   warningRef = React.createRef();
 
+  //  TODO this.props.user.id will be null on F5, leading to a 404 on the route
+  componentDidMount = () => {
+    this.props.getUserOrders(this.props.user.id);
+  }
+
   resetValidation = () => {
     this.emailRef.current.style.background = "#fff";
     this.passwordRef.current.style.background = "#fff";

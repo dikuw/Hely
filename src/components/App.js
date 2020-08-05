@@ -26,6 +26,10 @@ class App extends React.Component {
     orders: [],
     userOrders: [],
     cart: {},
+    shipping: {
+      method:"USPS",
+      price: "900"
+    },
     customer: {
       email: "",
       firstName: "",
@@ -38,14 +42,19 @@ class App extends React.Component {
       postalCode: "",
       mobile: "",
     },
-    shipping: "",
+    user: {
+      id: "",
+      name: "",
+      email: ""
+    },
+    clientSecret: "",
     menuOpen: false,
     showAddedPopup: false,
     isLoading: false,
     isLoggedIn: false,
     isAdmin: false,
-    name: null,
-    email: null,
+    name: "",
+    email: "",
     passwordIncorrect: false,
   };
 
@@ -54,8 +63,7 @@ class App extends React.Component {
     //  ** ⏰ ⏰ ⏰  ** //
     this.setState({ isLoading: true });
 
-    const userID = this.getUser();
-    await this.getUserOrders(userID);
+    this.getUser();
 
     await apis.getInventory().then(inventory => {
       this.setState({
@@ -84,11 +92,14 @@ class App extends React.Component {
           isAdmin: res.data.user.isAdmin,
           name: res.data.user.name,
           email: res.data.user.email,
+          user: {
+            id: res.data.user._id,
+            name: res.data.user.name,
+            email: res.data.user.email,
+          }
          });
-        console.log('found user', res);
         return res.data.user._id;
       } else {
-        console.log('no user found', res);
       }
     });
   }
@@ -103,7 +114,6 @@ class App extends React.Component {
           name: res.data.name,
           email: res.data.email,
          });
-        console.log('user registered successfully', res);
         this.props.history.push("/");
       } else {
         console.log('error', res);
@@ -120,8 +130,12 @@ class App extends React.Component {
           isAdmin: res.data.isAdmin,
           name: res.data.name,
           email: res.data.email,
+          user: {
+            id: res.data.user._id,
+            name: res.data.user.name,
+            email: res.data.user.email,
+          }
          });
-        console.log('user logged in successfully', res);
         this.props.history.push("/");
       } else {
         this.setState({ 
@@ -142,7 +156,6 @@ class App extends React.Component {
         password: null
       });
       this.props.history.push("/");
-      console.log('user logged out successfully', res);
     });
   }
 
@@ -233,9 +246,9 @@ class App extends React.Component {
     return Object.values(this.state.cart).reduce((a, b) => a + b, 0);
   }
 
-  postPayment = async (payload) => {
-    await apis.postPayment(payload).then(res => {
-      console.log(`Payment posted successfully`);
+  postCreatePaymentIntent = async (payload) => {
+    await apis.postCreatePaymentIntent(payload).then(res => {
+      this.setState({ clientSecret: res.data.clientSecret });
     });
   };
 
@@ -245,9 +258,17 @@ class App extends React.Component {
     }))
   }
 
+  addOrder = async (order) => {
+    await apis.postOrder(order).then(res => {
+      console.log('addOrder', res)
+    });
+  }
+
   getUserOrders = async (userID) => {
+    console.log('userID', userID);
     await apis.getUserOrders(userID).then(res => {
-      this.setState({ userOrders: res.data.orders });
+      console.log('getUserOrders', res);
+      this.setState({ userOrders: res.data.data });
     });
   }
 
@@ -351,12 +372,16 @@ class App extends React.Component {
                 <Banner bannerString="Payment Information" />
                 <Payment 
                   history={this.props.history} 
+                  cart={this.state.cart} 
                   cartTotal={this.getCartTotal()} 
+                  user={this.state.user} 
                   customer={this.state.customer} 
                   name={this.state.name}
                   email={this.state.email}
                   shipping={this.state.shipping}
-                  postPayment={this.postPayment}
+                  postCreatePaymentIntent={this.postCreatePaymentIntent}
+                  clientSecret={this.state.clientSecret}
+                  addOrder={this.addOrder}
                 />
               </React.Fragment>
             )}
@@ -408,6 +433,8 @@ class App extends React.Component {
                   isLoggedIn={this.state.isLoggedIn} 
                   name={this.state.name}
                   email={this.state.email}
+                  user={this.state.user}
+                  getUserOrders={this.getUserOrders}
                   userOrders={this.state.userOrders}
                 />
               </React.Fragment>
