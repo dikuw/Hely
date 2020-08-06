@@ -10,26 +10,6 @@ const StyledWrapperDiv = styled.div`
   padding: 4px;
 `;
 
-const StyledButton = styled.button`
-  font-size: 1.2em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--vinoTinto);
-  border-color: var(--vinoTinto);
-  border-radius: 2px;
-  border: 0;
-  color: var(--almostWhite);
-  display: inline-block;
-  height: 45px;
-  letter-spacing: 1px;
-  line-height: 45px;
-  margin: 0;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-  width: auto;
-`;
-
 const StyledNoPermissionsDiv = styled.div`
   max-width: 1200px;
   display: flex;
@@ -54,7 +34,6 @@ class Orders extends React.Component {
             inventory={this.props.inventory} 
             updateOrder={this.props.updateOrder}
           />)}
-        <StyledButton onClick={this.props.loadSampleOrders}>Load Sample Orders</StyledButton>
       </StyledWrapperDiv>
     );
   }

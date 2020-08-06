@@ -1,6 +1,7 @@
 import React from 'react';
 import CartHeader from './CartHeader';
 import CartItem from './CartItem';
+import { format } from 'date-fns'
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
@@ -116,57 +117,45 @@ class EditItemForm extends React.Component {
   }
 
   render() {
-    const cart = this.props.item.cart;
-    const total = cart.reduce((prevTotal, item) => {
-      const cartItem = this.props.inventory.filter(inventoryItem => inventoryItem._id===item._id)[0];
-      const count = item.qty;
-      if (cartItem) {
-        return prevTotal + (count * cartItem.price);
-      }
-      return prevTotal;
-    }, 0);
+    const cart = Object.entries(this.props.item.cart);
     return (
       <StyledDiv>
         <StyledOverviewColDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="id">Order ID: </StyledLabel>
-              <input type="text" name="id" value={this.props.item.id} readOnly />
+              <input type="text" name="id" value={this.props.item._id} readOnly />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="email">Email: </StyledLabel>
-              <input type="text" name="email" onChange={this.handleChange} value={this.props.item.email} />
+              <input type="text" name="email" onChange={this.handleChange} value={this.props.item.customer.email} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingName">Name: </StyledLabel>
-              <input type="text" name="shippingName" onChange={this.handleChange} value={this.props.item.shippingName} />
+              <input type="text" name="shippingName" onChange={this.handleChange} value={this.props.item.customer.firstName} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingAddressLine1">Address Line 1: </StyledLabel>
-              <input type="text" name="shippingAddressLine1" onChange={this.handleChange} value={this.props.item.shippingAddressLine1} />
+              <input type="text" name="shippingAddressLine1" onChange={this.handleChange} value={this.props.item.customer.address1} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingAddressLine2">Address Line 2: </StyledLabel>
-              <input type="text" name="shippingAddressLine2" onChange={this.handleChange} value={this.props.item.shippingAddressLine2} />
+              <input type="text" name="shippingAddressLine2" onChange={this.handleChange} value={this.props.item.customer.address2} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingAddressCity">City: </StyledLabel>
-              <input type="text" name="shippingAddressCity" onChange={this.handleChange} value={this.props.item.shippingAddressCity} />
+              <input type="text" name="shippingAddressCity" onChange={this.handleChange} value={this.props.item.customer.city} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingAddressState">State: </StyledLabel>
-              <input type="text" name="shippingAddressState" onChange={this.handleChange} value={this.props.item.shippingAddressState} />
+              <input type="text" name="shippingAddressState" onChange={this.handleChange} value={this.props.item.customer.state} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingAddressZip">Zip Code: </StyledLabel>
-              <input type="text" name="shippingAddressZip" onChange={this.handleChange} value={this.props.item.shippingAddressZip} />
+              <input type="text" name="shippingAddressZip" onChange={this.handleChange} value={this.props.item.customer.postalCode} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
               <StyledLabel htmlFor="shippingAddressCountryCode">Country Code: </StyledLabel>
-              <input type="text" name="shippingAddressCountryCode" onChange={this.handleChange} value={this.props.item.shippingAddressCountryCode} />
-          </StyledFormRowDiv>
-          <StyledFormRowDiv>
-              <StyledLabel htmlFor="shippingAddressCountry">Country: </StyledLabel>
-              <input type="text" name="shippingAddressCountry" onChange={this.handleChange} value={this.props.item.shippingAddressCountry} />
+              <input type="text" name="shippingAddressCountryCode" onChange={this.handleChange} value={this.props.item.customer.country} />
           </StyledFormRowDiv>
         </StyledOverviewColDiv>
         <StyledProcessingColDiv>
@@ -176,7 +165,7 @@ class EditItemForm extends React.Component {
           </StyledFormRowDiv>
           <StyledFormRowDiv>
             <StyledLabel htmlFor="orderDate">Order Date: </StyledLabel>
-            <input type="text" name="orderDate" onChange={this.handleChange} value={this.props.item.orderDate} />
+            <input type="text" name="orderDate" value={format(new Date(this.props.item.orderDate), 'MMMM dd, yyyy')} readOnly />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
             <StyledLabel htmlFor="status">Status: </StyledLabel>
@@ -187,12 +176,12 @@ class EditItemForm extends React.Component {
           </StyledFormRowDiv>
           <StyledFormRowDiv>Order Details</StyledFormRowDiv>
           <StyledFormRowDiv>
-            <CartHeader total={total} />
+            <CartHeader total={this.props.item.total} />
           </StyledFormRowDiv>
           <StyledFormRowDiv>
             <StyledUl>
-              {cart.map((item, i) => (
-                <CartItem key={item._id} qty={item.qty} item={this.props.inventory.filter(inventoryItem => inventoryItem._id===item._id)[0]} />
+              {Object.keys(this.props.item.cart).map((key, i) => (
+                <CartItem key={key} index={key} qty={this.props.item.cart[key]} item={this.props.inventory.filter(item => item.id===key)[0]} />
               ))}
             </StyledUl>
           </StyledFormRowDiv>

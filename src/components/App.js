@@ -67,6 +67,10 @@ class App extends React.Component {
 
     this.getUserOrders(this.state.user.id);
 
+    if (this.state.isAdmin) {
+      this.getOrders();
+    }
+
     await apis.getInventory().then(inventory => {
       this.setState({
         inventory: inventory.data.data,
@@ -267,12 +271,17 @@ class App extends React.Component {
   }
 
   getUserOrders = async (userID) => {
-    if (userID) {
-      await apis.getUserOrders(userID).then(res => {
-        this.setState({ userOrders: res.data.data });
-      });
-    }
+    await apis.getUserOrders(userID).then(res => {
+      this.setState({ userOrders: res.data.data });
+    });
   }
+
+  getOrders = async () => {
+    await apis.getOrders().then(res => {
+      this.setState({ orders: res.data.data });
+    });
+  }
+
 
   updateShipping = (update) => {
     this.setState({ shipping: update })

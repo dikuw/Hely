@@ -37,7 +37,7 @@ const StyledGridPriceDiv = styled.div`
 class CartItem extends React.Component {
   render() {
     const { item, qty } = this.props;
-    const total = formatPrice(qty * item.price);
+    const total = item ? formatPrice(qty * item.price) : 0;
     return (
       <StyledGridWrapperDiv>
         <StyledItemDiv>
