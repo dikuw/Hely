@@ -37,6 +37,7 @@ const StyledGridPriceDiv = styled.div`
 class CartItem extends React.Component {
   render() {
     const { item, qty } = this.props;
+    //  ** TODO sort out why item is undefined sometimes ** //
     const total = item ? formatPrice(qty * item.price) : 0;
     return (
       <StyledGridWrapperDiv>

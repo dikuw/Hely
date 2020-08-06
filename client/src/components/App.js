@@ -52,9 +52,6 @@ class App extends React.Component {
     showAddedPopup: false,
     isLoading: false,
     isLoggedIn: false,
-    isAdmin: false,
-    name: "",
-    email: "",
     passwordIncorrect: false,
   };
 
@@ -96,8 +93,6 @@ class App extends React.Component {
         this.setState({ 
           isLoggedIn: true,
           isAdmin: res.data.user.isAdmin,
-          name: res.data.user.name,
-          email: res.data.user.email,
           user: {
             id: res.data.user._id,
             name: res.data.user.name,
@@ -117,8 +112,6 @@ class App extends React.Component {
         this.setState({ 
           isLoggedIn: true,
           isAdmin: res.data.isAdmin,
-          name: res.data.name,
-          email: res.data.email,
          });
         this.props.history.push("/");
       } else {
@@ -134,14 +127,16 @@ class App extends React.Component {
         this.setState({ 
           isLoggedIn: true,
           isAdmin: res.data.isAdmin,
-          name: res.data.name,
-          email: res.data.email,
           user: {
             id: res.data._id,
             name: res.data.name,
             email: res.data.email,
           }
-         });
+        });
+        this.getUserOrders(this.state.user.id);
+        if (this.state.isAdmin) {
+          this.getOrders();
+        }
         this.props.history.push("/");
       } else {
         this.setState({ 
@@ -158,9 +153,9 @@ class App extends React.Component {
       this.setState({
         isLoggedIn: false,
         isAdmin: false,
-        username: null,
-        password: null
       });
+      this.setState({ userOrders: [] });
+      this.setState({ orders: [] });
       this.props.history.push("/");
     });
   }
@@ -294,7 +289,7 @@ class App extends React.Component {
   render() {
     return (
       <main>
-        <TopBanner isLoggedIn={this.state.isLoggedIn} name={this.state.name}/>
+        <TopBanner isLoggedIn={this.state.isLoggedIn} name={this.state.user.name}/>
         <Header  />
         <Navigation isLoggedIn={this.state.isLoggedIn} isAdmin={this.state.isAdmin} history={this.props.history} getCartItemCount={this.getCartItemCount} logoutUser={this.logoutUser} />
         <Switch>
@@ -387,8 +382,8 @@ class App extends React.Component {
                   cartTotal={this.getCartTotal()} 
                   user={this.state.user} 
                   customer={this.state.customer} 
-                  name={this.state.name}
-                  email={this.state.email}
+                  name={this.state.user.name}
+                  email={this.state.user.email}
                   shipping={this.state.shipping}
                   postCreatePaymentIntent={this.postCreatePaymentIntent}
                   clientSecret={this.state.clientSecret}
@@ -442,8 +437,6 @@ class App extends React.Component {
                 <Account 
                   history={this.props.history} 
                   isLoggedIn={this.state.isLoggedIn} 
-                  name={this.state.name}
-                  email={this.state.email}
                   user={this.state.user}
                   userOrders={this.state.userOrders}
                   inventory={this.state.inventory} 

@@ -117,7 +117,6 @@ class EditItemForm extends React.Component {
   }
 
   render() {
-    const cart = Object.entries(this.props.item.cart);
     return (
       <StyledDiv>
         <StyledOverviewColDiv>

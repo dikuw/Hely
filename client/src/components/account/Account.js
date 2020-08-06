@@ -135,11 +135,11 @@ class Account extends React.Component {
         <StyledForm onSubmit={this.updateClick}>
           <StyledFormRowDiv>
             <StyledLabel htmlFor="name">Name: </StyledLabel>
-            <input name="name" ref={this.nameRef} type="text"  onChange={this.handleChange} onFocus={this.resetValidation} value={this.props.name}/>
+            <input name="name" ref={this.nameRef} type="text"  onChange={this.handleChange} onFocus={this.resetValidation} value={this.props.user.name}/>
           </StyledFormRowDiv>
           <StyledFormRowDiv>
             <StyledLabel htmlFor="email">Email: </StyledLabel>
-            <input name="email" ref={this.emailRef} type="text"  onChange={this.handleChange} onFocus={this.resetValidation} value={this.props.email}/>
+            <input name="email" ref={this.emailRef} type="text"  onChange={this.handleChange} onFocus={this.resetValidation} value={this.props.user.email}/>
           </StyledFormRowDiv>
           <StyledButton type="submit" >Update</StyledButton>
         </StyledForm>

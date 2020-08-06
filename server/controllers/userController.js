@@ -5,8 +5,7 @@ const promisify = require('es6-promisify');
 
 exports.getCurrentUser = async (req, res) => {
   if (req.user) {
-    const user = await User.findOne({ _id: req.user._id });
-    res.json({ user: user });
+    res.json({ user: req.user });
   } else {
     res.json({ error: 'No user found' });
   };
