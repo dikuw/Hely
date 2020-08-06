@@ -23,7 +23,7 @@ class CartHeader extends React.Component {
   render() {
     return (
       <StyledWrapperDiv>
-        <StyledSubTotalDiv>Subtotal: {formatPrice(this.props.total)}</StyledSubTotalDiv>
+        <StyledSubTotalDiv>Total: {formatPrice(this.props.total)}</StyledSubTotalDiv>
       </StyledWrapperDiv>
     )
   }
