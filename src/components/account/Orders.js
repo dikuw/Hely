@@ -6,7 +6,6 @@ const StyledWrapperDiv = styled.div`
   max-width: 1200px;
   display: flex;
   flex-direction: column;
-  margin: 30px auto;
   padding: 4px;
 `;
 
@@ -26,7 +25,7 @@ class Orders extends React.Component {
       <StyledWrapperDiv>
         <StyledUl>
           {userOrders.map((item, i) => (
-            <Order key={item._id} index={item._id} order={item} />
+            <Order key={item._id} index={item._id} order={item} inventory={this.props.inventory} />
           ))}
         </StyledUl>
       </StyledWrapperDiv>
