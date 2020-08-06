@@ -37,7 +37,8 @@ const StyledGridPriceDiv = styled.div`
 class OrderItem extends React.Component {
   render() {
     const { item, qty } = this.props;
-    const total = formatPrice(qty * item.price);
+    //  ** TODO sort out why item is undefined sometimes ** //
+    const total = item ? formatPrice(qty * item.price) : 0;
     return (
       <StyledGridWrapperDiv>
         <StyledItemDiv>

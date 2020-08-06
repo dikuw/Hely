@@ -16,11 +16,15 @@ const StyledUl = styled.ul`
 class Orders extends React.Component {
   render() {
     const userOrders = this.props.userOrders;
-    if (!userOrders) {
+    console.log('userOrders', userOrders);
+    if (!userOrders || userOrders===[]) {
       return (
         <StyledWrapperDiv>No orders found.</StyledWrapperDiv>
       )
     };
+    if (userOrders.length < 1 || this.props.inventory.length < 1) {
+        return <div />
+    }
     return (
       <StyledWrapperDiv>
         <StyledUl>

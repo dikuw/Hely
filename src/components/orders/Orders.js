@@ -24,18 +24,23 @@ class Orders extends React.Component {
     if (!this.props.isLoggedIn) {
       return <StyledNoPermissionsDiv>You do not have permission to view this page.</StyledNoPermissionsDiv>
     }
-    return (
-      <StyledWrapperDiv>
-        {Object.values(this.props.orders).map( (item, i) => 
-          <EditItemForm 
-            key={i} 
-            index={i} 
-            item={item} 
-            inventory={this.props.inventory} 
-            updateOrder={this.props.updateOrder}
-          />)}
-      </StyledWrapperDiv>
-    );
+    if (this.props.orders.length < 1 || this.props.inventory.length < 1) {
+      return <div />
+    }
+    if (this.props.orders) {
+      return (
+        <StyledWrapperDiv>
+          {Object.values(this.props.orders).map( (item, i) => 
+            <EditItemForm 
+              key={i} 
+              index={i} 
+              item={item} 
+              inventory={this.props.inventory} 
+              updateOrder={this.props.updateOrder}
+            />)}
+        </StyledWrapperDiv>
+      );
+    }
   }
 }
 
