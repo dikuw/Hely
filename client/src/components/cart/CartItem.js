@@ -64,8 +64,8 @@ class CartItem extends React.Component {
           </StyledItemDiv>
           <StyledItemDiv>Sorry <em>{item ? item.name : 'this'}</em> is no longer available.</StyledItemDiv>
           <StyledItemDiv>
-          <StyledButton onClick={() => this.props.deleteFromCart(index)}>&times;</StyledButton>
-        </StyledItemDiv>
+            <StyledButton onClick={() => this.props.deleteFromCart(index)}>&times;</StyledButton>
+          </StyledItemDiv>
         </StyledGridWrapperDiv>
       )
     }

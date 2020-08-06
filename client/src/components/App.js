@@ -63,7 +63,9 @@ class App extends React.Component {
     //  ** ⏰ ⏰ ⏰  ** //
     this.setState({ isLoading: true });
 
-    this.getUser();
+    await this.getUser();
+
+    this.getUserOrders(this.state.user.id);
 
     await apis.getInventory().then(inventory => {
       this.setState({
@@ -131,9 +133,9 @@ class App extends React.Component {
           name: res.data.name,
           email: res.data.email,
           user: {
-            id: res.data.user._id,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            id: res.data._id,
+            name: res.data.name,
+            email: res.data.email,
           }
          });
         this.props.history.push("/");
@@ -265,11 +267,11 @@ class App extends React.Component {
   }
 
   getUserOrders = async (userID) => {
-    console.log('userID', userID);
-    await apis.getUserOrders(userID).then(res => {
-      console.log('getUserOrders', res);
-      this.setState({ userOrders: res.data.data });
-    });
+    if (userID) {
+      await apis.getUserOrders(userID).then(res => {
+        this.setState({ userOrders: res.data.data });
+      });
+    }
   }
 
   updateShipping = (update) => {
@@ -289,42 +291,42 @@ class App extends React.Component {
         <Switch>
           <Route  exact path="/" 
             render={() => (
-              <React.Fragment>
+              <>
                 {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={this.state.inventory} addToCart={this.addToCart} togglePopup={this.togglePopup} />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/face" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Products for your face" />
                 {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="face")} addToCart={this.addToCart} togglePopup={this.togglePopup} />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/eyes" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Products for your eyes" />
                 {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="eyes")} addToCart={this.addToCart} togglePopup={this.togglePopup} />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/brushes" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Brushes" />
                 {this.state.showAddedPopup ? <AddedPopup history={this.props.history} togglePopup={this.togglePopup} /> : null}
                 <Grid inventory={Object.values(this.state.inventory).filter(item => item.category==="brushes")} addToCart={this.addToCart}  togglePopup={this.togglePopup} />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/cart" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Your Cart" />
                 <Cart 
                   history={this.props.history} 
@@ -334,12 +336,12 @@ class App extends React.Component {
                   removeFromCart={this.removeFromCart} 
                   deleteFromCart={this.deleteFromCart} 
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/checkout" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Checkout" />
                 <Checkout 
                   history={this.props.history} 
@@ -349,12 +351,12 @@ class App extends React.Component {
                   customer={this.state.customer} 
                   updateCustomer={this.updateCustomer}
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/checkoutShipping" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Shipping" />
                 <CheckoutShipping 
                   history={this.props.history} 
@@ -363,12 +365,12 @@ class App extends React.Component {
                   shipping={this.state.shipping}
                   updateShipping={this.updateShipping} 
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/payment" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Payment Information" />
                 <Payment 
                   history={this.props.history} 
@@ -383,23 +385,23 @@ class App extends React.Component {
                   clientSecret={this.state.clientSecret}
                   addOrder={this.addOrder}
                 />
-              </React.Fragment>
+              </>
             )}
           />
           {/* <Route path="/login" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Log In (or Register)" />
                 <Login 
                   history={this.props.history} 
                   isLoggedIn={this.state.isLoggedIn}
                 />
-              </React.Fragment>
+              </>
             )}
           /> */}
           <Route path="/login" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Log In" />
                 <LocalLogin 
                   history={this.props.history} 
@@ -409,24 +411,24 @@ class App extends React.Component {
                   loginUser={this.loginUser}
                   forgotUser={this.forgotUser} 
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/register" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Register a New Account" />
                 <Register 
                   history={this.props.history} 
                   registerUser={this.registerUser}
                   isLoggedIn={this.state.isLoggedIn} 
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/account" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Your Account" />
                 <Account 
                   history={this.props.history} 
@@ -434,15 +436,15 @@ class App extends React.Component {
                   name={this.state.name}
                   email={this.state.email}
                   user={this.state.user}
-                  getUserOrders={this.getUserOrders}
                   userOrders={this.state.userOrders}
+                  inventory={this.state.inventory} 
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/inventory" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Inventory" />
                 <Inventory 
                   isLoggedIn={this.state.isLoggedIn} 
@@ -452,13 +454,13 @@ class App extends React.Component {
                   deleteItem={this.deleteItem}
                   loadSampleInventory={this.loadSampleInventory}
                 />
-              </React.Fragment>
+              </>
               
             )}
           />
           <Route path="/orders" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Orders" />
                 <Orders 
                   isLoggedIn={this.state.isLoggedIn} 
@@ -466,39 +468,39 @@ class App extends React.Component {
                   orders={this.state.orders} 
                   loadSampleOrders={this.loadSampleOrders}
                 />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/privacy" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Privacy Policy" />
                 <Privacy />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/terms" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Terms of Use" />
                 <Terms />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/shipping" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Shipping Policy" />
                 <Shipping />
-              </React.Fragment>
+              </>
             )}
           />
           <Route path="/returns" 
             render={() => (
-              <React.Fragment>
+              <>
                 <Banner bannerString="Return Policy" />
                 <Returns />
-              </React.Fragment>
+              </>
             )}
           />
         </Switch>
