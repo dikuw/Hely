@@ -28,7 +28,6 @@ app.use(fileUpload({
 
 //  enable CORS for all origins to allow development with local server
 app.use(cors({credentials: true, origin: process.env.ORIGIN}));
-// app.use(cors({credentials: true, origin: 'https://hely.herokuapp.com'}));
 
 // express-validator to validate data used in userController.validateRegister
 app.use(expressValidator());
