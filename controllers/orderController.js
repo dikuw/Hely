@@ -3,7 +3,7 @@ const Order = require('../models/Order');
 
 exports.getOrders = async (req, res) => {
   const orders = await Order.find();
-  if (!devices.length) {
+  if (!orders.length) {
     return res.status(400).json({ success: false, error: "No orders found" });
   } else {
     return res.status(200).json({ success: true, data: orders })
