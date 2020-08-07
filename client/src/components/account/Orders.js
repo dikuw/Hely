@@ -2,6 +2,10 @@ import React from 'react';
 import Order from './Order';
 import styled from 'styled-components';
 
+const StyledLoadingDiv = styled.div`
+  text-align: center;
+`;
+
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
   display: flex;
@@ -23,7 +27,7 @@ class Orders extends React.Component {
       )
     };
     if (userOrders.length < 1 || this.props.inventory.length < 1) {
-        return <div />
+      return <StyledLoadingDiv>Loading... please wait</StyledLoadingDiv>
     }
     return (
       <StyledWrapperDiv>

@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import EditItemForm from './EditItemForm';
 
+const StyledLoadingDiv = styled.div`
+  text-align: center;
+`;
+
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
   display: flex;
@@ -25,7 +29,7 @@ class Orders extends React.Component {
       return <StyledNoPermissionsDiv>You do not have permission to view this page.</StyledNoPermissionsDiv>
     }
     if (this.props.orders.length < 1 || this.props.inventory.length < 1) {
-      return <div />
+      return <StyledLoadingDiv>Loading... please wait</StyledLoadingDiv>
     }
     if (this.props.orders) {
       return (
