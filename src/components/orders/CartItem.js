@@ -15,9 +15,10 @@ const StyledGridWrapperDiv = styled.div`
 `;
 
 const StyledItemDiv = styled.div`
-
+  @media (max-width: 768px) {
+    font-size: 0.8em;
+  }
 `;
-
 const StyledGridPhotoImg = styled.img`
   width: 3vw;
   @media (max-width: 768px) {
@@ -26,19 +27,12 @@ const StyledGridPhotoImg = styled.img`
 `;
 
 const StyledGridNameDiv = styled.div`
-  width: 10vw;
-`;
-
-
-const StyledGridPriceDiv = styled.div`
-  width: 4vw;
+  text-align: center;
 `;
 
 class CartItem extends React.Component {
   render() {
     const { item, qty } = this.props;
-    //  ** TODO sort out why item is undefined sometimes ** //
-    const total = item ? formatPrice(qty * item.price) : 0;
     return (
       <StyledGridWrapperDiv>
         <StyledItemDiv>
@@ -49,9 +43,6 @@ class CartItem extends React.Component {
         </StyledItemDiv>
         <StyledItemDiv>
           <StyledGridNameDiv>{qty} at {formatPrice(item.price)} each</StyledGridNameDiv>
-        </StyledItemDiv>
-        <StyledItemDiv>
-          <StyledGridPriceDiv>{total}</StyledGridPriceDiv>
         </StyledItemDiv>
       </StyledGridWrapperDiv>
     );

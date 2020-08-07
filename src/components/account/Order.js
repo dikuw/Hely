@@ -22,17 +22,27 @@ const StyledGridWrapperDiv = styled.div`
 const StyledHeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%
+  width: 100%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
+  @media (max-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const StyledSubHeaderDiv = styled.div`
   text-transform: uppercase;
   font-size: 0.8em;
+  @media (max-width: 768px) {
+    margin-right: 0.25em;
+    font-size: 0.9em;
+  }
 `;
 
 const StyledValueDiv = styled.div`
@@ -62,8 +72,12 @@ class Order extends React.Component {
               <StyledValueDiv>{this.props.order.customer.firstName + " " + this.props.order.customer.lastName}</StyledValueDiv>
             </StyledDiv>
             <StyledDiv>
-              <StyledSubHeaderDiv>Order #: {this.props.order._id}</StyledSubHeaderDiv>
-              <StyledValueDiv>Status: {this.props.order.status}</StyledValueDiv>
+              <StyledSubHeaderDiv>Status:</StyledSubHeaderDiv>
+              <StyledValueDiv>{this.props.order.status}</StyledValueDiv>
+            </StyledDiv>
+            <StyledDiv>
+              <StyledSubHeaderDiv>Order #:</StyledSubHeaderDiv>
+              <StyledValueDiv>S{this.props.order._id}</StyledValueDiv>
             </StyledDiv>
           </StyledHeaderDiv>
         </StyledGridWrapperDiv>
