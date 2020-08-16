@@ -62,7 +62,7 @@ class App extends React.Component {
 
     await this.getUser();
 
-    this.getUserOrders(this.state.user.id);
+    if (this.state.user.id) this.getUserOrders(this.state.user.id);
 
     if (this.state.isAdmin) {
       this.getOrders();
