@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
@@ -97,48 +98,46 @@ const StyledNavLi = styled.li`
   }
 `;
 
-class Footer extends React.Component {
-  render() {
-    return (
-      <StyledFooter >
-        <StyledContactDiv >
-          <StyledContacth1 >Hely Cosmetics</StyledContacth1>        
-          <StyledContacth2>Email</StyledContacth2>    
-          <StyledDiv>
-            <a rel="noopener noreferrer" href="mailto:info@helycosmetics.com" target="_blank">info@helycosmetics.com</a>
-          </StyledDiv>
-          <StyledContacth2>Phone</StyledContacth2>    
-          <StyledDiv>
-            <a rel="noopener noreferrer" href="https://api.whatsapp.com/send?div=5804148025111" target="_blank">+58 414-8025111</a>
-          </StyledDiv>  
-          <StyledContacth2>Socials</StyledContacth2>  
-          <StyledDiv>
-            <a rel="noopener noreferrer" href="https://www.instagram.com/helycosmetics/" target="_blank"><StyledIGDiv></StyledIGDiv> </a>
-          </StyledDiv>
-        </StyledContactDiv>
-        <StyledNavUl>
-          <StyledNavLi>
-            <StyledNavh2>Information</StyledNavh2>
-            <ul>
-              <li><Link to="/shipping">Shipping </Link></li>
-              <li><Link to="/returns">Returns </Link></li>
-            </ul>
-          </StyledNavLi>
-          <StyledNavLi>
-            <StyledNavh2>Legal</StyledNavh2>
-            <ul>
-              <li><Link to="/privacy">Privacy Policy </Link></li>
-              <li><Link to="/terms">Terms of Use </Link></li>
-            </ul>
-          </StyledNavLi>
-        </StyledNavUl>
-        <StyledLegal>
-          <p>&copy; 2020 Hely Cosmetics</p>
-          <p>Created by<a rel="noopener noreferrer" href="http://www.dikuw.com/" target="_blank"> dikuw</a></p>
-        </StyledLegal>
-      </StyledFooter>
-    );
-  }
-};
+export default function Footer(props) {
+  const { t } = useTranslation();
 
-export default Footer;
+  return (
+    <StyledFooter >
+      <StyledContactDiv >
+        <StyledContacth1 >Hely Cosmetics</StyledContacth1>        
+        <StyledContacth2>{t("Email")}</StyledContacth2>    
+        <StyledDiv>
+          <a rel="noopener noreferrer" href="mailto:info@helycosmetics.com" target="_blank">info@helycosmetics.com</a>
+        </StyledDiv>
+        <StyledContacth2>{t("Phone")}</StyledContacth2>    
+        <StyledDiv>
+          <a rel="noopener noreferrer" href="https://api.whatsapp.com/send?div=5804148025111" target="_blank">+58 414-8025111</a>
+        </StyledDiv>  
+        <StyledContacth2>{t("Socials")}</StyledContacth2>  
+        <StyledDiv>
+          <a rel="noopener noreferrer" href="https://www.instagram.com/helycosmetics/" target="_blank"><StyledIGDiv></StyledIGDiv> </a>
+        </StyledDiv>
+      </StyledContactDiv>
+      <StyledNavUl>
+        <StyledNavLi>
+          <StyledNavh2>{t("Information")}</StyledNavh2>
+          <ul>
+            <li><Link to="/shipping">{t("Shipping")}</Link></li>
+            <li><Link to="/returns">{t("Returns")}</Link></li>
+          </ul>
+        </StyledNavLi>
+        <StyledNavLi>
+          <StyledNavh2>{t("Legal")}</StyledNavh2>
+          <ul>
+            <li><Link to="/privacy">{t("Privacy Policy")}</Link></li>
+            <li><Link to="/terms">{t("Terms of Use")}</Link></li>
+          </ul>
+        </StyledNavLi>
+      </StyledNavUl>
+      <StyledLegal>
+        <p>&copy; 2020 Hely Cosmetics</p>
+        <p>Created by<a rel="noopener noreferrer" href="http://www.dikuw.com/" target="_blank"> dikuw</a></p>
+      </StyledLegal>
+    </StyledFooter>
+  );
+};

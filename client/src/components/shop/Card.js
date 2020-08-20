@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -52,32 +53,29 @@ const StyledAddToCartButton = styled.button`
   width: auto;
 `;
 
-class Card extends React.Component {
+export default function Card(props) {
+  const { t } = useTranslation();
 
-  handleClick = (key) => {
-    this.props.addToCart(key);
-    this.props.togglePopup();
+  const handleClick = (key) => {
+    props.addToCart(key);
+    props.togglePopup();
   };
 
-  render() {
-    const { item, index } = this.props;
-    const isAvailable = item.available;
+  const { item, index } = props;
+  const isAvailable = item.available;
 
-    return (
-      <StyledGridFigure>
-        <StyledGridPhotoWrapDiv>
-          <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
-        </StyledGridPhotoWrapDiv>
-        <figcaption>
-          <p>{item.description}</p>
-          <p>{formatPrice(item.price)}</p>
-        </figcaption>
-        <StyledAddToCartWrapperDiv>
-          <StyledAddToCartButton disabled={!isAvailable} onClick={() => this.handleClick(index)}>{isAvailable ? 'Add to Cart' : 'Sold Out'}</StyledAddToCartButton>
-        </StyledAddToCartWrapperDiv>
-      </StyledGridFigure>
-    );
-  };
+  return (
+  <StyledGridFigure>
+    <StyledGridPhotoWrapDiv>
+      <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
+    </StyledGridPhotoWrapDiv>
+    <figcaption>
+      <p>{item.description}</p>
+      <p>{formatPrice(item.price)}</p>
+    </figcaption>
+    <StyledAddToCartWrapperDiv>
+      <StyledAddToCartButton disabled={!isAvailable} onClick={() => handleClick(index)}>{isAvailable ? t('Add to Cart') : t('Sold Out')}</StyledAddToCartButton>
+    </StyledAddToCartWrapperDiv>
+  </StyledGridFigure>
+  );
 };
-
-export default Card;

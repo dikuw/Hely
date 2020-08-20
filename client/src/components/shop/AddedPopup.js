@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
 const StyledPopupDiv = styled.div`
@@ -73,26 +74,23 @@ const StyledButtonInvisible = styled.button`
   width: 75%;
 `;
 
-class AddedPopup extends React.Component {
+export default function AddedPopup(props) {
+  const { t } = useTranslation();
 
-  handleClick = () => {
-    this.props.togglePopup();
-    this.props.history.push("/cart");
+  const handleClick = () => {
+    props.togglePopup();
+    props.history.push("/cart");
   };
 
-  render() {
-    return (
-      <StyledPopupDiv >  
-        <StyledPopupWrapperDiv>  
-          <StyledPopupHeaderDiv>
-            <StyledPopupHeaderH1>Added to Cart!</StyledPopupHeaderH1>  
-          </StyledPopupHeaderDiv>
-          <StyledButton onClick={() => this.handleClick()}>Go to Cart</StyledButton>
-          <StyledButtonInvisible onClick={this.props.togglePopup}>Keep Shopping</StyledButtonInvisible>
-        </StyledPopupWrapperDiv>  
-      </StyledPopupDiv>  
-    ); 
-  }
+  return (
+    <StyledPopupDiv >  
+      <StyledPopupWrapperDiv>  
+        <StyledPopupHeaderDiv>
+          <StyledPopupHeaderH1>{t("Added to Cart!")}</StyledPopupHeaderH1>  
+        </StyledPopupHeaderDiv>
+        <StyledButton onClick={() => handleClick()}>{t("Go to Cart")}</StyledButton>
+        <StyledButtonInvisible onClick={props.togglePopup}>{t("Keep Shopping")}</StyledButtonInvisible>
+      </StyledPopupWrapperDiv>  
+    </StyledPopupDiv>  
+  ); 
 };
-
-export default AddedPopup;
