@@ -78,6 +78,21 @@ const StyledCheckoutButton = styled.button`
   width: auto;
 `;
 
+const StyledButtonInvisible = styled.button`
+  font-size: 0.8em;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--vinoTinto);
+  background: white; 
+  border: 0;
+  display: inline-block;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  padding: 5px 5px;
+  width: 100%;
+`;
+
 class Checkout extends React.Component {
 
   handleChange = async (e) => {
@@ -89,6 +104,10 @@ class Checkout extends React.Component {
   
   handleClick = () => {
     this.props.history.push("/checkoutShipping");
+  };
+
+  goBack = () => {
+    this.props.history.push("/cart");
   };
 
   render() {
@@ -117,6 +136,7 @@ class Checkout extends React.Component {
             </select>
           <input name="mobile" type="text" placeholder="Mobile" onChange={this.handleChange} value={this.props.customer.mobile} />
           <StyledCheckoutButton onClick={() => this.handleClick()}>Continue to Shipping</StyledCheckoutButton>
+          <StyledButtonInvisible onClick={() => this.goBack()}>Back to Cart</StyledButtonInvisible>
         </StyledForm>
       </StyledWrapperDiv>
     )
