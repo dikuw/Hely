@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -48,21 +49,18 @@ const StyledCheckoutButton = styled.button`
   width: auto;
 `;
 
-class CartFooter extends React.Component {
+export default function CartFooter(props) {
+  const { t } = useTranslation();
 
-  handleClick = () => {
-    this.props.history.push("/checkout");
+  const handleClick = () => {
+    props.history.push("/checkout");
   };
 
-  render() {
-    return (
-      <StyledWrapperDiv>
-        <StyledSubTotalDiv>Subtotal: {formatPrice(this.props.total)}</StyledSubTotalDiv>
-        <StyledNoteDiv>Shipping calculated at checkout</StyledNoteDiv>
-        <StyledCheckoutButton onClick={() => this.handleClick()}>Checkout</StyledCheckoutButton>
-      </StyledWrapperDiv>
-    )
-  }
+  return (
+    <StyledWrapperDiv>
+      <StyledSubTotalDiv>{t("Subtotal")}: {formatPrice(props.total)}</StyledSubTotalDiv>
+      <StyledNoteDiv>{t("Shipping calculated at checkout")}</StyledNoteDiv>
+      <StyledCheckoutButton onClick={() => handleClick()}>{t("Checkout")}</StyledCheckoutButton>
+    </StyledWrapperDiv>
+  )
 };
-
-export default CartFooter;
