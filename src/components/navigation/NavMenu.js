@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
 const Ul = styled.ul`
@@ -51,41 +52,37 @@ const Link = styled.a`
   }
 `;
 
-class NavMenu extends React.Component {
-  myUl = React.createRef();
+export default function NavMenu(props) {
+  const { t } = useTranslation();
 
-  handleClick(link, menuOpen) {
-    this.props.setOpen(!menuOpen)
-    this.props.history.push(link);
+  const handleClick = (link, menuOpen) => {
+    props.setOpen(!menuOpen)
+    props.history.push(link);
   }
  
-  render() {
-    return (
-      <Ul ref={this.myUl}  menuOpen={this.props.menuOpen}>
-        <Li><Link onClick={() => this.handleClick('/', this.props.menuOpen) } >Home</Link></Li>
-        <Li><Link onClick={() => this.handleClick('/face', this.props.menuOpen) } >Face</Link></Li>
-        <Li><Link onClick={() => this.handleClick('/eyes', this.props.menuOpen) } >Eyes</Link></Li>
-        <Li><Link onClick={() => this.handleClick('/brushes', this.props.menuOpen) } >Brushes</Link></Li>
-        <Li><Link onClick={() => this.handleClick('/cart', this.props.menuOpen) } >Cart ({this.props.getCartItemCount()})</Link></Li>
-        {this.props.isAdmin ? (
-          <React.Fragment>
-            <Li><Link onClick={() => this.handleClick('/inventory', this.props.menuOpen) } >Inventory</Link></Li>
-            <Li><Link onClick={() => this.handleClick('/orders', this.props.menuOpen) } >Orders</Link></Li>
-          </React.Fragment>
-          ) : ( "" )
-        }
-        {this.props.isLoggedIn ? (
-            <React.Fragment>
-              <Li><Link onClick={() => this.handleClick('/account', this.props.menuOpen) } >Account</Link></Li>
-              <Li><Link onClick={() => this.props.logoutUser() } >Log Out</Link></Li>
-            </React.Fragment>
-          ) : (
-            <Li><Link onClick={() => this.handleClick('/login', this.props.menuOpen) } >Log In</Link></Li>
-          )
-        }
-      </Ul>
-    );
-  }
+  return (
+    <Ul menuOpen={props.menuOpen}>
+      <Li><Link onClick={() => handleClick('/', props.menuOpen) } >Home</Link></Li>
+      <Li><Link onClick={() => handleClick('/face', props.menuOpen) } >{t("Face")}</Link></Li>
+      <Li><Link onClick={() => handleClick('/eyes', props.menuOpen) } >{t("Eyes")}</Link></Li>
+      <Li><Link onClick={() => handleClick('/brushes', props.menuOpen) } >{t("Brushes")}</Link></Li>
+      <Li><Link onClick={() => handleClick('/cart', props.menuOpen) } >{t("Cart")} ({props.getCartItemCount()})</Link></Li>
+      {props.isAdmin ? (
+        <>
+          <Li><Link onClick={() => handleClick('/inventory', props.menuOpen) } >{t("Inventory")}</Link></Li>
+          <Li><Link onClick={() => handleClick('/orders', props.menuOpen) } >{t("Orders")}</Link></Li>
+        </>
+        ) : ( "" )
+      }
+      {props.isLoggedIn ? (
+          <>
+            <Li><Link onClick={() => handleClick('/account', props.menuOpen) } >{t("Account")}</Link></Li>
+            <Li><Link onClick={() => props.logoutUser() } >{t("Log Out")}</Link></Li>
+          </>
+        ) : (
+          <Li><Link onClick={() => handleClick('/login', props.menuOpen) } >{t("Log In")}</Link></Li>
+        )
+      }
+    </Ul>
+  );
 }
-
-export default NavMenu;
