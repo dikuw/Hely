@@ -34,7 +34,7 @@ const StyledAddToCartWrapperDiv = styled.div`
 `;
 
 const StyledAddToCartButton = styled.button`
-  font-size: 1.2em;
+  font-size: 1rem;
   text-transform: uppercase;
   font-weight: 400;
   font-style: normal;
