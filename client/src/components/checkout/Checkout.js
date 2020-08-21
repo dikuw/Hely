@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -93,54 +94,51 @@ const StyledButtonInvisible = styled.button`
   width: 100%;
 `;
 
-class Checkout extends React.Component {
+export default function Checkout(props) {
+  const { t } = useTranslation();
 
-  handleChange = async (e) => {
+  const handleChange = async (e) => {
     let updatedValue = e.currentTarget.value;
     let propName = e.currentTarget.name;
 
-    this.props.updateCustomer(propName, updatedValue);
+    props.updateCustomer(propName, updatedValue);
   }
   
-  handleClick = () => {
-    this.props.history.push("/checkoutShipping");
+  const handleClick = () => {
+    props.history.push("/checkoutShipping");
   };
 
-  goBack = () => {
-    this.props.history.push("/cart");
+  const goBack = () => {
+    props.history.push("/cart");
   };
 
-  render() {
-    return (
-      <StyledWrapperDiv>
-        <div>Cart total: {formatPrice(this.props.cartTotal)}</div>
-        <StyledNoteDiv>Shipping added in the next step</StyledNoteDiv>
-        <div>Contact Information</div>
-        <StyledForm>
-          <input name="email" type="text" placeholder="Email" onChange={this.handleChange} value={this.props.customer.email} />
-          <StyledGroupDiv>
-            <input name="firstName" type="text" placeholder="First Name" onChange={this.handleChange} value={this.props.customer.firstName} />
-            <input name="lastName" type="text" placeholder="Last Name" onChange={this.handleChange} value={this.props.customer.lastName} />
-          </StyledGroupDiv>
-          <input name="address1" type="text" placeholder="Address" onChange={this.handleChange} value={this.props.customer.address1} />
-          <input name="address2" type="text" placeholder="Apartment, suite, etc. (if applicable)" onChange={this.handleChange} value={this.props.customer.address2} />
-          <StyledGroupDiv>
-            <input name="city" type="text" placeholder="City" onChange={this.handleChange} value={this.props.customer.city} />
-            <input name="state" type="text" placeholder="State" onChange={this.handleChange} value={this.props.customer.state} />
-            <input name="postalCode" type="text" placeholder="Postal Code" onChange={this.handleChange} value={this.props.customer.postalCode} />
-          </StyledGroupDiv>
-            <select name="country" onChange={this.handleChange} value={this.props.customer.country} >
-              <option value="CO">Colombia</option>
-              <option value="US">USA</option>
-              <option value="VE">Venezuela</option>
-            </select>
-          <input name="mobile" type="text" placeholder="Mobile" onChange={this.handleChange} value={this.props.customer.mobile} />
-          <StyledCheckoutButton onClick={() => this.handleClick()}>Continue to Shipping</StyledCheckoutButton>
-          <StyledButtonInvisible onClick={() => this.goBack()}>Back to Cart</StyledButtonInvisible>
-        </StyledForm>
-      </StyledWrapperDiv>
-    )
-  }
+  return (
+    <StyledWrapperDiv>
+      <div>{t("Cart total")}: {formatPrice(props.cartTotal)}</div>
+      <StyledNoteDiv>{t("Shipping added in the next step")}</StyledNoteDiv>
+      <div>{t("Contact Information")}</div>
+      <StyledForm>
+        <input name="email" type="text" placeholder="Email" onChange={handleChange} value={props.customer.email} />
+        <StyledGroupDiv>
+          <input name="firstName" type="text" placeholder="First Name" onChange={handleChange} value={props.customer.firstName} />
+          <input name="lastName" type="text" placeholder="Last Name" onChange={handleChange} value={props.customer.lastName} />
+        </StyledGroupDiv>
+        <input name="address1" type="text" placeholder="Address" onChange={handleChange} value={props.customer.address1} />
+        <input name="address2" type="text" placeholder="Apartment, suite, etc. (if applicable)" onChange={handleChange} value={props.customer.address2} />
+        <StyledGroupDiv>
+          <input name="city" type="text" placeholder="City" onChange={handleChange} value={props.customer.city} />
+          <input name="state" type="text" placeholder="State" onChange={handleChange} value={props.customer.state} />
+          <input name="postalCode" type="text" placeholder="Postal Code" onChange={handleChange} value={props.customer.postalCode} />
+        </StyledGroupDiv>
+          <select name="country" onChange={handleChange} value={props.customer.country} >
+            <option value="CO">Colombia</option>
+            <option value="US">USA</option>
+            <option value="VE">Venezuela</option>
+          </select>
+        <input name="mobile" type="text" placeholder="Mobile" onChange={handleChange} value={props.customer.mobile} />
+        <StyledCheckoutButton onClick={() => handleClick()}>{t("Continue to Shipping")}</StyledCheckoutButton>
+        <StyledButtonInvisible onClick={() => goBack()}>{t("Back to Cart")}</StyledButtonInvisible>
+      </StyledForm>
+    </StyledWrapperDiv>
+  )
 };
-
-export default Checkout;
