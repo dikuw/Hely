@@ -118,9 +118,9 @@ export default function Checkout(props) {
       <StyledNoteDiv>{t("Shipping added in the next step")}</StyledNoteDiv>
       <div>{t("Contact Information")}</div>
       <StyledForm>
-        <input name="email" type="text" placeholder="Email" onChange={handleChange} value={props.customer.email} />
+        <input name="email" type="text" placeholder={t("Email")} onChange={handleChange} value={props.customer.email} />
         <StyledGroupDiv>
-          <input name="firstName" type="text" placeholder="First Name" onChange={handleChange} value={props.customer.firstName} />
+          <input name="firstName" type="text" placeholder={t("First Name")} onChange={handleChange} value={props.customer.firstName} />
           <input name="lastName" type="text" placeholder="Last Name" onChange={handleChange} value={props.customer.lastName} />
         </StyledGroupDiv>
         <input name="address1" type="text" placeholder="Address" onChange={handleChange} value={props.customer.address1} />
