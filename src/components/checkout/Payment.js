@@ -1,4 +1,5 @@
-import React  from 'react';
+import React, { useState, useEffect, useRef }  from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import {loadStripe} from '@stripe/stripe-js';
 import {CardElement, Elements, ElementsConsumer} from '@stripe/react-stripe-js';
@@ -113,7 +114,7 @@ const StyledWarningDiv = styled.div`
 
 const stripePromise = loadStripe("pk_test_51HCJ9zLgTNpklCDHxJedB0w1YFVo1eFtsrs3rXoftYGDv2gJE0L62mmreg3MVzkdBf6kMzzalWMhE2DlCexgLxAx005RG1QVPh");
 
-const Payment = (props) => {
+export default function Payment(props) {
   return (
     <Elements stripe={stripePromise}>
       <ElementsConsumer>
@@ -139,66 +140,86 @@ const Payment = (props) => {
   );
 };
 
-class CheckoutForm extends React.Component {
-  firstNameRef = React.createRef();
-  lastNameRef = React.createRef();
-  address1Ref = React.createRef();
-  address2Ref = React.createRef();
-  cityRef = React.createRef();
-  stateRef = React.createRef();
-  countryRef = React.createRef();
-  postalCodeRef = React.createRef();
-  checkboxRef = React.createRef();
-  successRef = React.createRef();
-  warningRef = React.createRef();
+function CheckoutForm(props) {
+  const { t } = useTranslation();
 
-  state = {
-    loading: false,
-    total: parseInt(this.props.cartTotal) + parseInt(this.props.shipping.price)
-  };
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const address1Ref = useRef(null);
+  const address2Ref = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const countryRef = useRef(null);
+  const postalCodeRef = useRef(null);
+  const checkboxRef = useRef(null);
+  const successRef = useRef(null);
+  const warningRef = useRef(null);
 
-  componentDidMount = () => {
-    this.props.postCreatePaymentIntent({ amount: this.state.total });
-  };
+  const [loading, setLoading] = useState(false);
+  const prevLoadingRef = useRef();
+  useEffect(() => {
+    console.log("loading", loading);
+    prevLoadingRef.current = loading;
+  });
+  const prevLoading = prevLoadingRef.current;
 
-  componentDidUpdate = () => {
-    this.successRef.current.innerHTML = null;
-    this.warningRef.current.innerHTML = null;
-  }
+  const [total, setTotal] = useState(parseInt(props.cartTotal) + parseInt(props.shipping.price));
 
-  togglePopup = () => {   
-    this.setState(prevState => ({
-      loading: !prevState.loading
-    }))
+  useEffect(() => {
+    props.postCreatePaymentIntent({ amount: total });
+  }, []);
+
+  useEffect(() => {
+    successRef.current.innerHTML = null;
+    warningRef.current.innerHTML = null;
+  });
+
+  const togglePopup = () => {   
+    console.log('togglePopup called 1', loading, prevLoading);
+    // loading ? setLoading(false) : setLoading(true);
+    if (loading) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+    console.log('togglePopup called 2', loading, prevLoading);
+    // setLoading(!prevLoading);
   } 
 
-  populateAddress = () => {
-    if (this.checkboxRef.current.checked) {
-      this.firstNameRef.current.value = this.props.customer.firstName;
-      this.lastNameRef.current.value = this.props.customer.lastName;
-      this.address1Ref.current.value = this.props.customer.address1;
-      this.address2Ref.current.value = this.props.customer.address2;
-      this.cityRef.current.value = this.props.customer.city;
-      this.stateRef.current.value = this.props.customer.state;
-      this.countryRef.current.value = this.props.customer.country;
-      this.postalCodeRef.current.value = this.props.customer.postalCode;
-    } else {
-      this.firstNameRef.current.value = "";
-      this.lastNameRef.current.value = "";
-      this.address1Ref.current.value = "";
-      this.address2Ref.current.value = "";
-      this.cityRef.current.value = "";
-      this.stateRef.current.value = "";
-      this.countryRef.current.value = "";
-      this.postalCodeRef.current.value = "";
-    }
-    
+  const openPopup = () => {
+    setLoading(true);
   }
 
-  handleSubmit = async (event) => {
+  const closePopup = () => {
+    setLoading(false);
+  }
+
+  const populateAddress = () => {
+    if (checkboxRef.current.checked) {
+      firstNameRef.current.value = props.customer.firstName;
+      lastNameRef.current.value = props.customer.lastName;
+      address1Ref.current.value = props.customer.address1;
+      address2Ref.current.value = props.customer.address2;
+      cityRef.current.value = props.customer.city;
+      stateRef.current.value = props.customer.state;
+      countryRef.current.value = props.customer.country;
+      postalCodeRef.current.value = props.customer.postalCode;
+    } else {
+      firstNameRef.current.value = "";
+      lastNameRef.current.value = "";
+      address1Ref.current.value = "";
+      address2Ref.current.value = "";
+      cityRef.current.value = "";
+      stateRef.current.value = "";
+      countryRef.current.value = "";
+      postalCodeRef.current.value = "";
+    }
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const {stripe, elements} = this.props;
+    const {stripe, elements} = props;
 
     if (!stripe || !elements) {
       return;
@@ -207,97 +228,93 @@ class CheckoutForm extends React.Component {
     const cardElement = elements.getElement(CardElement);
 
     let payWithCard = async (stripe, card, clientSecret) => {
-      this.togglePopup();
+      togglePopup();
       stripe.confirmCardPayment(clientSecret, { payment_method: { card: card } })
         .then((result) => {
-          this.togglePopup();
+          togglePopup();
           if (result.error) {
             console.log(result.error.message);
-            this.warningRef.current.innerHTML = result.error.message;
+            warningRef.current.innerHTML = result.error.message;
           } else {
             console.log(result.paymentIntent.id);
-            this.successRef.current.innerHTML = "Payment completed successfully."
-            this.props.addOrder({
-              user: this.props.user,
-              cart: this.props.cart,
-              customer: this.props.customer,
+            successRef.current.innerHTML = "Payment completed successfully."
+            props.addOrder({
+              user: props.user,
+              cart: props.cart,
+              customer: props.customer,
               paymentId: result.paymentIntent.id,
               orderDate: Date.now(),
               status: "In progress",
-              total: this.state.total,
-              shipping: this.props.shipping
+              total: total,
+              shipping: props.shipping
             });
           }
         });
     };
 
-    await payWithCard(stripe, cardElement, this.props.clientSecret);
+    await payWithCard(stripe, cardElement, props.clientSecret);
 
   };
 
-  backClick = () => {
-    this.props.history.push("/checkoutShipping");
+  const backClick = () => {
+    props.history.push("/checkoutShipping");
   };
 
-  render() {
-    const {stripe} = this.props;
-    
-    return (
-      <StyledWrapperDiv>
-        {this.state.loading ? <LoadingPopup /> : null}
-        <div>Cart: {formatPrice(this.props.cartTotal)}</div>
-        <div>Shipping: {formatPrice(this.props.shipping.price)}</div>
-        <div>Total: {formatPrice(this.state.total)}</div>
-        <StyledForm >
-          <h4>Billing Address</h4>
-          <label htmlFor="sameAs">
-            <input name="sameAs" ref={this.checkboxRef} type="checkbox" onClick={this.populateAddress} />Same as shipping
-          </label>
-          <StyledGroupDiv>
-            <input name="firstName" ref={this.firstNameRef} type="text" placeholder="First Name" onChange={this.handleChange} />
-            <input name="lastName" ref={this.lastNameRef} type="text" placeholder="Last Name" onChange={this.handleChange} />
-          </StyledGroupDiv>
-          <input name="address1" ref={this.address1Ref} type="text" placeholder="Address" onChange={this.handleChange} />
-          <input name="address2" ref={this.address2Ref} type="text" placeholder="Apartment, suite, etc. (if applicable)" onChange={this.handleChange} />
-          <StyledGroupDiv>
-            <input name="city" ref={this.cityRef} type="text" placeholder="City" onChange={this.handleChange} />
-            <input name="state" ref={this.stateRef} type="text" placeholder="State" onChange={this.handleChange} />
-            <input name="postalCode" ref={this.postalCodeRef} type="text" placeholder="Postal Code" onChange={this.handleChange} />
-          </StyledGroupDiv>
-          <select name="country" ref={this.countryRef} onChange={this.handleChange} >
-            <option value="CO">Colombia</option>
-            <option value="US">USA</option>
-            <option value="VE">Venezuela</option>
-          </select>
-        </StyledForm>
-        <StyledForm onSubmit={this.handleSubmit}>
-          <CardElementContainer>
-            <CardElement
-              options={{
-                hidePostalCode: true,
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#424770',
-                    '::placeholder': {
-                      color: '#8b9299',
-                    },
-                  },
-                  invalid: {
-                    color: '#9e2146',
+  const { stripe } = props;
+  
+  return (
+    <StyledWrapperDiv>
+      {loading ? <LoadingPopup /> : null}
+      <div>{t("Cart")}: {formatPrice(props.cartTotal)}</div>
+      <div>{t("Shipping")}: {formatPrice(props.shipping.price)}</div>
+      <div>{t("Total")}: {formatPrice(total)}</div>
+      <StyledForm >
+        <h4>{t("Billing Address")}</h4>
+        <label htmlFor="sameAs">
+          <input name="sameAs" ref={checkboxRef} type="checkbox" onClick={populateAddress} />{t("Same as shipping")}
+        </label>
+        <StyledGroupDiv>
+          <input name="firstName" ref={firstNameRef} type="text" placeholder={t("First Name")} />
+          <input name="lastName" ref={lastNameRef} type="text" placeholder={t("Last Name")} />
+        </StyledGroupDiv>
+        <input name="address1" ref={address1Ref} type="text" placeholder={t("Address")} />
+        <input name="address2" ref={address2Ref} type="text" placeholder={t("Apartment, suite, etc. (if applicable)")} />
+        <StyledGroupDiv>
+          <input name="city" ref={cityRef} type="text" placeholder={t("City")} />
+          <input name="state" ref={stateRef} type="text" placeholder={t("State")} />
+          <input name="postalCode" ref={postalCodeRef} type="text" placeholder={t("Postal Code")} />
+        </StyledGroupDiv>
+        <select name="country" ref={countryRef} >
+          <option value="CO">Colombia</option>
+          <option value="US">USA</option>
+          <option value="VE">Venezuela</option>
+        </select>
+      </StyledForm>
+      <StyledForm onSubmit={handleSubmit}>
+        <CardElementContainer>
+          <CardElement
+            options={{
+              hidePostalCode: true,
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': {
+                    color: '#8b9299',
                   },
                 },
-              }}
-            />
-          </CardElementContainer>
-          <StyledCheckoutButton type="submit" disabled={!stripe}>Pay {formatPrice(this.state.total)}</StyledCheckoutButton>
-          <StyledSuccessDiv ref={this.successRef}></StyledSuccessDiv>
-          <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
-        </StyledForm>
-        <StyledButtonInvisible onClick={() => this.backClick()}>Back to Shipping</StyledButtonInvisible>
-      </StyledWrapperDiv>
-    );
-  }
+                invalid: {
+                  color: '#9e2146',
+                },
+              },
+            }}
+          />
+        </CardElementContainer>
+        <StyledCheckoutButton type="submit" disabled={!stripe}>{t("Pay")} {formatPrice(total)}</StyledCheckoutButton>
+        <StyledSuccessDiv ref={successRef}></StyledSuccessDiv>
+        <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
+      </StyledForm>
+      <StyledButtonInvisible onClick={() => backClick()}>{t("Back to Shipping")}</StyledButtonInvisible>
+    </StyledWrapperDiv>
+  );
 };
-
-export default Payment;

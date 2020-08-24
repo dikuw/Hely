@@ -121,21 +121,21 @@ export default function Checkout(props) {
         <input name="email" type="text" placeholder={t("Email")} onChange={handleChange} value={props.customer.email} />
         <StyledGroupDiv>
           <input name="firstName" type="text" placeholder={t("First Name")} onChange={handleChange} value={props.customer.firstName} />
-          <input name="lastName" type="text" placeholder="Last Name" onChange={handleChange} value={props.customer.lastName} />
+          <input name="lastName" type="text" placeholder={t("Last Name")} onChange={handleChange} value={props.customer.lastName} />
         </StyledGroupDiv>
-        <input name="address1" type="text" placeholder="Address" onChange={handleChange} value={props.customer.address1} />
-        <input name="address2" type="text" placeholder="Apartment, suite, etc. (if applicable)" onChange={handleChange} value={props.customer.address2} />
+        <input name="address1" type="text" placeholder={t("Address")} onChange={handleChange} value={props.customer.address1} />
+        <input name="address2" type="text" placeholder={t("Apartment, suite, etc. (if applicable)")} onChange={handleChange} value={props.customer.address2} />
         <StyledGroupDiv>
-          <input name="city" type="text" placeholder="City" onChange={handleChange} value={props.customer.city} />
-          <input name="state" type="text" placeholder="State" onChange={handleChange} value={props.customer.state} />
-          <input name="postalCode" type="text" placeholder="Postal Code" onChange={handleChange} value={props.customer.postalCode} />
+          <input name="city" type="text" placeholder={t("City")} onChange={handleChange} value={props.customer.city} />
+          <input name="state" type="text" placeholder={t("State")} onChange={handleChange} value={props.customer.state} />
+          <input name="postalCode" type="text" placeholder={t("Postal Code")} onChange={handleChange} value={props.customer.postalCode} />
         </StyledGroupDiv>
           <select name="country" onChange={handleChange} value={props.customer.country} >
             <option value="CO">Colombia</option>
             <option value="US">USA</option>
             <option value="VE">Venezuela</option>
           </select>
-        <input name="mobile" type="text" placeholder="Mobile" onChange={handleChange} value={props.customer.mobile} />
+        <input name="mobile" type="text" placeholder={t("Mobile")} onChange={handleChange} value={props.customer.mobile} />
         <StyledCheckoutButton onClick={() => handleClick()}>{t("Continue to Shipping")}</StyledCheckoutButton>
         <StyledButtonInvisible onClick={() => goBack()}>{t("Back to Cart")}</StyledButtonInvisible>
       </StyledForm>

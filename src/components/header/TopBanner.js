@@ -11,31 +11,32 @@ const BannerDiv = styled.div`
   text-align: center;
 `;
 
-const ButtonDiv = styled.div`
+const SelectDiv = styled.div`
   float: right;
+  font-size: 0.8rem;
 `;
 
-const LangButton = styled.button`
-  font-size: 0.8rem;
-  padding: 0.1rem;
-  min-width: 52px;
-  background-color: var(--almostWhite);
+const StyledSelect = styled.select`
+  background-color: var(--vinoTinto);
+  color:  var(--almostWhite);
 `;
 
 export default function TopBanner(props) {
   const { t, i18n } = useTranslation();
 
-  const changeLanguage = lng => {
-    i18n.changeLanguage(lng);
+  const handleChange = (event) => {
+    i18n.changeLanguage(event.target.value);
   };
  
   return (
     <BannerDiv>
       {t("Welcome")} {props.isLoggedIn ? props.name : t("guest")}!
-      <ButtonDiv>
-          <LangButton onClick={() => changeLanguage("es")}>{t("Spanish")}</LangButton>
-          <LangButton onClick={() => changeLanguage("en")}>{t("English")}</LangButton>
-      </ButtonDiv>
+      <SelectDiv>
+        <StyledSelect name="language" onChange={handleChange} >
+          <option value="es">{t("Spanish")}</option>
+          <option value="en">{t("English")}</option>
+        </StyledSelect>
+      </SelectDiv>
     </BannerDiv>
   )
 }

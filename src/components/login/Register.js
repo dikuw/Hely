@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef }  from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
 const StyledWrapperDiv = styled.div`
@@ -54,72 +55,70 @@ const StyledWarningDiv = styled.div`
   font-weight: 600;
 `;
 
-class Register extends React.Component {
-  nameRef = React.createRef();
-  emailRef = React.createRef();
-  passwordRef = React.createRef();
-  confirmPasswordRef = React.createRef();
-  warningRef = React.createRef();
+export default function Register(props) {
+  const { t } = useTranslation();
 
-  resetValidation = () => {
-    this.nameRef.current.style.background = "#fff";
-    this.emailRef.current.style.background = "#fff";
-    this.passwordRef.current.style.background = "#fff";
-    this.confirmPasswordRef.current.style.background = "#fff";
-    this.warningRef.current.innerHTML = "";
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+  const warningRef = useRef(null);
+
+  const resetValidation = () => {
+    nameRef.current.style.background = "#fff";
+    emailRef.current.style.background = "#fff";
+    passwordRef.current.style.background = "#fff";
+    confirmPasswordRef.current.style.background = "#fff";
+    warningRef.current.innerHTML = "";
   }
 
-  validateForm = () => {
+  const validateForm = () => {
     let passVal = true;
-    if (this.passwordRef.current.value !== this.confirmPasswordRef.current.value) {
-      this.passwordRef.current.style.background = "#ffc2c2";
-      this.confirmPasswordRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Passwords do not match! Please try again.";
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      passwordRef.current.style.background = "#ffc2c2";
+      confirmPasswordRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Passwords do not match! Please try again.");
       passVal = false;
     }
-    if (!this.nameRef.current.value) {
-      this.nameRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Please provide your name.";
+    if (!nameRef.current.value) {
+      nameRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Please provide your name.");
       passVal = false;
     }
     // TODO Validate email address for format using a library
     // **  📧 📧 📧  **
-    if (!this.emailRef.current.value) {
-      this.emailRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Please provide your email.";
+    if (!emailRef.current.value) {
+      emailRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Please provide your email.");
       passVal = false;
     }
     return passVal;
   }
 
-  registerClick = (event) => {
+  const registerClick = (event) => {
     event.preventDefault();
-    if (this.validateForm()) {
+    if (validateForm()) {
       const user = {
-        name: this.nameRef.current.value,
-        email: this.emailRef.current.value,
-        password: this.passwordRef.current.value,
-        confirmPassword: this.confirmPasswordRef.current.value,
+        name: nameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+        confirmPassword: confirmPasswordRef.current.value,
       };
-      this.props.registerUser(user);
+      props.registerUser(user);
       event.currentTarget.reset();
     }
   };
 
-  render() {
-    return (
-      <StyledWrapperDiv>
-        <StyledForm onSubmit={this.registerClick}>
-          <input name="name" ref={this.nameRef} type="text" placeholder="Name" onFocus={this.resetValidation} />
-          <input name="email" ref={this.emailRef} type="text" placeholder="Email" onFocus={this.resetValidation} />
-          <input name="password" ref={this.passwordRef} type="password" placeholder="Password" onFocus={this.resetValidation} />
-          <input name="confirmPassword" ref={this.confirmPasswordRef} type="password" placeholder="Confirm Password" onFocus={this.resetValidation} />
-          <StyledButton type="submit" >Register</StyledButton>
-        </StyledForm>
-        <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
-      </StyledWrapperDiv>
-    )
-  }
+  return (
+    <StyledWrapperDiv>
+      <StyledForm onSubmit={registerClick}>
+        <input name="name" ref={nameRef} type="text" placeholder={t("Name")} onFocus={resetValidation} />
+        <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
+        <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
+        <input name="confirmPassword" ref={confirmPasswordRef} type="password" placeholder={t("Confirm Password")} onFocus={resetValidation} />
+        <StyledButton type="submit" >{t("Register")}</StyledButton>
+      </StyledForm>
+      <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
+    </StyledWrapperDiv>
+  )
 };
-
-export default Register;

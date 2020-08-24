@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -90,54 +91,49 @@ const StyledButtonInvisible = styled.button`
   width: 100%;
 `;
 
-class CheckoutShipping extends React.Component {
+export default function CheckoutShipping(props) {
+  const { t } = useTranslation();
 
-  handleChange = async (e) => {
+  const handleChange = async (e) => {
     //  TODO update this so it is not-hardcoded or at least validate prices on the server //
     //  💰 💰 💰 💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰💰 💰 💰 💰  //
-    this.props.updateShipping({ method: e.currentTarget.value, price: e.currentTarget.getAttribute("data-price") });
+    props.updateShipping({ method: e.currentTarget.value, price: e.currentTarget.getAttribute("data-price") });
   }
   
-  handleClick = () => {
-    this.props.history.push("/payment");
+  const handleClick = () => {
+    props.history.push("/payment");
   };
 
-  goBack = () => {
-    this.props.history.push("/checkout");
+  const goBack = () => {
+    props.history.push("/checkout");
   };
 
-  render() {
-    return (
-      <StyledWrapperDiv>
-        <div>Cart total: {formatPrice(this.props.cartTotal)}</div>
-        <h4>Choose Shipping Method</h4>
-        <StyledForm>
-          <StyledGroupDiv>
-            <input type="radio" id="USPS" name="shippingMethod" value="USPS" data-price="900" onChange={this.handleChange} checked={this.props.shipping.method === 'USPS' || !(this.props.shipping.method) } />
-            <label htmlFor="USPS">USPS Priority Mail</label>
-            <StyledDurationDiv>3 business days</StyledDurationDiv>
-            <StyledPriceDiv>{formatPrice(900)}</StyledPriceDiv>
-          </StyledGroupDiv>
-          <StyledGroupDiv>
-            <input type="radio" id="Fedex" name="shippingMethod" value="Fedex" data-price="1200" onChange={this.handleChange} checked={this.props.shipping.method === 'Fedex'} />
-            <label htmlFor="Fedex">Fedex</label>
-            <StyledDurationDiv>2 business days</StyledDurationDiv>
-            <StyledPriceDiv>{formatPrice(1200)}</StyledPriceDiv>
-          </StyledGroupDiv>
-          <StyledGroupDiv>
-            <input type="radio" id="UPS" name="shippingMethod" value="UPS" data-price="1299" onChange={this.handleChange} checked={this.props.shipping.method === 'UPS'} />
-            <label htmlFor="UPS">UPS</label>
-            <StyledDurationDiv>2 business days</StyledDurationDiv>
-            <StyledPriceDiv>{formatPrice(1299)}</StyledPriceDiv>
-          </StyledGroupDiv>
-          <StyledCheckoutButton onClick={() => this.handleClick()}>Continue to Payment</StyledCheckoutButton>
-          <StyledButtonInvisible onClick={() => this.goBack()}>Back to Information</StyledButtonInvisible>
-        </StyledForm>
-
-        
-      </StyledWrapperDiv>
-    )
-  }
+  return (
+    <StyledWrapperDiv>
+      <div>{t("Cart total")}: {formatPrice(props.cartTotal)}</div>
+      <h4>{t("Choose Shipping Method")}</h4>
+      <StyledForm>
+        <StyledGroupDiv>
+          <input type="radio" id="USPS" name="shippingMethod" value="USPS" data-price="900" onChange={handleChange} checked={props.shipping.method === 'USPS' || !(props.shipping.method) } />
+          <label htmlFor="USPS">USPS Priority Mail</label>
+          <StyledDurationDiv>3 business days</StyledDurationDiv>
+          <StyledPriceDiv>{formatPrice(900)}</StyledPriceDiv>
+        </StyledGroupDiv>
+        <StyledGroupDiv>
+          <input type="radio" id="Fedex" name="shippingMethod" value="Fedex" data-price="1200" onChange={handleChange} checked={props.shipping.method === 'Fedex'} />
+          <label htmlFor="Fedex">Fedex</label>
+          <StyledDurationDiv>2 business days</StyledDurationDiv>
+          <StyledPriceDiv>{formatPrice(1200)}</StyledPriceDiv>
+        </StyledGroupDiv>
+        <StyledGroupDiv>
+          <input type="radio" id="UPS" name="shippingMethod" value="UPS" data-price="1299" onChange={handleChange} checked={props.shipping.method === 'UPS'} />
+          <label htmlFor="UPS">UPS</label>
+          <StyledDurationDiv>2 business days</StyledDurationDiv>
+          <StyledPriceDiv>{formatPrice(1299)}</StyledPriceDiv>
+        </StyledGroupDiv>
+        <StyledCheckoutButton onClick={() => handleClick()}>{t("Continue to Payment")}</StyledCheckoutButton>
+        <StyledButtonInvisible onClick={() => goBack()}>{t("Back to Information")}</StyledButtonInvisible>
+      </StyledForm>
+    </StyledWrapperDiv>
+  )
 };
-
-export default CheckoutShipping;
