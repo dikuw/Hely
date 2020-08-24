@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef }  from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
 const StyledWrapperDiv = styled.div`
@@ -72,85 +73,83 @@ const StyledWarningDiv = styled.div`
   font-weight: 600;
 `;
 
-class LocalLogin extends React.Component {
-  emailRef = React.createRef();
-  passwordRef = React.createRef();
-  forgotEmailRef = React.createRef();
-  warningRef = React.createRef();
+export default function LocalLogin(props) {
+  const { t } = useTranslation();
 
-  resetValidation = () => {
-    this.emailRef.current.style.background = "#fff";
-    this.passwordRef.current.style.background = "#fff";
-    this.forgotEmailRef.current.style.background = "#fff";
-    this.warningRef.current.innerHTML = "";
-    this.props.resetPasswordIncorrect();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const forgotEmailRef = useRef(null);
+  const warningRef = useRef(null);
+
+  const resetValidation = () => {
+    emailRef.current.style.background = "#fff";
+    passwordRef.current.style.background = "#fff";
+    forgotEmailRef.current.style.background = "#fff";
+    warningRef.current.innerHTML = "";
+    props.resetPasswordIncorrect();
   }
 
-  validateForm = () => {
+  const validateForm = () => {
     let passVal = true;
     // TODO Validate email address for format using a library
     // **  📧 📧 📧  **
-    if (!this.emailRef.current.value) {
-      this.emailRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Email is required.";
+    if (!emailRef.current.value) {
+      emailRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Email is required");
       passVal = false;
     }
-    if (!this.passwordRef.current.value) {
-      this.passwordRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Password is required.";
+    if (!passwordRef.current.value) {
+      passwordRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Password is required");
       passVal = false;
     }
     return passVal;
   }
 
-  loginClick = (event) => {
+  const loginClick = (event) => {
     event.preventDefault();
-    if (this.validateForm()) {
+    if (validateForm()) {
       const user = {
-        email: this.emailRef.current.value,
-        password: this.passwordRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
       };
-      this.props.loginUser(user);
+      props.loginUser(user);
       event.currentTarget.reset();
     }
   };
   
-  forgotClick = (event) => {
+  const forgotClick = (event) => {
     event.preventDefault();
     //  TODO validate forgot password form
     const user = {
-      email: this.forgotEmailRef.current.value,
+      email: forgotEmailRef.current.value,
     };
-    this.props.forgotUser(user);
+    props.forgotUser(user);
     event.currentTarget.reset();
   };
 
-  registerClick = () => {
-    this.props.history.push("/register");
+  const registerClick = () => {
+    props.history.push("/register");
   };
 
-  render() {
-    return (
-      <StyledWrapperDiv>
-        <div>Login</div>
-        <StyledForm onSubmit={this.loginClick}>
-          <input name="email" ref={this.emailRef} type="text" placeholder="Email" onFocus={this.resetValidation} />
-          <input name="password" ref={this.passwordRef} type="password" placeholder="Password" onFocus={this.resetValidation} />
-          <StyledButton type="submit" >Log in</StyledButton>
-        </StyledForm>
-        <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
-        {this.props.passwordIncorrect ? (<StyledWarningDiv>Email or password is incorrect. Please try again</StyledWarningDiv>) : ( "" )}
-        <div>Forgot your password?</div>
-        <StyledForm onSubmit={this.forgotClick}>
-          <input name="forgotEmail" ref={this.forgotEmailRef} type="text" placeholder="Email"  />
-          <StyledButton type="submit" >Send a Reset</StyledButton>
-        </StyledForm>
-        <StyledForm>
-          <StyledButtonInvisible onClick={() => this.registerClick()}>No account? Register here!</StyledButtonInvisible>
-        </StyledForm>
-      </StyledWrapperDiv>
-    )
-  }
+  return (
+    <StyledWrapperDiv>
+      <div>{t("Log in")}</div>
+      <StyledForm onSubmit={loginClick}>
+        <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
+        <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
+        <StyledButton type="submit" >{t("Log in")}</StyledButton>
+      </StyledForm>
+      <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
+      {props.passwordIncorrect ? (<StyledWarningDiv>{t("Email or password is incorrect. Please try again")}</StyledWarningDiv>) : ( "" )}
+      <div>{t("Forgot your password")}?</div>
+      <StyledForm onSubmit={forgotClick}>
+        <input name="forgotEmail" ref={forgotEmailRef} type="text" placeholder={t("Email")}  />
+        <StyledButton type="submit" >{t("Send a Reset")}</StyledButton>
+      </StyledForm>
+      <StyledForm>
+        <StyledButtonInvisible onClick={() => registerClick()}>{t("No account? Register here!")}</StyledButtonInvisible>
+      </StyledForm>
+    </StyledWrapperDiv>
+  )
 };
-
-export default LocalLogin;

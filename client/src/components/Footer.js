@@ -136,7 +136,7 @@ export default function Footer(props) {
       </StyledNavUl>
       <StyledLegal>
         <p>&copy; 2020 Hely Cosmetics</p>
-        <p>Created by<a rel="noopener noreferrer" href="http://www.dikuw.com/" target="_blank"> dikuw</a></p>
+        <p>{t("Created by")}<a rel="noopener noreferrer" href="http://www.dikuw.com/" target="_blank"> dikuw</a></p>
       </StyledLegal>
     </StyledFooter>
   );
