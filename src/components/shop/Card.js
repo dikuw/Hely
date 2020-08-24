@@ -13,6 +13,7 @@ const StyledGridFigure = styled.figure`
   background: var(--almostWhite);
   box-shadow: 0 0 0 5px rgba(0,0,0,0.03);
   position: relative;
+  max-width: 400px;
 `;
 
 const StyledGridPhotoWrapDiv = styled.div`

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import AddItemForm from './AddItemForm';
 import EditItemForm from './EditItemForm';
@@ -42,44 +43,36 @@ const StyledNoPermissionsDiv = styled.div`
   padding: 4px;
 `;
 
+export default function Inventory(props) {
+  const { t } = useTranslation();
 
-class Inventory extends React.Component {
-  state = {
-    uploadingPhoto: false
-  }
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  componentWillUnmount = async () => {
-    await apis.putInventory({ ...this.props.inventory });
-  }
-
-  togglePopup = () => {   
-    this.setState(prevState => ({
-      uploadingPhoto: !prevState.uploadingPhoto
-    }))
-  } 
-
-  render() {
-    if (!this.props.isLoggedIn) {
-      return <StyledNoPermissionsDiv>You do not have permission to view this page.</StyledNoPermissionsDiv>
+  useEffect(() => {
+    return async () => {
+      console.log('props.inventory', props.inventory);
+      if (props.inventory.length > 0) await apis.putInventory({ ...props.inventory });
     }
-    return (
-      <StyledWrapperDiv>
-        {this.state.uploadingPhoto ? <LoadingPopup /> : null}
-        <AddItemForm addItem={this.props.addItem} uploadingPhoto={this.state.uploadingPhoto} togglePopup={this.togglePopup} />
-        {Object.values(this.props.inventory).map( (item, i) => 
-          <EditItemForm 
-            key={i} 
-            index={i} 
-            item={item} 
-            updateItem={this.props.updateItem}
-            deleteItem={this.props.deleteItem}
-            uploadingPhoto={this.state.uploadingPhoto}
-            togglePopup={this.togglePopup}
-          />)}
-        <StyledButton onClick={this.props.loadSampleInventory}>Load Sample Data</StyledButton>
-      </StyledWrapperDiv>
-    );
-  }
-}
+  }, []);
 
-export default Inventory;
+  if (!props.isLoggedIn) {
+    return <StyledNoPermissionsDiv>{t("You do not have permission to view this page")}.</StyledNoPermissionsDiv>
+  }
+  return (
+    <StyledWrapperDiv>
+      {uploadingPhoto ? <LoadingPopup /> : null}
+      <AddItemForm addItem={props.addItem} uploadingPhoto={uploadingPhoto} setUploadingPhoto={setUploadingPhoto} />
+      {Object.values(props.inventory).map( (item, i) => 
+        <EditItemForm 
+          key={i} 
+          index={i} 
+          item={item} 
+          updateItem={props.updateItem}
+          deleteItem={props.deleteItem}
+          uploadingPhoto={uploadingPhoto}
+          setUploadingPhoto={setUploadingPhoto}
+        />)}
+      <StyledButton onClick={props.loadSampleInventory}>Load Sample Data</StyledButton>
+    </StyledWrapperDiv>
+  );
+}

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef }  from 'react';
+import { useTranslation } from "react-i18next";
 import apis from '../../api/index';
 import styled from 'styled-components';
 
@@ -68,100 +69,98 @@ const StyledButton = styled.button`
   width: auto;
 `;
 
-class AddItemForm extends React.Component {
-  idRef = React.createRef();
-  nameRef = React.createRef();
-  priceRef = React.createRef();
-  categoryRef= React.createRef();
-  statusRef = React.createRef();
-  imageRef = React.createRef();
-  descriptionRef = React.createRef();
+export default function AddItemForm(props) {
+  const { t } = useTranslation();
 
-  resetValidation = () => {
-    this.nameRef.current.placeholder = "Name";
-    this.nameRef.current.style.background = "#fff";
-    this.descriptionRef.current.placeholder = "Description";
-    this.descriptionRef.current.style.background = "#fff";
-    this.priceRef.current.placeholder = "Price";
-    this.priceRef.current.style.background = "#fff";
+  const idRef = useRef(null);
+  const nameRef = useRef(null);
+  const priceRef = useRef(null);
+  const categoryRef= useRef(null);
+  const statusRef = useRef(null);
+  const imageRef = useRef(null);
+  const descriptionRef = useRef(null);
+
+  const resetValidation = () => {
+    nameRef.current.placeholder = "Name";
+    nameRef.current.style.background = "#fff";
+    descriptionRef.current.placeholder = "Description";
+    descriptionRef.current.style.background = "#fff";
+    priceRef.current.placeholder = "Price";
+    priceRef.current.style.background = "#fff";
   }
 
-  validateForm = () => {
+  const validateForm = () => {
     let passVal = true;
-    if (!this.nameRef.current.value) {
-      this.nameRef.current.placeholder = "Name is a required field";
-      this.nameRef.current.style.background = "#ffc2c2";
+    if (!nameRef.current.value) {
+      nameRef.current.placeholder = "Name is a required field";
+      nameRef.current.style.background = "#ffc2c2";
       passVal = false;
     }
-    if (!this.descriptionRef.current.value) {
-      this.descriptionRef.current.placeholder = "Description is a required field";
-      this.descriptionRef.current.style.background = "#ffc2c2";
+    if (!descriptionRef.current.value) {
+      descriptionRef.current.placeholder = "Description is a required field";
+      descriptionRef.current.style.background = "#ffc2c2";
       passVal = false;
     }
-    if (!this.priceRef.current.value) {
-      this.priceRef.current.placeholder = "Price is a required field";
-      this.priceRef.current.style.background = "#ffc2c2";
+    if (!priceRef.current.value) {
+      priceRef.current.placeholder = "Price is a required field";
+      priceRef.current.style.background = "#ffc2c2";
       passVal = false;
     }
     return passVal;
   }
 
-  formSubmit = (event) => {
+  const formSubmit = (event) => {
     event.preventDefault();
-    if (this.validateForm()) {
+    if (validateForm()) {
       const item = {
-        id: this.idRef.current.value,
-        name: this.nameRef.current.value,
-        price: parseFloat(this.priceRef.current.value),
-        category: this.categoryRef.current.value,
-        status: this.statusRef.current.value,
-        image: this.imageRef.current.getAttribute('data-path'),
-        description: this.descriptionRef.current.value,
+        id: idRef.current.value,
+        name: nameRef.current.value,
+        price: parseFloat(priceRef.current.value),
+        category: categoryRef.current.value,
+        status: statusRef.current.value,
+        image: imageRef.current.getAttribute('data-path'),
+        description: descriptionRef.current.value,
         show: true
       };
-      this.props.addItem(item);
+      props.addItem(item);
       event.currentTarget.reset();
     }
   }
 
-  handleChange = async (event) => {
-    this.props.togglePopup();
+  const handleChange = async (event) => {
+    props.setUploadingPhoto(true);
     const formData = new FormData(); 
 
     formData.append('file', event.target.files[0]);
 
     const res = await apis.postImage(formData);
 
-    this.imageRef.current.setAttribute('data-path', `${res.data.fileName}`);
-    this.props.togglePopup();
+    imageRef.current.setAttribute('data-path', `${res.data.fileName}`);
+    props.setUploadingPhoto(false);
   }
 
-  render() {
-    return (
-      <StyledForm onSubmit={this.formSubmit}>
-        <input name="name" ref={this.idRef} type="text" placeholder="ID" defaultValue={Date.now()} />
-        <input name="name" ref={this.nameRef} type="text" placeholder="Name" onFocus={this.resetValidation} />
-        <input name="price" ref={this.priceRef} type="text" placeholder="Price" onFocus={this.resetValidation} />
-        <select name="category" ref={this.categoryRef} >
-          <option value="face">Face</option>
-          <option value="eyes">Eyes</option>
-          <option value="brushes">Brushes</option>
-        </select>
-        <select name="status" ref={this.statusRef} >
-          <option value={true}>Available</option>
-          <option value={false}>Not Available</option>
-        </select>
-        <StyledImageUploadDiv>
-          <label htmlFor='file-input'>
-            <StyledImageUploadImg />
-          </label>
-          <input name="image" id='file-input' type="file" accept="image/png, image/jpeg" data-path="" ref={this.imageRef} onChange={this.handleChange} />
-        </StyledImageUploadDiv>
-        <textarea name="description" ref={this.descriptionRef} placeholder="Please enter a description" onFocus={this.resetValidation} />
-        <StyledButton type="submit">+ Add Item</StyledButton>
-      </StyledForm>
-    );
-  }
+  return (
+    <StyledForm onSubmit={formSubmit}>
+      <input name="name" ref={idRef} type="text" placeholder={t("ID")} defaultValue={Date.now()} />
+      <input name="name" ref={nameRef} type="text" placeholder={t("Name")} onFocus={resetValidation} />
+      <input name="price" ref={priceRef} type="text" placeholder={t("Price")} onFocus={resetValidation} />
+      <select name="category" ref={categoryRef} >
+        <option value="face">{t("Face")}</option>
+        <option value="eyes">{t("Eyes")}</option>
+        <option value="brushes">{t("Brushes")}</option>
+      </select>
+      <select name="status" ref={statusRef} >
+        <option value={true}>{t("Available")}</option>
+        <option value={false}>{t("Not Available")}</option>
+      </select> 
+      <StyledImageUploadDiv>
+        <label htmlFor='file-input'>
+          <StyledImageUploadImg />
+        </label>
+        <input name="image" id='file-input' type="file" accept="image/png, image/jpeg" data-path="" ref={imageRef} onChange={handleChange} />
+      </StyledImageUploadDiv>
+      <textarea name="description" ref={descriptionRef} placeholder={t("Please enter a description")} onFocus={resetValidation} />
+      <StyledButton type="submit">+ {t("Add Item")}</StyledButton>
+    </StyledForm>
+  );
 }
-
-export default AddItemForm;

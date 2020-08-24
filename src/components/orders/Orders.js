@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import EditItemForm from './EditItemForm';
 
@@ -23,29 +24,27 @@ const StyledNoPermissionsDiv = styled.div`
   padding: 4px;
 `;
 
-class Orders extends React.Component {
-  render() {
-    if (!this.props.isLoggedIn) {
-      return <StyledNoPermissionsDiv>You do not have permission to view this page.</StyledNoPermissionsDiv>
-    }
-    if (this.props.orders.length < 1 || this.props.inventory.length < 1) {
-      return <StyledLoadingDiv>Loading... please wait</StyledLoadingDiv>
-    }
-    if (this.props.orders) {
-      return (
-        <StyledWrapperDiv>
-          {Object.values(this.props.orders).map( (item, i) => 
-            <EditItemForm 
-              key={i} 
-              index={i} 
-              item={item} 
-              inventory={this.props.inventory} 
-              updateOrder={this.props.updateOrder}
-            />)}
-        </StyledWrapperDiv>
-      );
-    }
+export default function Orders(props) {
+  const { t } = useTranslation();
+
+  if (!props.isLoggedIn) {
+    return <StyledNoPermissionsDiv>{t("You do not have permission to view this page")}.</StyledNoPermissionsDiv>
+  }
+  if (props.orders.length < 1 || props.inventory.length < 1) {
+    return <StyledLoadingDiv>{t("Loading... please wait")}</StyledLoadingDiv>
+  }
+  if (props.orders) {
+    return (
+      <StyledWrapperDiv>
+        {Object.values(props.orders).map( (item, i) => 
+          <EditItemForm 
+            key={i} 
+            index={i} 
+            item={item} 
+            inventory={props.inventory} 
+            updateOrder={props.updateOrder}
+          />)}
+      </StyledWrapperDiv>
+    );
   }
 }
-
-export default Orders;
