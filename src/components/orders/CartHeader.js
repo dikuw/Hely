@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -18,15 +19,12 @@ const StyledSubTotalDiv = styled.div`
   }
 `;
 
-class CartHeader extends React.Component {
+export default function EditItemForm(props) {
+  const { t } = useTranslation();
 
-  render() {
-    return (
-      <StyledWrapperDiv>
-        <StyledSubTotalDiv>Total: {formatPrice(this.props.total)}</StyledSubTotalDiv>
-      </StyledWrapperDiv>
-    )
-  }
+  return (
+    <StyledWrapperDiv>
+      <StyledSubTotalDiv>{t("Total")}: {formatPrice(props.total)}</StyledSubTotalDiv>
+    </StyledWrapperDiv>
+  )
 };
-
-export default CartHeader;
