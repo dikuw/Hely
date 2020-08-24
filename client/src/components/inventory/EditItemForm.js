@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import apis from '../../api/index';
 import styled from 'styled-components';
 
@@ -68,9 +69,10 @@ const StyledImageUploadImg = styled.img`
   max-width: 50px;
 `;
 
-class EditItemForm extends React.Component {
+export default function EditItemForm(props) {
+  const { t } = useTranslation();
 
-  handleChange = async (e) => {
+  const handleChange = async (e) => {
     let updatedValue = e.currentTarget.value;
     let propName = e.currentTarget.name;
 
@@ -79,48 +81,44 @@ class EditItemForm extends React.Component {
     }
 
     if (propName === "image") {
-      this.props.togglePopup();
+      props.togglePopup();
       const formData = new FormData(); 
       formData.append('file', e.target.files[0]);
       const res = await apis.postImage(formData);
       updatedValue = `${res.data.fileName}`;
-      this.props.togglePopup();
+      props.togglePopup();
     };
 
     const updatedItem = {
-        ...this.props.item,
+        ...props.item,
         [propName]: updatedValue
     }
 
-    this.props.updateItem(this.props.index, updatedItem);
+    props.updateItem(props.index, updatedItem);
   }
 
-  render() {
-    return (
-      <StyledDiv>
-        <input type="text" name="id" value={this.props.item.id} readOnly />
-        <input type="text" name="name" onChange={this.handleChange} value={this.props.item.name} />
-        <input type="text" name="price" onChange={this.handleChange} value={this.props.item.price} />
-        <select name="category" onChange={this.handleChange} value={this.props.item.category} >
-          <option value="face">Face</option>
-          <option value="eyes">Eyes</option>
-          <option value="brushes">Brushes</option>
-        </select>
-        <select name="available" onChange={this.handleChange} value={this.props.item.available} >
-          <option value={true}>Available</option>
-          <option value={false}>Not Available</option>
-        </select>
-        <StyledImageUploadDiv>
-          <label key={this.props.index} htmlFor={`file-input${this.props.index}`}>
-            <StyledImageUploadImg src={`https://res.cloudinary.com/dikuw/image/upload/${this.props.item.image}`} alt={this.props.item.image}/>
-          </label>
-          <input name="image" id={`file-input${this.props.index}`} type="file" accept="image/png, image/jpeg" onChange={this.handleChange} />
-        </StyledImageUploadDiv>
-        <textarea name="description" onChange={this.handleChange} value={this.props.item.description} />
-        <StyledButton onClick={() => this.props.deleteItem(this.props.index)} >Remove Item</StyledButton>
-      </StyledDiv>
-    );
-  }
+  return (
+    <StyledDiv>
+      <input type="text" name="id" value={props.item.id} readOnly />
+      <input type="text" name="name" onChange={handleChange} value={props.item.name} />
+      <input type="text" name="price" onChange={handleChange} value={props.item.price} />
+      <select name="category" onChange={handleChange} value={props.item.category} >
+        <option value="face">{t("Face")}</option>
+        <option value="eyes">{t("Eyes")}</option>
+        <option value="brushes">{t("Brushes")}</option>
+      </select>
+      <select name="available" onChange={handleChange} value={props.item.available} >
+      <option value={true}>{t("Available")}</option>
+        <option value={false}>{t("Not Available")}</option>
+      </select>
+      <StyledImageUploadDiv>
+        <label key={props.index} htmlFor={`file-input${props.index}`}>
+          <StyledImageUploadImg src={`https://res.cloudinary.com/dikuw/image/upload/${props.item.image}`} alt={props.item.image}/>
+        </label>
+        <input name="image" id={`file-input${props.index}`} type="file" accept="image/png, image/jpeg" onChange={handleChange} />
+      </StyledImageUploadDiv>
+      <textarea name="description" onChange={handleChange} value={props.item.description} />
+      <StyledButton onClick={() => props.deleteItem(props.index)} >{t("Remove Item")}</StyledButton>
+    </StyledDiv>
+  );
 }
-
-export default EditItemForm;

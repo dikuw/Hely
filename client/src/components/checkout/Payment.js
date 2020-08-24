@@ -156,43 +156,17 @@ function CheckoutForm(props) {
   const warningRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
-  const prevLoadingRef = useRef();
-  useEffect(() => {
-    console.log("loading", loading);
-    prevLoadingRef.current = loading;
-  });
-  const prevLoading = prevLoadingRef.current;
 
-  const [total, setTotal] = useState(parseInt(props.cartTotal) + parseInt(props.shipping.price));
+  const total = parseInt(props.cartTotal) + parseInt(props.shipping.price);
 
   useEffect(() => {
     props.postCreatePaymentIntent({ amount: total });
   }, []);
 
-  useEffect(() => {
-    successRef.current.innerHTML = null;
-    warningRef.current.innerHTML = null;
-  });
-
-  const togglePopup = () => {   
-    console.log('togglePopup called 1', loading, prevLoading);
-    // loading ? setLoading(false) : setLoading(true);
-    if (loading) {
-      setLoading(false);
-    } else {
-      setLoading(true);
-    }
-    console.log('togglePopup called 2', loading, prevLoading);
-    // setLoading(!prevLoading);
-  } 
-
-  const openPopup = () => {
-    setLoading(true);
-  }
-
-  const closePopup = () => {
-    setLoading(false);
-  }
+  // useEffect(() => {
+  //   successRef.current.innerHTML = null;
+  //   warningRef.current.innerHTML = null;
+  // });
 
   const populateAddress = () => {
     if (checkboxRef.current.checked) {
@@ -219,6 +193,9 @@ function CheckoutForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    successRef.current.innerHTML = null;
+    warningRef.current.innerHTML = null;
+
     const {stripe, elements} = props;
 
     if (!stripe || !elements) {
@@ -228,10 +205,10 @@ function CheckoutForm(props) {
     const cardElement = elements.getElement(CardElement);
 
     let payWithCard = async (stripe, card, clientSecret) => {
-      togglePopup();
+      setLoading(true);
       stripe.confirmCardPayment(clientSecret, { payment_method: { card: card } })
         .then((result) => {
-          togglePopup();
+          setLoading(false);
           if (result.error) {
             console.log(result.error.message);
             warningRef.current.innerHTML = result.error.message;
@@ -290,7 +267,7 @@ function CheckoutForm(props) {
           <option value="VE">Venezuela</option>
         </select>
       </StyledForm>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={handleSubmit} >
         <CardElementContainer>
           <CardElement
             options={{
@@ -310,7 +287,7 @@ function CheckoutForm(props) {
             }}
           />
         </CardElementContainer>
-        <StyledCheckoutButton type="submit" disabled={!stripe}>{t("Pay")} {formatPrice(total)}</StyledCheckoutButton>
+        <StyledCheckoutButton type="submit" disabled={!stripe} >{t("Pay")} {formatPrice(total)}</StyledCheckoutButton>
         <StyledSuccessDiv ref={successRef}></StyledSuccessDiv>
         <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       </StyledForm>
