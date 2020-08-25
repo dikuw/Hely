@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import Order from './Order';
 import styled from 'styled-components';
 
@@ -17,28 +18,26 @@ const StyledUl = styled.ul`
   width: 100%;
 `;
 
-class Orders extends React.Component {
-  render() {
-    const userOrders = this.props.userOrders;
-    console.log('userOrders', userOrders);
-    if (!userOrders || userOrders===[]) {
-      return (
-        <StyledWrapperDiv>No orders found.</StyledWrapperDiv>
-      )
-    };
-    if (userOrders.length < 1 || this.props.inventory.length < 1) {
-      return <StyledLoadingDiv>Loading... please wait</StyledLoadingDiv>
-    }
-    return (
-      <StyledWrapperDiv>
-        <StyledUl>
-          {userOrders.map((item, i) => (
-            <Order key={item._id} index={item._id} order={item} inventory={this.props.inventory} />
-          ))}
-        </StyledUl>
-      </StyledWrapperDiv>
-    )
-  }
-};
+export default function Orders(props) {
+  const { t } = useTranslation();
 
-export default Orders;
+  const userOrders = props.userOrders;
+
+  if (!userOrders || userOrders===[]) {
+    return (
+      <StyledWrapperDiv>{t("No orders found")}.</StyledWrapperDiv>
+    )
+  };
+  if (userOrders.length < 1 || props.inventory.length < 1) {
+    return <StyledLoadingDiv>{t("Loading... please wait")}</StyledLoadingDiv>
+  }
+  return (
+    <StyledWrapperDiv>
+      <StyledUl>
+        {userOrders.map((item, i) => (
+          <Order key={item._id} index={item._id} order={item} inventory={props.inventory} />
+        ))}
+      </StyledUl>
+    </StyledWrapperDiv>
+  )
+};

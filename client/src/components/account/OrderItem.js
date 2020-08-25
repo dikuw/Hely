@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -31,23 +32,21 @@ const StyledGridNameDiv = styled.div`
   text-align: center;
 `;
 
-class OrderItem extends React.Component {
-  render() {
-    const { item, qty } = this.props;
-    return (
-      <StyledGridWrapperDiv>
-        <StyledItemDiv>
-          <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
-        </StyledItemDiv>
-        <StyledItemDiv>
-          <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
-        </StyledItemDiv>
-        <StyledItemDiv>
-          <StyledGridNameDiv>{qty} at {formatPrice(item.price)} each</StyledGridNameDiv>
-        </StyledItemDiv>
-      </StyledGridWrapperDiv>
-    );
-  };
-};
+export default function OrderItem(props) {
+  const { t } = useTranslation();
 
-export default OrderItem;
+  const { item, qty } = props;
+  return (
+    <StyledGridWrapperDiv>
+      <StyledItemDiv>
+        <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
+      </StyledItemDiv>
+      <StyledItemDiv>
+        <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
+      </StyledItemDiv>
+      <StyledItemDiv>
+        <StyledGridNameDiv>{qty} @ {formatPrice(item.price)} {t("each")}</StyledGridNameDiv>
+      </StyledItemDiv>
+    </StyledGridWrapperDiv>
+  );
+};
