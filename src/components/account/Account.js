@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useTranslation } from "react-i18next";
 import Orders from './Orders';
 import styled from 'styled-components';
 
@@ -81,74 +82,73 @@ const StyledNoPermissionsDiv = styled.div`
   padding: 4px;
 `;
 
-class Account extends React.Component {
-  emailRef = React.createRef();
-  passwordRef = React.createRef();
-  warningRef = React.createRef();
+export default function Account(props) {
+  const { t } = useTranslation();
 
-  resetValidation = () => {
-    this.emailRef.current.style.background = "#fff";
-    this.passwordRef.current.style.background = "#fff";
-    this.warningRef.current.innerHTML = "";
-    this.props.resetPasswordIncorrect();
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const warningRef = useRef(null);
+
+  const resetValidation = () => {
+    emailRef.current.style.background = "#fff";
+    passwordRef.current.style.background = "#fff";
+    warningRef.current.innerHTML = "";
+    props.resetPasswordIncorrect();
   }
 
-  validateForm = () => {
+  const validateForm = () => {
     let passVal = true;
     // TODO Validate email address for format using a library
     // **  📧 📧 📧  **
-    if (!this.emailRef.current.value) {
-      this.emailRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Email is required.";
+    if (!emailRef.current.value) {
+      emailRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = "Email is required.";
       passVal = false;
     }
-    if (!this.nameRef.current.value) {
-      this.nameRef.current.style.background = "#ffc2c2";
-      this.warningRef.current.innerHTML = "Name is required.";
+    if (!nameRef.current.value) {
+      nameRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = "Name is required.";
       passVal = false;
     }
     return passVal;
   }
 
-  handleChange = () => {
+  const handleChange = () => {
     console.log('account form field changed');
   };
 
-  updateClick = (event) => {
+  const updateClick = (event) => {
     event.preventDefault();
-    if (this.validateForm()) {
+    if (validateForm()) {
       const user = {
-        name: this.nameRef.current.value,
-        email: this.emailRef.current.value,
+        name: nameRef.current.value,
+        email: emailRef.current.value,
       };
-      this.props.updateUser(user);
+      props.updateUser(user);
     }
   };
   
-  render() {
-    if (!this.props.isLoggedIn) {
-      return <StyledNoPermissionsDiv>Please log in to view this page.</StyledNoPermissionsDiv>
-    }
-    return (
-      <StyledWrapperDiv>
-        <div>Update Your Account</div>
-        <StyledForm onSubmit={this.updateClick}>
-          <StyledFormRowDiv>
-            <StyledLabel htmlFor="name">Name: </StyledLabel>
-            <input name="name" ref={this.nameRef} type="text"  onChange={this.handleChange} onFocus={this.resetValidation} value={this.props.user.name}/>
-          </StyledFormRowDiv>
-          <StyledFormRowDiv>
-            <StyledLabel htmlFor="email">Email: </StyledLabel>
-            <input name="email" ref={this.emailRef} type="text"  onChange={this.handleChange} onFocus={this.resetValidation} value={this.props.user.email}/>
-          </StyledFormRowDiv>
-          <StyledButton type="submit" >Update</StyledButton>
-        </StyledForm>
-        <StyledWarningDiv ref={this.warningRef}></StyledWarningDiv>
-        <div>Your Orders</div>
-        <Orders userOrders={this.props.userOrders} inventory={this.props.inventory} />
-      </StyledWrapperDiv>
-    )
+  if (!props.isLoggedIn) {
+    return <StyledNoPermissionsDiv>{t("Please log in to view this page")}.</StyledNoPermissionsDiv>
   }
+  return (
+    <StyledWrapperDiv>
+      <div>{t("Update Your Account")}</div>
+      <StyledForm onSubmit={updateClick}>
+        <StyledFormRowDiv>
+          <StyledLabel htmlFor="name">{t("Name")}: </StyledLabel>
+          <input name="name" ref={nameRef} type="text"  onChange={handleChange} onFocus={resetValidation} value={props.user.name}/>
+        </StyledFormRowDiv>
+        <StyledFormRowDiv>
+          <StyledLabel htmlFor="email">{t("Email")}: </StyledLabel>
+          <input name="email" ref={emailRef} type="text"  onChange={handleChange} onFocus={resetValidation} value={props.user.email}/>
+        </StyledFormRowDiv>
+        <StyledButton type="submit" >{t("Update")}</StyledButton>
+      </StyledForm>
+      <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
+      <div>{t("Your Orders")}</div>
+      <Orders userOrders={props.userOrders} inventory={props.inventory} />
+    </StyledWrapperDiv>
+  )
 };
-
-export default Account;
