@@ -32,7 +32,7 @@ class Shipping extends React.Component {
           </StyledHeaderDiv>
           <p>Orders must be placed by 11am EST to start processing the same day. Processing time typically process within&nbsp;3-5 business days (Monday - Friday).</p>
           <p>Delivery times are based on orders placed between Monday-Friday (excluding holidays, holiday weekends).</p>
-          <table cellspacing="0" cellpadding="0">
+          <table cellSpacing="0" cellPadding="0">
             <tbody>
               <tr>
                 <StyledTableTd>
