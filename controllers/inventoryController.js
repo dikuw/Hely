@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 exports.getInventory = async (req, res) => {
-  await Item.find({ "show": true }, (err, inventory) => {
+  await Item.find({}, (err, inventory) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }
@@ -62,26 +62,6 @@ exports.putInventory = async (req, res) => {
   return res.send(body);
 };
 
-// this resizes and uploads, but refreshes the page (sometimes)
-// exports.uploadImage = async (req, res) => {
-//   if (!req.files) {
-//     return res.status(400).json({ msg: 'No file to upload' });
-//   }
-//   const file = req.files.file;
-//   const extension = file.mimetype.split('/')[1];
-//   const filePath = `../client/public/images/${Date.now()}.${extension}`;
-//   const photo = await jimp.read(file.tempFilePath);
-//   await photo.resize(370, jimp.AUTO).quality(75);
-//   await photo.writeAsync(filePath)
-//   cloudinary.uploader.upload(filePath, function(err, result) { 
-//     if (err) {
-//       console.log('error', err);
-//     }
-//     res.json({ fileName: result.public_id });
-//   });
-// };
-
-// this uploads, but does not resize and does not refresh the page
 exports.uploadImage = async (req, res) => {
   if (!req.files) {
     return res.status(400).json({ msg: 'No file to upload' });
