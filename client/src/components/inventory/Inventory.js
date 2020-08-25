@@ -68,7 +68,6 @@ export default function Inventory(props) {
           index={i} 
           item={item} 
           updateItem={props.updateItem}
-          deleteItem={props.deleteItem}
           uploadingPhoto={uploadingPhoto}
           setUploadingPhoto={setUploadingPhoto}
         />)}

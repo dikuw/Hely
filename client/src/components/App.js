@@ -14,7 +14,6 @@ import Inventory from './inventory/Inventory';
 import Orders from './orders/Orders';
 import { Privacy, Terms, Shipping, Returns } from './information/index';
 import Footer from './Footer';
-import inventory from '../data/inventory';
 import orders from '../data/orders';
 import apis from '../api/index';
 
@@ -195,16 +194,6 @@ class App extends React.Component {
     const inventory = [ ...this.state.inventory ];
     inventory[key] = updatedItem;
     this.setState({ inventory });
-  }
-
-  deleteItem = (key) => {
-    const inventory = [ ...this.state.inventory ];
-    inventory.splice(key, 1);
-    this.setState({ inventory });
-  }
-
-  loadSampleInventory = () => {
-    this.setState({ inventory: inventory });
   }
 
   addToCart = (key) => {
@@ -453,7 +442,6 @@ class App extends React.Component {
                   inventory={Object.values(this.state.inventory).filter(item => item.show===true)} 
                   addItem={this.addItem}
                   updateItem={this.updateItem}
-                  deleteItem={this.deleteItem}
                   loadSampleInventory={this.loadSampleInventory}
                 />
               </>
