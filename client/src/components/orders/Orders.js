@@ -28,7 +28,7 @@ export default function Orders(props) {
   const { t } = useTranslation();
 
   if (!props.isLoggedIn) {
-    return <StyledNoPermissionsDiv>{t("You do not have permission to view this page")}.</StyledNoPermissionsDiv>
+    return <StyledNoPermissionsDiv>{t("Please log in to view this page")}.</StyledNoPermissionsDiv>
   }
   if (props.orders.length < 1 || props.inventory.length < 1) {
     return <StyledLoadingDiv>{t("Loading... please wait")}</StyledLoadingDiv>
