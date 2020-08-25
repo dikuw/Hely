@@ -3,23 +3,6 @@ import { useTranslation } from "react-i18next";
 import apis from '../../api/index';
 import styled from 'styled-components';
 
-const StyledButton = styled.button`
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--vinoTinto);
-  border-color: var(--vinoTinto);
-  border-radius: 2px;
-  border: 0;
-  color: var(--almostWhite);
-  display: inline-block;
-  letter-spacing: 1px;
-  margin: 0;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-  width: auto;
-`;
-
 const StyledDiv = styled.div`
   margin-bottom: 20px;
   border: 2px solid #000;
@@ -122,7 +105,6 @@ export default function EditItemForm(props) {
         <option value={true}>{t("Show Item")}</option>
         <option value={false}>{t("Hide Item")}</option>
       </select> 
-      <StyledButton onClick={() => props.deleteItem(props.index)} >{t("Remove Item")}</StyledButton>
     </StyledDiv>
   );
 }
