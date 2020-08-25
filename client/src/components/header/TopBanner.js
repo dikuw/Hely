@@ -32,7 +32,7 @@ export default function TopBanner(props) {
     <BannerDiv>
       {t("Welcome")} {props.isLoggedIn ? props.name : t("guest")}!
       <SelectDiv>
-        <StyledSelect name="language" onChange={handleChange} >
+        <StyledSelect name="language" onChange={handleChange} value={i18n.language}>
           <option value="es">{t("Spanish")}</option>
           <option value="en">{t("English")}</option>
         </StyledSelect>
