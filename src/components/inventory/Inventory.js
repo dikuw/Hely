@@ -56,7 +56,7 @@ export default function Inventory(props) {
   }, []);
 
   if (!props.isLoggedIn) {
-    return <StyledNoPermissionsDiv>{t("You do not have permission to view this page")}.</StyledNoPermissionsDiv>
+    return <StyledNoPermissionsDiv>{t("Please log in to view this page")}.</StyledNoPermissionsDiv>
   }
   return (
     <StyledWrapperDiv>
@@ -72,7 +72,6 @@ export default function Inventory(props) {
           uploadingPhoto={uploadingPhoto}
           setUploadingPhoto={setUploadingPhoto}
         />)}
-      <StyledButton onClick={props.loadSampleInventory}>Load Sample Data</StyledButton>
     </StyledWrapperDiv>
   );
 }
