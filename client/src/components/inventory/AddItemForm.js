@@ -29,7 +29,7 @@ const StyledForm = styled.form`
     background: #fef2de;
   }
   textarea {
-    width: 100%;
+    width: 66.6%;
   }
   button {
     width: 100%;
@@ -79,6 +79,7 @@ export default function AddItemForm(props) {
   const statusRef = useRef(null);
   const imageRef = useRef(null);
   const descriptionRef = useRef(null);
+  const showRef = useRef(null);
 
   const resetValidation = () => {
     nameRef.current.placeholder = "Name";
@@ -120,7 +121,7 @@ export default function AddItemForm(props) {
         status: statusRef.current.value,
         image: imageRef.current.getAttribute('data-path'),
         description: descriptionRef.current.value,
-        show: true
+        show: showRef.current.value,
       };
       props.addItem(item);
       event.currentTarget.reset();
@@ -160,6 +161,10 @@ export default function AddItemForm(props) {
         <input name="image" id='file-input' type="file" accept="image/png, image/jpeg" data-path="" ref={imageRef} onChange={handleChange} />
       </StyledImageUploadDiv>
       <textarea name="description" ref={descriptionRef} placeholder={t("Please enter a description")} onFocus={resetValidation} />
+      <select name="show" ref={showRef} >
+        <option value={true}>{t("Show Item")}</option>
+        <option value={false}>{t("Hide Item")}</option>
+      </select> 
       <StyledButton type="submit">+ {t("Add Item")}</StyledButton>
     </StyledForm>
   );

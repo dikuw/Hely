@@ -46,7 +46,7 @@ const StyledDiv = styled.div`
     background: #fef2de;
   }
   textarea {
-    width: 100%;
+    width: 66.6%;
   }
   button {
     width: 100%;
@@ -118,6 +118,10 @@ export default function EditItemForm(props) {
         <input name="image" id={`file-input${props.index}`} type="file" accept="image/png, image/jpeg" onChange={handleChange} />
       </StyledImageUploadDiv>
       <textarea name="description" onChange={handleChange} value={props.item.description} />
+      <select name="show" onChange={handleChange} value={props.item.show}>
+        <option value={true}>{t("Show Item")}</option>
+        <option value={false}>{t("Hide Item")}</option>
+      </select> 
       <StyledButton onClick={() => props.deleteItem(props.index)} >{t("Remove Item")}</StyledButton>
     </StyledDiv>
   );
