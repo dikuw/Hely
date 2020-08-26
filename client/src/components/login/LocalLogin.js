@@ -104,14 +104,14 @@ export default function LocalLogin(props) {
       <StyledForm onSubmit={loginClick}>
         <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
         <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
-        <VisibleActionButton type="submit" clickHandler={() => null} buttonLabel={t("Log in")} />
+        <VisibleActionButton type="submit" buttonLabel={t("Log in")} />
       </StyledForm>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       {props.passwordIncorrect ? (<StyledWarningDiv>{t("Email or password is incorrect. Please try again")}</StyledWarningDiv>) : ( "" )}
       <div>{t("Forgot your password")}?</div>
       <StyledForm onSubmit={forgotClick}>
         <input name="forgotEmail" ref={forgotEmailRef} type="text" placeholder={t("Email")}  />
-        <VisibleActionButton type="submit" clickHandler={() => null} buttonLabel={t("Send a Reset")} />
+        <VisibleActionButton type="submit" buttonLabel={t("Send a Reset")} />
       </StyledForm>
       <StyledForm>
         <InvisibleActionButton clickHandler={registerClick} buttonLabel={t("No account? Register here!")} />

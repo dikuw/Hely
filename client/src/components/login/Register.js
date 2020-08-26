@@ -101,7 +101,7 @@ export default function Register(props) {
         <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
         <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
         <input name="confirmPassword" ref={confirmPasswordRef} type="password" placeholder={t("Confirm Password")} onFocus={resetValidation} />
-        <VisibleActionButton type="submit" clickHandler={() => null} buttonLabel={t("Register")} />
+        <VisibleActionButton type="submit" buttonLabel={t("Register")} />
       </StyledForm>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       <InvisibleActionButton clickHandler={goBack} buttonLabel={t("Back to Log In")} />
