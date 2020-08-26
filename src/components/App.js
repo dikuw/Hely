@@ -24,7 +24,7 @@ export default function App(props) {
   const [inventory, setInventory] = useState([]);
   const [orders, setOrders] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState([]);
   const [shipping, setShipping] = useState({
     method:"USPS",
     price: "900"
@@ -63,7 +63,7 @@ export default function App(props) {
       await getUser();
 
       if (user.id) getUserOrders(user.id);
-      console.log('isAdmin', isAdmin);
+      console.log('before getOrders', isAdmin);
       if (isAdmin) {
         getOrders();
       }
@@ -81,7 +81,7 @@ export default function App(props) {
     }
 
     initialize();
-    
+
   }, []);
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export default function App(props) {
         setIsLoggedIn(true);
         console.log('res.data.user.isAdmin', res.data.user.isAdmin);
         setIsAdmin(res.data.user.isAdmin);
-        console.log(isAdmin);
+        console.log('isAdmin', isAdmin);
         setUser({
           id: res.data.user._id,
           name: res.data.user.name,
@@ -176,47 +176,26 @@ export default function App(props) {
   };
 
   const updateItem = (key, updatedItem) => {
-    const inventory = [ ...inventory ];
-    inventory[key] = updatedItem;
-    setInventory({ inventory });
+    const newInventory = [ ...inventory ];
+    newInventory[key] = updatedItem;
+    setInventory({ newInventory });
   }
 
-  const [state, dispatch] = useReducer(reducer, {cart: {}});
-
-  function reducer(state, action, key) {
-    switch (action.type) {
-      case 'increment':
-        return {[key]: state.cart[key] + 1};
-      case 'decrement':
-        return{[key]: state.cart[key] - 1};
-      default:
-        throw new Error();
+  const addToCart = (newItem) => {
+    let newCart = [ ...cart ];
+    const itemId = newCart.findIndex((item) => item.item._id === newItem._id);
+    if (itemId === -1) {
+      newCart.push({ item: newItem, qty: 1 })
+    } else {
+      newCart[itemId].qty += 1;
     }
-  }
-
-  // function updateCart() {
-  //   const [state, dispatch] = useReducer(reducer, {cart: {}});
-  //   return (
-  //     <>
-  //       Count: {state.count}
-  //       <button onClick={() => dispatch({type: 'decrement'}, key)}>-</button>
-  //       <button onClick={() => dispatch({type: 'increment'}, key)}>+</button>
-  //     </>
-  //   );
-  // }
-
-  const addToCart = (key) => {
-    dispatch({type: 'increment'}, key)
-    // setState(prevState => ({
-    //   cart: { ...prevState.cart, [key]: prevState.cart[key] + 1 || 1 }
-    // }))
+    setCart(newCart);
   };
 
   const removeFromCart = (key) => {
-    if (state.cart[key] === 1) {
+    if (cart[key] === 1) {
       deleteFromCart(key);
     } else {
-      dispatch({type: 'decrement'}, key);
       // setState(prevState => ({
       //   cart: { ...prevState.cart, [key]: prevState.cart[key] - 1 }
       // }))
@@ -224,30 +203,25 @@ export default function App(props) {
   };
 
   const deleteFromCart = (key) => {
-    let cart = { ...cart };
+    let newCart = [ ...cart ];
     delete cart[key];
-    setCart(cart);
-    // setState(prevState => {
-    //   let cart = { ...prevState.cart }; 
-    //   delete cart[key];                                 
-    //   return { cart };
-    // });
+    setCart(newCart);
   }
 
   const getCartTotal = () => {
-    const total = Object.keys(state.cart).reduce((prevTotal, key) => {
-      const cartItem = Object.values(state.inventory).filter(item => item.id===key)[0];
-      const count = state.cart[key];
-      if (cartItem && cartItem.available) {
-        return prevTotal + (count * cartItem.price);
+    const total = cart.reduce((total, item) => {
+      const cartItem = item.item;
+      const isAvailable = inventory.filter(item => item._id===cartItem._id)[0].isAvailable;
+      if (cartItem && isAvailable) {
+        return total + (item.qty * cartItem.price);
       }
-      return prevTotal;
+      return total;
     }, 0);
     return total;
   }
 
   const getCartItemCount = () => {
-    return Object.values(cart).reduce((a, b) => a + b, 0);
+    return cart.length;
   }
 
   const postCreatePaymentIntent = async (payload) => {

@@ -57,10 +57,9 @@ const StyledAddToCartButton = styled.button`
 export default function Card(props) {
   const { t } = useTranslation();
 
-  const handleClick = (key) => {
-    props.addToCart(key);
+  const handleClick = (item) => {
+    props.addToCart(item);
     props.setShowAddedPopup(true);
-    // props.togglePopup();
   };
 
   const { item, index } = props;
@@ -76,7 +75,7 @@ export default function Card(props) {
       <p>{formatPrice(item.price)}</p>
     </figcaption>
     <StyledAddToCartWrapperDiv>
-      <StyledAddToCartButton disabled={!isAvailable} onClick={() => handleClick(index)}>{isAvailable ? t('Add to Cart') : t('Sold Out')}</StyledAddToCartButton>
+      <StyledAddToCartButton disabled={!isAvailable} onClick={() => handleClick(item)}>{isAvailable ? t('Add to Cart') : t('Sold Out')}</StyledAddToCartButton>
     </StyledAddToCartWrapperDiv>
   </StyledGridFigure>
   );

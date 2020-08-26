@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
 
@@ -51,50 +52,51 @@ const StyledButton = styled.button`
   color: var(--rosaVieja);
 `;
 
-class CartItem extends React.Component {
-  render() {
-    const { item, index } = this.props;
-    const isAvailable = item.available;
-    const total = formatPrice(this.props.qty * item.price );
-    if (!isAvailable) {
-      return (
-        <StyledGridWrapperDiv>
-          <StyledItemDiv>
-            <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
-          </StyledItemDiv>
-          <StyledItemDiv>Sorry <em>{item ? item.name : 'this'}</em> is no longer available.</StyledItemDiv>
-          <StyledItemDiv>
-            <StyledButton onClick={() => this.props.deleteFromCart(index)}>&times;</StyledButton>
-          </StyledItemDiv>
-        </StyledGridWrapperDiv>
-      )
-    }
+export default function CartItem(props) {
+  const { t } = useTranslation();
+
+  const { item, index } = props;
+  //  TODO check if is available from current inventory
+  //  ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ 
+  const isAvailable = props.inventory.filter(inventoryItem => inventoryItem._id===item._id)[0].isAvailable;
+  //  ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ 
+  const total = formatPrice(props.qty * item.price );
+  if (!isAvailable) {
     return (
       <StyledGridWrapperDiv>
         <StyledItemDiv>
-          <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
+          <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
         </StyledItemDiv>
+        <StyledItemDiv>{t("Sorry")} <em>{isAvailable ? item.name : t("this")}</em> {t("is no longer available")}.</StyledItemDiv>
         <StyledItemDiv>
-          <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
-        </StyledItemDiv>
-        <StyledItemDiv>
-          <StyledItemQuanityGroupDiv>
-            <StyledButton onClick={() => this.props.removeFromCart(index)}>-</StyledButton>
-            <StyledQuantityDiv>
-              {this.props.qty}
-            </StyledQuantityDiv>
-            <StyledButton onClick={() => this.props.addToCart(index)}>+</StyledButton>
-          </StyledItemQuanityGroupDiv>
-        </StyledItemDiv>
-        <StyledItemDiv>
-          <StyledGridPriceDiv>{total}</StyledGridPriceDiv>
-        </StyledItemDiv>
-        <StyledItemDiv>
-          <StyledButton onClick={() => this.props.deleteFromCart(index)}>&times;</StyledButton>
+          <StyledButton onClick={() => props.deleteFromCart(index)}>&times;</StyledButton>
         </StyledItemDiv>
       </StyledGridWrapperDiv>
-    );
-  };
+    )
+  }
+  return (
+    <StyledGridWrapperDiv>
+      <StyledItemDiv>
+        <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
+      </StyledItemDiv>
+      <StyledItemDiv>
+        <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
+      </StyledItemDiv>
+      <StyledItemDiv>
+        <StyledItemQuanityGroupDiv>
+          <StyledButton onClick={() => props.removeFromCart(index)}>-</StyledButton>
+          <StyledQuantityDiv>
+            {props.qty}
+          </StyledQuantityDiv>
+          <StyledButton onClick={() => props.addToCart(index)}>+</StyledButton>
+        </StyledItemQuanityGroupDiv>
+      </StyledItemDiv>
+      <StyledItemDiv>
+        <StyledGridPriceDiv>{total}</StyledGridPriceDiv>
+      </StyledItemDiv>
+      <StyledItemDiv>
+        <StyledButton onClick={() => props.deleteFromCart(index)}>&times;</StyledButton>
+      </StyledItemDiv>
+    </StyledGridWrapperDiv>
+  );
 };
-
-export default CartItem;
