@@ -23,6 +23,6 @@ const StyledButton = styled.button`
 
 export default function InvisibleActionButton(props) {
   return (
-    <StyledButton onClick={() => props.clickHandler()}>{props.buttonLabel}</StyledButton>
+    <StyledButton onClick={props.clickHandler ? props.clickHandler : null}>{props.buttonLabel}</StyledButton>
   )
 };
