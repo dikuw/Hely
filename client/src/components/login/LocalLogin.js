@@ -1,6 +1,7 @@
 import React, { useRef }  from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
+import { InvisibleActionButton, VisibleActionButton } from '../shared/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -29,41 +30,6 @@ const StyledForm = styled.form`
   button {
     border: 0;
   }
-`;
-
-const StyledButton = styled.button`
-  font-size: 1.2em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--rosaVieja);
-  border-color: var(--rosaVieja);
-  border-radius: 2px;
-  border: 0;
-  color: #ffffff;
-  display: inline-block;
-  height: 45px;
-  letter-spacing: 1px;
-  line-height: 45px;
-  margin: 0.25rem;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-  width: auto;
-`;
-
-const StyledButtonInvisible = styled.button`
-  font-size: 0.8em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  color: var(--vinoTinto);
-  background: white; 
-  border: 0;
-  display: inline-block;
-  letter-spacing: 1px;
-  margin-top: 0.5rem;
-  padding: 5px 5px;
-  width: 100%;
 `;
 
 const StyledWarningDiv = styled.div`
@@ -138,17 +104,17 @@ export default function LocalLogin(props) {
       <StyledForm onSubmit={loginClick}>
         <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
         <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
-        <StyledButton type="submit" >{t("Log in")}</StyledButton>
+        <VisibleActionButton type="submit" clickHandler={() => null} buttonLabel={t("Log in")} />
       </StyledForm>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       {props.passwordIncorrect ? (<StyledWarningDiv>{t("Email or password is incorrect. Please try again")}</StyledWarningDiv>) : ( "" )}
       <div>{t("Forgot your password")}?</div>
       <StyledForm onSubmit={forgotClick}>
         <input name="forgotEmail" ref={forgotEmailRef} type="text" placeholder={t("Email")}  />
-        <StyledButton type="submit" >{t("Send a Reset")}</StyledButton>
+        <VisibleActionButton type="submit" clickHandler={() => null} buttonLabel={t("Send a Reset")} />
       </StyledForm>
       <StyledForm>
-        <StyledButtonInvisible onClick={() => registerClick()}>{t("No account? Register here!")}</StyledButtonInvisible>
+        <InvisibleActionButton clickHandler={registerClick} buttonLabel={t("No account? Register here!")} />
       </StyledForm>
     </StyledWrapperDiv>
   )

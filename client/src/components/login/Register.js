@@ -1,6 +1,7 @@
 import React, { useRef }  from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
+import { InvisibleActionButton, VisibleActionButton } from '../shared/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -26,26 +27,6 @@ const StyledForm = styled.form`
   button {
     border: 0;
   }
-`;
-
-const StyledButton = styled.button`
-  font-size: 1.2em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--rosaVieja);
-  border-color: var(--rosaVieja);
-  border-radius: 2px;
-  border: 0;
-  color: #ffffff;
-  display: inline-block;
-  height: 45px;
-  letter-spacing: 1px;
-  line-height: 45px;
-  margin: 0.25rem;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-  width: auto;
 `;
 
 const StyledWarningDiv = styled.div`
@@ -109,6 +90,10 @@ export default function Register(props) {
     }
   };
 
+  const goBack = () => {
+    props.history.push("/login");
+  };
+
   return (
     <StyledWrapperDiv>
       <StyledForm onSubmit={registerClick}>
@@ -116,9 +101,10 @@ export default function Register(props) {
         <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
         <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
         <input name="confirmPassword" ref={confirmPasswordRef} type="password" placeholder={t("Confirm Password")} onFocus={resetValidation} />
-        <StyledButton type="submit" >{t("Register")}</StyledButton>
+        <VisibleActionButton type="submit" clickHandler={() => null} buttonLabel={t("Register")} />
       </StyledForm>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
+      <InvisibleActionButton clickHandler={goBack} buttonLabel={t("Back to Log In")} />
     </StyledWrapperDiv>
   )
 };
