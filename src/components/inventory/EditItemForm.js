@@ -18,9 +18,6 @@ const StyledDiv = styled.div`
     border: 0;
     border-bottom: 1px solid #000;
     border-right: 1px solid #000;
-    -webkit-appearance: none;
-      -moz-appearance: none;
-            appearance: none;
     border-radius: 0;
     background: #fff;
   }
@@ -64,12 +61,12 @@ export default function EditItemForm(props) {
     }
 
     if (propName === "image") {
-      props.togglePopup();
+      props.setUploadingPhoto(true);
       const formData = new FormData(); 
       formData.append('file', e.target.files[0]);
       const res = await apis.postImage(formData);
       updatedValue = `${res.data.fileName}`;
-      props.togglePopup();
+      props.setUploadingPhoto(false);
     };
 
     const updatedItem = {
