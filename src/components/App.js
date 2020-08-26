@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from 'react-router-dom';
 import TopBanner from './header/TopBanner';
@@ -24,7 +24,7 @@ export default function App(props) {
   const [inventory, setInventory] = useState([]);
   const [orders, setOrders] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const [shipping, setShipping] = useState({
     method:"USPS",
     price: "900"
@@ -85,7 +85,6 @@ export default function App(props) {
   }, []);
 
   useEffect(() => {
-    console.log('cart', cart);
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]); // Only re-run the effect if count changes
 
@@ -192,26 +191,32 @@ export default function App(props) {
     setCart(newCart);
   };
 
-  const removeFromCart = (key) => {
-    if (cart[key] === 1) {
-      deleteFromCart(key);
+  const removeFromCart = (newItem) => {
+    let newCart = [ ...cart ];
+    const itemId = newCart.findIndex((item) => item.item._id === newItem._id);
+    if (itemId === -1) {
+      newCart.push({ item: newItem, qty: 1 })
     } else {
-      // setState(prevState => ({
-      //   cart: { ...prevState.cart, [key]: prevState.cart[key] - 1 }
-      // }))
+      if (newCart[itemId].qty === 1) {
+        newCart.splice(itemId, 1);
+      } else {
+        newCart[itemId].qty -= 1;
+      }
     }
+    setCart(newCart);
   };
 
-  const deleteFromCart = (key) => {
+  const deleteFromCart = (newItem) => {
     let newCart = [ ...cart ];
-    delete cart[key];
+    const itemId = newCart.findIndex((item) => item.item._id === newItem._id);
+    newCart.splice(itemId, 1);
     setCart(newCart);
   }
 
   const getCartTotal = () => {
     const total = cart.reduce((total, item) => {
       const cartItem = item.item;
-      const isAvailable = inventory.filter(item => item._id===cartItem._id)[0].isAvailable;
+      const isAvailable = inventory.filter(item => item.id===cartItem.id)[0].available;
       if (cartItem && isAvailable) {
         return total + (item.qty * cartItem.price);
       }
@@ -221,7 +226,10 @@ export default function App(props) {
   }
 
   const getCartItemCount = () => {
-    return cart.length;
+    const total = cart.reduce((total, item) => {
+      return total + item.qty;
+    }, 0);
+    return total;
   }
 
   const postCreatePaymentIntent = async (payload) => {
@@ -309,6 +317,7 @@ export default function App(props) {
                 history={props.history} 
                 inventory={inventory} 
                 cart={cart} 
+                getCartTotal={getCartTotal}
                 addToCart={addToCart} 
                 removeFromCart={removeFromCart} 
                 deleteFromCart={deleteFromCart} 

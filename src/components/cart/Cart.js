@@ -19,7 +19,7 @@ const StyledUl = styled.ul`
 export default function Cart(props) {
   const { t } = useTranslation();
 
-  const total = 999;
+  const total = props.getCartTotal();
 
   if (!total) {
     return (
@@ -31,7 +31,7 @@ export default function Cart(props) {
     <StyledWrapperDiv>
       <StyledUl>
         {props.cart.map((item) => (
-          <CartItem key={item.item.id} index={item.item.id} qty={item.qty} item={item.item} inventory={props.inventory} addToCart={props.addToCart} removeFromCart={props.removeFromCart} deleteFromCart={props.deleteFromCart} />
+          <CartItem key={item.item.id} qty={item.qty} item={item.item} inventory={props.inventory} addToCart={props.addToCart} removeFromCart={props.removeFromCart} deleteFromCart={props.deleteFromCart} />
         ))}
       </StyledUl>
       <CartFooter history={props.history} total={total} />

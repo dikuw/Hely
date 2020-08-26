@@ -180,7 +180,7 @@ export default function EditItemForm(props) {
         <StyledFormRowDiv>
           <StyledUl>
             {Object.keys(props.item.cart).map((key, i) => (
-              <CartItem key={key} index={key} qty={props.item.cart[key]} item={props.inventory.filter(item => item.id===key)[0]} />
+              <CartItem key={key} index={key} qty={props.item.cart[key]} item={props.inventory.find(item => item.id===key)} />
             ))}
           </StyledUl>
         </StyledFormRowDiv>
