@@ -55,12 +55,12 @@ const StyledButton = styled.button`
 export default function CartItem(props) {
   const { t } = useTranslation();
 
-  const { item, index } = props;
-  //  TODO check if is available from current inventory
-  //  ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ ⬇ 
-  const isAvailable = props.inventory.filter(inventoryItem => inventoryItem._id===item._id)[0].isAvailable;
-  //  ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ 
+  const { item } = props;
+
+  const isAvailable = props.inventory.find(inventoryItem => inventoryItem.id===item.id).available;
+
   const total = formatPrice(props.qty * item.price );
+
   if (!isAvailable) {
     return (
       <StyledGridWrapperDiv>
@@ -69,7 +69,7 @@ export default function CartItem(props) {
         </StyledItemDiv>
         <StyledItemDiv>{t("Sorry")} <em>{isAvailable ? item.name : t("this")}</em> {t("is no longer available")}.</StyledItemDiv>
         <StyledItemDiv>
-          <StyledButton onClick={() => props.deleteFromCart(index)}>&times;</StyledButton>
+          <StyledButton onClick={() => props.deleteFromCart(item)}>&times;</StyledButton>
         </StyledItemDiv>
       </StyledGridWrapperDiv>
     )
@@ -84,18 +84,18 @@ export default function CartItem(props) {
       </StyledItemDiv>
       <StyledItemDiv>
         <StyledItemQuanityGroupDiv>
-          <StyledButton onClick={() => props.removeFromCart(index)}>-</StyledButton>
+          <StyledButton onClick={() => props.removeFromCart(item)}>-</StyledButton>
           <StyledQuantityDiv>
             {props.qty}
           </StyledQuantityDiv>
-          <StyledButton onClick={() => props.addToCart(index)}>+</StyledButton>
+          <StyledButton onClick={() => props.addToCart(item)}>+</StyledButton>
         </StyledItemQuanityGroupDiv>
       </StyledItemDiv>
       <StyledItemDiv>
         <StyledGridPriceDiv>{total}</StyledGridPriceDiv>
       </StyledItemDiv>
       <StyledItemDiv>
-        <StyledButton onClick={() => props.deleteFromCart(index)}>&times;</StyledButton>
+        <StyledButton onClick={() => props.deleteFromCart(item)}>&times;</StyledButton>
       </StyledItemDiv>
     </StyledGridWrapperDiv>
   );
