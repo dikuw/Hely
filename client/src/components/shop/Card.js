@@ -59,7 +59,8 @@ export default function Card(props) {
 
   const handleClick = (key) => {
     props.addToCart(key);
-    props.togglePopup();
+    props.setShowAddedPopup(true);
+    // props.togglePopup();
   };
 
   const { item, index } = props;

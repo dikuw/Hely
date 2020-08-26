@@ -18,9 +18,6 @@ const StyledForm = styled.form`
     border: 0;
     border-bottom: 1px solid #000;
     border-right: 1px solid #000;
-    -webkit-appearance: none;
-      -moz-appearance: none;
-            appearance: none;
     border-radius: 0;
     background: #fff;
   }

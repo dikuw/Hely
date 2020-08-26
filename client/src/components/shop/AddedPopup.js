@@ -78,9 +78,13 @@ export default function AddedPopup(props) {
   const { t } = useTranslation();
 
   const handleClick = () => {
-    props.togglePopup();
+    props.setShowAddedPopup(false);
     props.history.push("/cart");
   };
+
+  const closePopup = () => {
+    props.setShowAddedPopup(false);
+  }
 
   return (
     <StyledPopupDiv >  
@@ -89,7 +93,7 @@ export default function AddedPopup(props) {
           <StyledPopupHeaderH1>{t("Added to Cart!")}</StyledPopupHeaderH1>  
         </StyledPopupHeaderDiv>
         <StyledButton onClick={() => handleClick()}>{t("Go to Cart")}</StyledButton>
-        <StyledButtonInvisible onClick={props.togglePopup}>{t("Keep Shopping")}</StyledButtonInvisible>
+        <StyledButtonInvisible onClick={closePopup}>{t("Keep Shopping")}</StyledButtonInvisible>
       </StyledPopupWrapperDiv>  
     </StyledPopupDiv>  
   ); 

@@ -10,16 +10,12 @@ const StyledGrid = styled.div`
   margin: 30px auto;
 `;
 
-class Grid extends React.Component {
-  render() {
-    return (
-      <StyledGrid>
-        {Object.values(this.props.inventory).map((item) => 
-          <Card key={item.id} index={item.id} item={item} addToCart={this.props.addToCart} togglePopup={this.props.togglePopup} />
-        )}
-      </StyledGrid>
-    )
-  }
+export default function Grid(props) {
+  return (
+    <StyledGrid>
+      {Object.values(props.inventory).map((item) => 
+        <Card key={item.id} index={item.id} item={item} addToCart={props.addToCart} setShowAddedPopup={props.setShowAddedPopup} />
+      )}
+    </StyledGrid>
+  )
 }
-
-export default Grid;
