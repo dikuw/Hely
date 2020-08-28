@@ -11,7 +11,7 @@ exports.getOrders = async (req, res) => {
 };
 
 exports.getUserOrders = async (req, res) => {
-  const orders = await Order.find({ "user.id" : req.params.id });
+  const orders = await Order.find({ "user._id" : req.params.id });
   if (!orders.length) {
     return res.status(200).json({ success: false, error: "No orders found" });
   } else {
