@@ -54,6 +54,8 @@ const Link = styled.a`
 
 export default function NavMenu(props) {
   const { t } = useTranslation();
+  
+  const cartItemCount = props.getCartItemCount();
 
   const handleClick = (link, menuOpen) => {
     props.setOpen(!menuOpen)
@@ -66,7 +68,7 @@ export default function NavMenu(props) {
       <Li><Link onClick={() => handleClick('/face', props.menuOpen) } >{t("Face")}</Link></Li>
       <Li><Link onClick={() => handleClick('/eyes', props.menuOpen) } >{t("Eyes")}</Link></Li>
       <Li><Link onClick={() => handleClick('/brushes', props.menuOpen) } >{t("Brushes")}</Link></Li>
-      <Li><Link onClick={() => handleClick('/cart', props.menuOpen) } >{t("Cart")} ({props.getCartItemCount()})</Link></Li>
+      <Li><Link onClick={() => handleClick('/cart', props.menuOpen) } >{t("Cart")} {cartItemCount ? `(${cartItemCount})` : ``}</Link></Li>
       {props.isAdmin ? (
         <>
           <Li><Link onClick={() => handleClick('/inventory', props.menuOpen) } >{t("Inventory")}</Link></Li>

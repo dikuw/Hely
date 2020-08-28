@@ -16,16 +16,11 @@ const Nav = styled.nav`
     margin-top: 30px;
   }
 `
-
-class Navigation extends React.Component {
-  render() {
-    return (
-      <Nav>
-        <Burger isLoggedIn={this.props.isLoggedIn} isAdmin={this.props.isAdmin} history={this.props.history} getCartItemCount={this.props.getCartItemCount} logoutUser={this.props.logoutUser} />
-        <CartIcon getCartItemCount={this.props.getCartItemCount} />
-      </Nav>
-    );
-  }
+export default function Navigation(props) {
+  return (
+    <Nav>
+      <Burger isLoggedIn={props.isLoggedIn} isAdmin={props.isAdmin} history={props.history} getCartItemCount={props.getCartItemCount} logoutUser={props.logoutUser} />
+      <CartIcon getCartItemCount={props.getCartItemCount} />
+    </Nav>
+  );
 };
-
-export default Navigation;
