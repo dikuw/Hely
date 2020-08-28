@@ -41,17 +41,12 @@ export default function App(props) {
     postalCode: "",
     mobile: "",
   });
-  const [user, setUser] = useState({
-    id: "",
-    name: "",
-    email: ""
-  });
+  const [user, setUser] = useState({});
   const [clientSecret, setClientSecret] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAddedPopup, setShowAddedPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isPasswordIncorrect, setIsPasswordIncorrect] = useState(false);
 
   useEffect(() => {
@@ -62,47 +57,42 @@ export default function App(props) {
     async function initialize() {
       await getUser();
 
-      if (user.id) getUserOrders(user.id);
-      console.log('before getOrders', isAdmin);
-      if (isAdmin) {
-        getOrders();
-      }
-
       await apis.getInventory().then(inventory => {
         setInventory(inventory.data.data);
         setIsLoading(false);
       });
 
-      const localStorageRef = localStorage.getItem('cart');
-      console.log('localStorageRef', localStorageRef);
-      if (localStorageRef) {
-        setCart(JSON.parse(localStorageRef));
+      const cartLS = localStorage.getItem('cart');
+      if (cartLS) {
+        setCart(JSON.parse(cartLS));
       }
     }
 
     initialize();
-
   }, []);
 
   useEffect(() => {
+    //  get user orders
+    if (user._id) getUserOrders(user._id);
+
+    //  get all orders for admins
+    if (user.isAdmin) {
+      getOrders();
+    }
+  }, [user]);
+
+  useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]); // Only re-run the effect if count changes
+  }, [cart]);
 
   const getUser = async () => {
     await apis.getUser().then(res => {
-      if (res.data.user) {
+      const user = res.data.user;
+      if (user) {
         setIsLoggedIn(true);
-        console.log('res.data.user.isAdmin', res.data.user.isAdmin);
-        setIsAdmin(res.data.user.isAdmin);
-        console.log('isAdmin', isAdmin);
-        setUser({
-          id: res.data.user._id,
-          name: res.data.user.name,
-          email: res.data.user.email,
-        });
-        return res.data.user._id;
-      } else {
-      }
+        setUser(user);
+        return user;
+      } 
     });
   }
 
@@ -111,7 +101,6 @@ export default function App(props) {
     await apis.register(payload).then(res => {
       if (res.data.email) {
         setIsLoggedIn(true);
-        setIsAdmin(res.data.isAdmin);
         props.history.push("/");
       } else {
         console.log('error', res);
@@ -124,14 +113,9 @@ export default function App(props) {
     await apis.login(payload).then(res => {
       if (res.data.email) {
         setIsLoggedIn(true);
-        setIsAdmin(res.data.isAdmin);
-        setUser({
-          id: res.data._id,
-          name: res.data.name,
-          email: res.data.email,
-        });
-        getUserOrders(user.id);
-        if (isAdmin) {
+        setUser(res.data);
+        getUserOrders(user._id);
+        if (user.isAdmin) {
           getOrders();
         }
         props.history.push("/");
@@ -146,9 +130,9 @@ export default function App(props) {
     const payload = { ...user };
     await apis.logout(payload).then(res => {
       setIsLoggedIn(false);
-      setIsAdmin(false);
       setUserOrders([]);
       setOrders([]);
+      setCart([]);
       props.history.push("/");
     });
   }
@@ -240,19 +224,19 @@ export default function App(props) {
 
   const updateCustomer = (updatedProp, update) => {
     setCustomer( { ...customer, [updatedProp]: update });
-    // setState(prevState => ({
-    //   customer: { ...prevState.customer, [updatedProp]: update }
-    // }))
   }
 
   const addOrder = async (order) => {
     await apis.postOrder(order).then(res => {
-      console.log('addOrder', res)
+      console.log('order added:', res);
+      setCart([]);
     });
   }
 
   const getUserOrders = async (userID) => {
+    console.log('getUserOrders userID', userID);
     await apis.getUserOrders(userID).then(res => {
+      console.log('getUserOrders res', res);
       setUserOrders(res.data.data);
     });
   }
@@ -272,7 +256,7 @@ export default function App(props) {
     <main>
       <TopBanner isLoggedIn={isLoggedIn} name={user.name}/>
       <Header  />
-      <Navigation isLoggedIn={isLoggedIn} isAdmin={isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
+      <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
       <Switch>
         <Route  exact path="/" 
           render={() => (
