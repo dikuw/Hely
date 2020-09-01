@@ -84,8 +84,8 @@ export default function Orders(props) {
         </StyledHeaderDiv>
       </StyledGridWrapperDiv>
       <StyledUl>
-        {Object.keys(props.order.cart).map((key, i) => (
-          <OrderItem key={key} index={key} qty={props.order.cart[key]} item={Object.values(props.inventory).filter(item => item.id===key)[0]} />
+        {props.order.cart.map((cartItem) => (
+          <OrderItem key={cartItem.item._id} index={cartItem.item._id} qty={cartItem.qty} item={cartItem.item} />
         ))}
       </StyledUl>
     </StyledWrapperDiv>

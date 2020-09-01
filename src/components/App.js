@@ -151,7 +151,6 @@ export default function App(props) {
   const addItem = async (inventoryItem) => {
     const payload = { ...inventoryItem };
     await apis.insertInventoryItem(payload).then(res => {
-      console.log(`item inserted successfully`, res);
       setInventory([ ...inventory, JSON.parse(res.config.data) ]);
     });
   };
@@ -227,21 +226,17 @@ export default function App(props) {
 
   const addOrder = async (order) => {
     await apis.postOrder(order).then(res => {
-      console.log('order added:', res);
       setCart([]);
     });
   }
 
   const getUserOrders = async (userID) => {
-    console.log('getUserOrders userID', userID);
     await apis.getUserOrders(userID).then(res => {
-      console.log('getUserOrders res', res);
       setUserOrders(res.data.data);
     });
   }
 
   const getOrders = async () => {
-    console.log('getOrders');
     await apis.getOrders().then(res => {
       setOrders(res.data.data);
     });
@@ -404,7 +399,6 @@ export default function App(props) {
                 isLoggedIn={isLoggedIn} 
                 user={user}
                 userOrders={userOrders}
-                inventory={inventory} 
               />
             </>
           )}
@@ -429,7 +423,6 @@ export default function App(props) {
               <Banner bannerString={t("Orders")} />
               <Orders 
                 isLoggedIn={isLoggedIn} 
-                inventory={inventory} 
                 orders={orders} 
               />
             </>

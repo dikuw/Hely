@@ -98,7 +98,7 @@ const StyledUl = styled.ul`
   width: 100%;
 `;
 
-export default function EditItemForm(props) {
+export default function EditOrderForm(props) {
   const { t } = useTranslation();
 
   const handleChange = async (e) => {
@@ -179,8 +179,8 @@ export default function EditItemForm(props) {
         </StyledFormRowDiv>
         <StyledFormRowDiv>
           <StyledUl>
-            {Object.keys(props.item.cart).map((key, i) => (
-              <CartItem key={key} index={key} qty={props.item.cart[key]} item={props.inventory.find(item => item.id===key)} />
+            {props.item.cart.map((cartItem) => (
+              <CartItem key={cartItem.item.id} index={cartItem.item.id} qty={cartItem.qty} item={cartItem.item} />
             ))}
           </StyledUl>
         </StyledFormRowDiv>

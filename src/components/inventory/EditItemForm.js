@@ -106,7 +106,6 @@ export default function EditItemForm(props) {
       const formData = new FormData(); 
       formData.append('file', e.target.files[0]);
       const res = await apis.postImage(formData);
-      console.log('res', res);
       updatedValue = res.data.fileName;
       imageRef.current.setAttribute('data-path', res.data.fileName);
       props.setUploadingPhoto(false);
