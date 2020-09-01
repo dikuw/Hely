@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
+import { InvisibleActionButton, VisibleActionButton } from '../shared/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -59,41 +60,6 @@ const StyledGroupDiv = styled.div`
   }
 `;
 
-const StyledCheckoutButton = styled.button`
-  font-size: 1.2em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--rosaVieja);
-  border-color: var(--rosaVieja);
-  border-radius: 2px;
-  border: 0;
-  color: #ffffff;
-  display: inline-block;
-  height: 45px;
-  letter-spacing: 1px;
-  line-height: 45px;
-  margin: 0;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-  width: auto;
-`;
-
-const StyledButtonInvisible = styled.button`
-  font-size: 0.8em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  color: var(--vinoTinto);
-  background: white; 
-  border: 0;
-  display: inline-block;
-  letter-spacing: 1px;
-  margin-top: 0.5rem;
-  padding: 5px 5px;
-  width: 100%;
-`;
-
 export default function Checkout(props) {
   const { t } = useTranslation();
 
@@ -136,8 +102,8 @@ export default function Checkout(props) {
             <option value="VE">Venezuela</option>
           </select>
         <input name="mobile" type="text" placeholder={t("Mobile")} onChange={handleChange} value={props.customer.mobile} />
-        <StyledCheckoutButton onClick={() => handleClick()}>{t("Continue to Shipping")}</StyledCheckoutButton>
-        <StyledButtonInvisible onClick={() => goBack()}>{t("Back to Cart")}</StyledButtonInvisible>
+        <VisibleActionButton  clickHandler={handleClick} buttonLabel={t("Continue to Shipping")} />
+        <InvisibleActionButton clickHandler={goBack} buttonLabel={t("Back to Cart")} />
       </StyledForm>
     </StyledWrapperDiv>
   )

@@ -152,8 +152,6 @@ export default function App(props) {
     const payload = { ...inventoryItem };
     await apis.insertInventoryItem(payload).then(res => {
       console.log(`item inserted successfully`, res);
-      // const inventory = [ ...inventory ];
-      // inventory.push(inventoryItem);
       setInventory([ ...inventory, JSON.parse(res.config.data) ]);
     });
   };
@@ -416,7 +414,7 @@ export default function App(props) {
               <Banner bannerString={t("Inventory")} />
               <Inventory 
                 isLoggedIn={isLoggedIn} 
-                inventory={Object.values(inventory).filter(item => item.show===true)} 
+                inventory={inventory} 
                 addItem={addItem}
                 updateItem={updateItem}
               />

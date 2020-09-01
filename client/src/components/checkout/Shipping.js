@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { formatPrice } from '../../helpers.js';
+import { InvisibleActionButton, VisibleActionButton } from '../shared/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -57,40 +58,6 @@ const StyledPriceDiv = styled.div`
   font-weight: 600;
 `;
 
-const StyledCheckoutButton = styled.button`
-  font-size: 1.2em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--rosaVieja);
-  border-color: var(--rosaVieja);
-  border-radius: 2px;
-  border: 0;
-  color: #ffffff;
-  display: inline-block;
-  height: 45px;
-  letter-spacing: 1px;
-  line-height: 45px;
-  margin: 0.25rem;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-`;
-
-const StyledButtonInvisible = styled.button`
-  font-size: 0.8em;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  color: var(--vinoTinto);
-  background: white; 
-  border: 0;
-  display: inline-block;
-  letter-spacing: 1px;
-  margin-top: 0.5rem;
-  padding: 5px 5px;
-  width: 100%;
-`;
-
 export default function CheckoutShipping(props) {
   const { t } = useTranslation();
 
@@ -131,8 +98,8 @@ export default function CheckoutShipping(props) {
           <StyledDurationDiv>2 business days</StyledDurationDiv>
           <StyledPriceDiv>{formatPrice(1299)}</StyledPriceDiv>
         </StyledGroupDiv>
-        <StyledCheckoutButton onClick={() => handleClick()}>{t("Continue to Payment")}</StyledCheckoutButton>
-        <StyledButtonInvisible onClick={() => goBack()}>{t("Back to Information")}</StyledButtonInvisible>
+        <VisibleActionButton  clickHandler={handleClick} buttonLabel={t("Continue to Payment")} />
+        <InvisibleActionButton clickHandler={goBack} buttonLabel={t("Back to Information")} />
       </StyledForm>
     </StyledWrapperDiv>
   )
