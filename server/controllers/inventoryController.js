@@ -36,7 +36,7 @@ exports.addItem = async (req, res) => {
   const item = new Item(body);
 
   if (!item) {
-    return res.status(400).json({ success: false, error: err });
+    return res.status(400).json({ success: false, error: "item not found" });
   }
 
   await item.save();
@@ -58,13 +58,13 @@ exports.updateItem = async (req, res) => {
     });
   }
 
-  const item = await Item.findOneAndUpdate({ _id: req.body._id }, req.body, {
+  const item = await Item.findOneAndUpdate({ id: req.body.id }, req.body, {
     new: true,
     runValidators: true
   }).exec();
 
   if (!item) {
-    return res.status(400).json({ success: false, error: err });
+    return res.status(400).json({ success: false, error: "item not found" });
   }
 
   await item.save();

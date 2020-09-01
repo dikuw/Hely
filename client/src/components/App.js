@@ -157,13 +157,10 @@ export default function App(props) {
   };
 
   const updateItem = async (updatedItem) => {
-    console.log('updatedItem', updatedItem)
-    // const payload = { ...updatedItem };
-    // await apis.updateInventoryItem(payload).then(res => {
-    //   console.log(`item updated successfully`, res);
-    //   const newInventory = [ ...inventory ]
-    //   setInventory([ ...newInventory, JSON.parse(res.config.data) ]);
-    // });
+    const payload = { ...updatedItem };
+    await apis.updateInventoryItem(payload).then(res => {
+      console.log(`item updated successfully`, res);
+    });
   }
 
   const addToCart = (newItem) => {
@@ -419,6 +416,7 @@ export default function App(props) {
               <Inventory 
                 isLoggedIn={isLoggedIn} 
                 inventory={inventory} 
+                setInventory={setInventory}
                 addItem={addItem}
                 updateItem={updateItem}
               />
