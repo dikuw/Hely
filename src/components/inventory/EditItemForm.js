@@ -64,6 +64,9 @@ const StyledButton = styled.button`
   padding: 0 25px;
   transition: background-color 300ms ease-out;
   width: auto;
+  :disabled {
+    color: var(--vinoTinto);
+  }
 `;
 
 
@@ -91,16 +94,32 @@ export default function EditItemForm(props) {
   }
 
   const handleChange = async (e) => {
+    let updatedValue = e.currentTarget.value;
     let propName = e.currentTarget.name;
+
+    if (updatedValue === "true" || updatedValue === "false") {	
+      updatedValue = JSON.parse(updatedValue);	
+    }	
 
     if (propName === "image") {
       props.setUploadingPhoto(true);
       const formData = new FormData(); 
       formData.append('file', e.target.files[0]);
       const res = await apis.postImage(formData);
-      e.currentTarget.value = `${res.data.fileName}`;
+      console.log('res', res);
+      updatedValue = res.data.fileName;
+      imageRef.current.setAttribute('data-path', res.data.fileName);
       props.setUploadingPhoto(false);
     };
+
+    const updatedItem = {
+      ...props.item,	
+      [propName]: updatedValue
+    };
+
+    const inventory = [ ...props.inventory ];
+    inventory[props.index] = updatedItem;
+    props.setInventory(inventory);
 
     setIsDirty(true);
 
@@ -140,6 +159,7 @@ export default function EditItemForm(props) {
         show: showRef.current.value,
       };
       props.updateItem(item);
+      setIsDirty(false);
     }
   }
 
@@ -161,7 +181,7 @@ export default function EditItemForm(props) {
         <label key={props.index} htmlFor={`file-input${props.index}`}>
           <StyledImageUploadImg src={`https://res.cloudinary.com/dikuw/image/upload/${props.item.image}`} alt={props.item.image}/>
         </label>
-        <input name="image" id={`file-input${props.index}`} type="file" accept="image/png, image/jpeg" ref={imageRef} onChange={handleChange} />
+        <input name="image" id={`file-input${props.index}`} type="file" accept="image/png, image/jpeg" data-path="" ref={imageRef} onChange={handleChange} />
       </StyledImageUploadDiv>
       <textarea name="description" ref={descriptionRef} onChange={handleChange} onFocus={resetValidation} value={props.item.description} />
       <select name="show" ref={showRef} onChange={handleChange} value={props.item.show}>

@@ -30,6 +30,8 @@ export default function Inventory(props) {
           key={i} 
           index={i} 
           item={item} 
+          inventory={props.inventory}
+          setInventory={props.setInventory}
           updateItem={props.updateItem}
           uploadingPhoto={uploadingPhoto}
           setUploadingPhoto={setUploadingPhoto}
