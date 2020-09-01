@@ -156,10 +156,14 @@ export default function App(props) {
     });
   };
 
-  const updateItem = (key, updatedItem) => {
-    const newInventory = [ ...inventory ];
-    newInventory[key] = updatedItem;
-    setInventory({ newInventory });
+  const updateItem = async (updatedItem) => {
+    console.log('updatedItem', updatedItem)
+    // const payload = { ...updatedItem };
+    // await apis.updateInventoryItem(payload).then(res => {
+    //   console.log(`item updated successfully`, res);
+    //   const newInventory = [ ...inventory ]
+    //   setInventory([ ...newInventory, JSON.parse(res.config.data) ]);
+    // });
   }
 
   const addToCart = (newItem) => {

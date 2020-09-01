@@ -10,9 +10,10 @@ export const register = payload => api.post('/register', payload);
 export const login = payload => api.post('/login', payload);
 export const logout = payload => api.post('/logout', payload);
 export const forgot = payload => api.post('/forgot', payload);
-export const insertInventoryItem = payload => api.post('/postItem', payload);
+export const insertInventoryItem = payload => api.post('/addItem', payload);
+export const updateInventoryItem = payload => api.post('/updateItem', payload);
 export const getInventory = () => api.get('/getInventory');
-export const putInventory = payload => api.put('/putInventory', payload);
+// export const putInventory = payload => api.put('/putInventory', payload);
 export const postImage = payload => api.post('/uploadImage', payload, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const getUserOrders = id => api.get(`/getUserOrders/${id}`);
 export const getOrders = () => api.get(`/getOrders`);
@@ -26,8 +27,8 @@ const apis = {
   logout,
   forgot,
   insertInventoryItem,
+  updateInventoryItem,
   getInventory,
-  putInventory,
   postImage,
   getUserOrders,
   getOrders,
