@@ -140,7 +140,7 @@ export default function Account(props) {
       </StyledForm>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       <div>{t("Your Orders")}</div>
-      <Orders userOrders={props.userOrders} inventory={props.inventory} />
+      <Orders userOrders={props.userOrders} />
     </StyledWrapperDiv>
   )
 };

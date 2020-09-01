@@ -28,14 +28,14 @@ export default function Orders(props) {
       <StyledWrapperDiv>{t("No orders found")}.</StyledWrapperDiv>
     )
   };
-  if (userOrders.length < 1 || props.inventory.length < 1) {
+  if (userOrders.length < 1) {
     return <StyledLoadingDiv>{t("Loading... please wait")}</StyledLoadingDiv>
   }
   return (
     <StyledWrapperDiv>
       <StyledUl>
-        {userOrders.map((item, i) => (
-          <Order key={item._id} index={item._id} order={item} inventory={props.inventory} />
+        {userOrders.map((item) => (
+          <Order key={item._id} index={item._id} order={item} />
         ))}
       </StyledUl>
     </StyledWrapperDiv>
