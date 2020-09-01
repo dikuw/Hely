@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { useTranslation } from "react-i18next";
-import Orders from './Orders';
 import styled from 'styled-components';
+import Orders from './Orders';
+import { NoPermissionDiv } from '../shared/index';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -73,15 +74,6 @@ const StyledWarningDiv = styled.div`
   font-weight: 600;
 `;
 
-const StyledNoPermissionsDiv = styled.div`
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  margin: 30px auto;
-  padding: 4px;
-`;
-
 export default function Account(props) {
   const { t } = useTranslation();
 
@@ -130,7 +122,7 @@ export default function Account(props) {
   };
   
   if (!props.isLoggedIn) {
-    return <StyledNoPermissionsDiv>{t("Please log in to view this page")}.</StyledNoPermissionsDiv>
+    return <NoPermissionDiv divLabel={t("Please log in to view this page")}></NoPermissionDiv>
   }
   return (
     <StyledWrapperDiv>

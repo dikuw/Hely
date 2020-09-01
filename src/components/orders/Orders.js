@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
+import { NoPermissionDiv } from '../shared/index';
 import EditItemForm from './EditItemForm';
 
 const StyledLoadingDiv = styled.div`
@@ -15,20 +16,11 @@ const StyledWrapperDiv = styled.div`
   padding: 4px;
 `;
 
-const StyledNoPermissionsDiv = styled.div`
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  margin: 30px auto;
-  padding: 4px;
-`;
-
 export default function Orders(props) {
   const { t } = useTranslation();
 
   if (!props.isLoggedIn) {
-    return <StyledNoPermissionsDiv>{t("Please log in to view this page")}.</StyledNoPermissionsDiv>
+    return <NoPermissionDiv divLabel={t("Please log in to view this page")}></NoPermissionDiv>
   }
   if (props.orders.length < 1 || props.inventory.length < 1) {
     return <StyledLoadingDiv>{t("Loading... please wait")}</StyledLoadingDiv>
