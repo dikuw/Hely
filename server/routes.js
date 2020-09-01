@@ -34,9 +34,10 @@ router.post('/forgot', authController.forgot);
 //  GET
 router.get('/getInventory', inventoryController.getInventory);
 //  CREATE
-router.post('/postItem', inventoryController.postItem);
+router.post('/addItem', inventoryController.addItem);
 //  UPDATE
-router.put('/putInventory', inventoryController.archiveInventory, inventoryController.putInventory);
+router.post('/updateItem', inventoryController.updateItem)
+// router.put('/putInventory', inventoryController.archiveInventory, inventoryController.putInventory);
 //  POST IMAGE
 router.post('/uploadImage', inventoryController.uploadImage);
 

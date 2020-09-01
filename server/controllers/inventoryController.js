@@ -23,7 +23,7 @@ exports.getInventory = async (req, res) => {
   }).catch(err => console.log(err))
 };
 
-exports.postItem = async (req, res) => {
+exports.addItem = async (req, res) => {
   const body = req.body;
 
   if (!body) {
@@ -48,18 +48,32 @@ exports.postItem = async (req, res) => {
   });
 };
 
-exports.archiveInventory = async (req, res, next) => {
-  await Item.updateMany({}, { $set: { show: false } })
-  next();
-}
-
-exports.putInventory = async (req, res) => {
+exports.updateItem = async (req, res) => {
   const body = req.body;
-  Object.values(body).forEach(async (item) => {
-    delete item._id;
-    await new Item(item).save();
-  })
-  return res.send(body);
+
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: 'You must provide a item',
+    });
+  }
+
+  const item = await Item.findOneAndUpdate({ _id: req.body._id }, req.body, {
+    new: true,
+    runValidators: true
+  }).exec();
+
+  if (!item) {
+    return res.status(400).json({ success: false, error: err });
+  }
+
+  await item.save();
+    
+  return res.status(201).json({
+    success: true,
+    id: item._id,
+    item: 'Item updated!',
+  });
 };
 
 exports.uploadImage = async (req, res) => {
