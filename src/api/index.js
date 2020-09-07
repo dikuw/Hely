@@ -13,7 +13,6 @@ export const forgot = payload => api.post('/forgot', payload);
 export const insertInventoryItem = payload => api.post('/addItem', payload);
 export const updateInventoryItem = payload => api.post('/updateItem', payload);
 export const getInventory = () => api.get('/getInventory');
-// export const putInventory = payload => api.put('/putInventory', payload);
 export const postImage = payload => api.post('/uploadImage', payload, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const getUserOrders = id => api.get(`/getUserOrders/${id}`);
 export const getOrders = () => api.get(`/getOrders`);
