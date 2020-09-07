@@ -37,7 +37,6 @@ router.get('/getInventory', inventoryController.getInventory);
 router.post('/addItem', inventoryController.addItem);
 //  UPDATE
 router.post('/updateItem', inventoryController.updateItem)
-// router.put('/putInventory', inventoryController.archiveInventory, inventoryController.putInventory);
 //  POST IMAGE
 router.post('/uploadImage', inventoryController.uploadImage);
 
