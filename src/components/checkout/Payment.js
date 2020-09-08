@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import {loadStripe} from '@stripe/stripe-js';
 import {CardElement, Elements, ElementsConsumer} from '@stripe/react-stripe-js';
-import LoadingPopup from './LoadingPopup';
+import { Popup } from '../shared/index';
 import { formatPrice } from '../../helpers.js';
 
 const StyledWrapperDiv = styled.div`
@@ -159,14 +159,11 @@ function CheckoutForm(props) {
 
   const total = parseInt(props.cartTotal) + parseInt(props.shipping.price);
 
-  useEffect(() => {
-    props.postCreatePaymentIntent({ amount: total });
-  }, []);
+  const { postCreatePaymentIntent } = props;
 
-  // useEffect(() => {
-  //   successRef.current.innerHTML = null;
-  //   warningRef.current.innerHTML = null;
-  // });
+  useEffect(() => {
+    postCreatePaymentIntent({ amount: total })
+  }, [postCreatePaymentIntent, total]);
 
   const populateAddress = () => {
     if (checkboxRef.current.checked) {
@@ -241,7 +238,7 @@ function CheckoutForm(props) {
   
   return (
     <StyledWrapperDiv>
-      {loading ? <LoadingPopup /> : null}
+      {loading ? <Popup popupText={t("Payment processing...")}/> : null}
       <div>{t("Cart")}: {formatPrice(props.cartTotal)}</div>
       <div>{t("Shipping")}: {formatPrice(props.shipping.price)}</div>
       <div>{t("Total")}: {formatPrice(total)}</div>
