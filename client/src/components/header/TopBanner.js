@@ -34,7 +34,7 @@ export default function TopBanner(props) {
       <SelectDiv>
         <StyledSelect name="language" onChange={handleChange} value={i18n.language}>
           <option value="es">{t("Spanish")}</option>
-          <option value="en">{t("English")}</option>
+          <option value="en-US">{t("English")}</option>
         </StyledSelect>
       </SelectDiv>
     </BannerDiv>
