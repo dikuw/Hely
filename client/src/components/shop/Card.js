@@ -62,7 +62,7 @@ export default function Card(props) {
     props.setShowAddedPopup(true);
   };
 
-  const { item, index } = props;
+  const { item } = props;
   const isAvailable = item.available;
 
   return (

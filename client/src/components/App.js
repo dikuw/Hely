@@ -13,6 +13,7 @@ import { LocalLogin, Register } from './login/index';
 import Account from './account/Account';
 import Inventory from './inventory/Inventory';
 import Orders from './orders/Orders';
+import { Popup } from './shared/index';
 import { Privacy, Terms, Shipping, Returns } from './information/index';
 import Footer from './Footer';
 import apis from '../api/index';
@@ -41,9 +42,11 @@ export default function App(props) {
     postalCode: "",
     mobile: "",
   });
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+  });
   const [clientSecret, setClientSecret] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [showAddedPopup, setShowAddedPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -227,6 +230,7 @@ export default function App(props) {
   const addOrder = async (order) => {
     await apis.postOrder(order).then(res => {
       setCart([]);
+      props.history.push("/account");
     });
   }
 
@@ -256,6 +260,7 @@ export default function App(props) {
           render={() => (
             <>
               {showAddedPopup ? <AddedPopup history={props.history} setShowAddedPopup={setShowAddedPopup} /> : null}
+              {isLoading ? <Popup popupText={t("Finding latest products...")}/> : null}
               <Grid inventory={inventory} addToCart={addToCart} setShowAddedPopup={setShowAddedPopup} />
             </>
           )}

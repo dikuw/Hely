@@ -130,7 +130,7 @@ export default function Account(props) {
       <StyledForm onSubmit={updateClick}>
         <StyledFormRowDiv>
           <StyledLabel htmlFor="name">{t("Name")}: </StyledLabel>
-          <input name="name" ref={nameRef} type="text"  onChange={handleChange} onFocus={resetValidation} value={props.user.name}/>
+          <input name="name" ref={nameRef} type="text" onChange={handleChange} onFocus={resetValidation} value={props.user.name}/>
         </StyledFormRowDiv>
         <StyledFormRowDiv>
           <StyledLabel htmlFor="email">{t("Email")}: </StyledLabel>

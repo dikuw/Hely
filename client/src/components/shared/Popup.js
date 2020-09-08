@@ -48,26 +48,16 @@ const StyledSpinnerImg = styled.img`
   width: 14rem;
 `;
 
+export default function Popup(props) {
 
-class AddedPopup extends React.Component {
-
-  handleClick = (key) => {
-    this.props.togglePopup();
-    this.props.history.push("/cart");
-  };
-
-  render() {
-    return (
-      <StyledPopupDiv >  
-        <StyledPopupWrapperDiv>  
-          <StyledPopupHeaderDiv>
-            <StyledPopupHeaderH1>Processing payment...</StyledPopupHeaderH1>  
-            <StyledSpinnerImg src="images/spinner.gif" alt="uploading" />
-          </StyledPopupHeaderDiv>
-        </StyledPopupWrapperDiv>  
-      </StyledPopupDiv>  
-    ); 
-  }
+  return (
+    <StyledPopupDiv >  
+      <StyledPopupWrapperDiv>  
+        <StyledPopupHeaderDiv>
+          <StyledPopupHeaderH1>{props.popupText}</StyledPopupHeaderH1>  
+          <StyledSpinnerImg src="images/spinner.gif" alt="uploading" />
+        </StyledPopupHeaderDiv>
+      </StyledPopupWrapperDiv>  
+    </StyledPopupDiv>  
+  ); 
 };
-
-export default AddedPopup;
