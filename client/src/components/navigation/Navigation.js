@@ -17,10 +17,13 @@ const Nav = styled.nav`
   }
 `
 export default function Navigation(props) {
+  const currentRoute = props.history.location.pathname;
   return (
     <Nav>
       <Burger isLoggedIn={props.isLoggedIn} isAdmin={props.isAdmin} history={props.history} getCartItemCount={props.getCartItemCount} logoutUser={props.logoutUser} />
-      <CartIcon getCartItemCount={props.getCartItemCount} />
+      {(currentRoute === "/admin" || currentRoute === "/orders" || currentRoute === "/inventory" || currentRoute === "/shippingOptions") ? ( "" ) : (
+          <CartIcon getCartItemCount={props.getCartItemCount} />
+      )}
     </Nav>
   );
 };

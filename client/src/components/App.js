@@ -12,9 +12,11 @@ import { Checkout, Shipping as CheckoutShipping, Payment } from './checkout/inde
 import { LocalLogin, Register } from './login/index';
 import Account from './account/Account';
 import Inventory from './inventory/Inventory';
+import ShippingOptions from './shippingOptions/ShippingOptions';
 import Orders from './orders/Orders';
 import { Popup } from './shared/index';
 import { Privacy, Terms, Shipping, Returns } from './information/index';
+import { Admin } from './admin/index';
 import Footer from './Footer';
 import apis from '../api/index';
 import '../style/styles.css';
@@ -22,8 +24,9 @@ import '../style/styles.css';
 export default function App(props) {
   const { t } = useTranslation();
 
-  const [inventory, setInventory] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [inventory, setInventory] = useState([]);
+  const [shippingOptions, setShippingOptions] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const [shipping, setShipping] = useState({
@@ -63,6 +66,10 @@ export default function App(props) {
       await apis.getInventory().then(inventory => {
         setInventory(inventory.data.data);
         setIsLoading(false);
+      });
+
+      await apis.getShippingOptions().then(shippingOptions => {
+        setShippingOptions(shippingOptions.data.data);
       });
 
       const cartLS = localStorage.getItem('cart');
@@ -165,6 +172,20 @@ export default function App(props) {
     });
   }
 
+  const addShippingOption = async (shippingOption) => {
+    const payload = { ...shippingOption };
+    await apis.insertShippingOption(payload).then(res => {
+      setShippingOptions([ ...shippingOptions, JSON.parse(res.config.data) ]);
+    });
+  };
+
+  const updateShippingOption = async (updatedShippingOption) => {
+    const payload = { ...updatedShippingOption };
+    await apis.updateShippingOption(payload).then(res => {
+      console.log(`shipping option updated successfully`, res);
+    });
+  }
+
   const addToCart = (newItem) => {
     let newCart = [ ...cart ];
     const itemId = newCart.findIndex((item) => item.item._id === newItem._id);
@@ -253,12 +274,12 @@ export default function App(props) {
   return (
     <main>
       <TopBanner isLoggedIn={isLoggedIn} name={user.name}/>
-      <Header  />
-      <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
       <Switch>
         <Route  exact path="/" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               {showAddedPopup ? <AddedPopup history={props.history} setShowAddedPopup={setShowAddedPopup} /> : null}
               {isLoading ? <Popup popupText={t("Finding latest products...")}/> : null}
               <Grid inventory={inventory} addToCart={addToCart} setShowAddedPopup={setShowAddedPopup} />
@@ -268,6 +289,8 @@ export default function App(props) {
         <Route path="/face" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Products for your face")} />
               {showAddedPopup ? <AddedPopup history={props.history} setShowAddedPopup={setShowAddedPopup} /> : null}
               <Grid inventory={Object.values(inventory).filter(item => item.category==="face")} addToCart={addToCart} setShowAddedPopup={setShowAddedPopup} />
@@ -277,6 +300,8 @@ export default function App(props) {
         <Route path="/eyes" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Products for your eyes")} />
               {showAddedPopup ? <AddedPopup history={props.history} setShowAddedPopup={setShowAddedPopup} /> : null}
               <Grid inventory={Object.values(inventory).filter(item => item.category==="eyes")} addToCart={addToCart} setShowAddedPopup={setShowAddedPopup} />
@@ -286,6 +311,8 @@ export default function App(props) {
         <Route path="/brushes" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Brushes")} />
               {showAddedPopup ? <AddedPopup history={props.history} setShowAddedPopup={setShowAddedPopup} /> : null}
               <Grid inventory={Object.values(inventory).filter(item => item.category==="brushes")} addToCart={addToCart}  setShowAddedPopup={setShowAddedPopup} />
@@ -295,6 +322,8 @@ export default function App(props) {
         <Route path="/cart" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Your Cart")} />
               <Cart 
                 history={props.history} 
@@ -311,6 +340,8 @@ export default function App(props) {
         <Route path="/checkout" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Checkout")} />
               <Checkout 
                 history={props.history} 
@@ -326,11 +357,14 @@ export default function App(props) {
         <Route path="/checkoutShipping" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Shipping")} />
               <CheckoutShipping 
                 history={props.history} 
                 cartTotal={getCartTotal()} 
                 customer={customer} 
+                shippingOptions={shippingOptions}
                 shipping={shipping}
                 updateShipping={updateShipping} 
               />
@@ -340,6 +374,8 @@ export default function App(props) {
         <Route path="/payment" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Payment Information")} />
               <Payment 
                 history={props.history} 
@@ -371,6 +407,8 @@ export default function App(props) {
         <Route path="/login" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Log In")} />
               <LocalLogin 
                 history={props.history} 
@@ -386,6 +424,8 @@ export default function App(props) {
         <Route path="/register" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Register a New Account")} />
               <Register 
                 history={props.history} 
@@ -398,6 +438,8 @@ export default function App(props) {
         <Route path="/account" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Your Account")} />
               <Account 
                 history={props.history} 
@@ -411,6 +453,7 @@ export default function App(props) {
         <Route path="/inventory" 
           render={() => (
             <>
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history}/>
               <Banner bannerString={t("Inventory")} />
               <Inventory 
                 isLoggedIn={isLoggedIn} 
@@ -422,9 +465,25 @@ export default function App(props) {
             </>
           )}
         />
+        <Route path="/shippingOptions" 
+          render={() => (
+            <>
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} />
+              <Banner bannerString={t("Shipping Options")} />
+              <ShippingOptions 
+                isLoggedIn={isLoggedIn} 
+                shippingOptions={shippingOptions} 
+                setShippingOptions={setShippingOptions}
+                addShippingOption={addShippingOption}
+                updateShippingOption={updateShippingOption}
+              />
+            </>
+          )}
+        />
         <Route path="/orders" 
           render={() => (
             <>
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} />
               <Banner bannerString={t("Orders")} />
               <Orders 
                 isLoggedIn={isLoggedIn} 
@@ -436,6 +495,8 @@ export default function App(props) {
         <Route path="/privacy" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Privacy Policy")} />
               <Privacy />
             </>
@@ -444,6 +505,8 @@ export default function App(props) {
         <Route path="/terms" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Terms of Use")} />
               <Terms />
             </>
@@ -452,6 +515,8 @@ export default function App(props) {
         <Route path="/shipping" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Shipping Policy")} />
               <Shipping />
             </>
@@ -460,8 +525,19 @@ export default function App(props) {
         <Route path="/returns" 
           render={() => (
             <>
+              <Header /> 
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
               <Banner bannerString={t("Return Policy")} />
               <Returns />
+            </>
+          )}
+        />
+        <Route path="/admin" 
+          render={() => (
+            <>
+              <Banner bannerString={t("Site Administration")} />
+              <Navigation isLoggedIn={isLoggedIn} isAdmin={user.isAdmin} history={props.history} getCartItemCount={getCartItemCount} logoutUser={logoutUser} />
+              <Admin history={props.history} />
             </>
           )}
         />

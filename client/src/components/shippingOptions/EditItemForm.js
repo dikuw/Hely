@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from "react-i18next";
-import apis from '../../api/index';
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
@@ -11,7 +10,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-wrap: wrap;
   div, input, textarea, select {
-    width: 33.33%;
+    width: 20%;
     padding: 10px;
     line-height: 1;
     font-size: 1rem;
@@ -25,9 +24,6 @@ const StyledForm = styled.form`
     outline: 0;
     background: #fef2de;
   }
-  textarea {
-    width: 66.6%;
-  }
   button {
     width: 100%;
     border: 0;
@@ -37,16 +33,6 @@ const StyledForm = styled.form`
       width: 100%;
     }
   }
-`;
-
-const StyledImageUploadDiv = styled.div`
-  > input {
-    display: none;
-  }
-`;
-
-const StyledImageUploadImg = styled.img`
-  max-width: 50px;
 `;
 
 const StyledButton = styled.button`
@@ -69,28 +55,24 @@ const StyledButton = styled.button`
   }
 `;
 
-
 export default function EditItemForm(props) {
   const { t } = useTranslation();
 
-  const [isDirty, setIsDirty] = useState(false);
+  const[isDirty, setIsDirty] = useState(false);
 
   const idRef = useRef(null);
   const nameRef = useRef(null);
   const priceRef = useRef(null);
-  const categoryRef= useRef(null);
-  const statusRef = useRef(null);
-  const imageRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const showRef = useRef(null);
+  const availableRef = useRef(null);
+  const durationRef = useRef(null);
 
   const resetValidation = () => {
     nameRef.current.placeholder = "Name";
     nameRef.current.style.background = "#fff";
-    descriptionRef.current.placeholder = "Description";
-    descriptionRef.current.style.background = "#fff";
     priceRef.current.placeholder = "Price";
     priceRef.current.style.background = "#fff";
+    durationRef.current.placeholder = "Duration";
+    durationRef.current.style.background = "#fff";
   }
 
   const handleChange = async (e) => {
@@ -101,24 +83,14 @@ export default function EditItemForm(props) {
       updatedValue = JSON.parse(updatedValue);	
     }	
 
-    if (propName === "image") {
-      props.setUploadingPhoto(true);
-      const formData = new FormData(); 
-      formData.append('file', e.target.files[0]);
-      const res = await apis.postImage(formData);
-      updatedValue = res.data.fileName;
-      imageRef.current.setAttribute('data-path', res.data.fileName);
-      props.setUploadingPhoto(false);
-    };
-
     const updatedItem = {
       ...props.item,	
       [propName]: updatedValue
     };
 
-    const inventory = [ ...props.inventory ];
-    inventory[props.index] = updatedItem;
-    props.setInventory(inventory);
+    const shippingOptions = [ ...props.shippingOptions ];
+    shippingOptions[props.index] = updatedItem;
+    props.setShippingOptions(shippingOptions);
 
     setIsDirty(true);
 
@@ -131,14 +103,14 @@ export default function EditItemForm(props) {
       nameRef.current.style.background = "#ffc2c2";
       passVal = false;
     }
-    if (!descriptionRef.current.value) {
-      descriptionRef.current.placeholder = "Description is a required field";
-      descriptionRef.current.style.background = "#ffc2c2";
-      passVal = false;
-    }
     if (!priceRef.current.value) {
       priceRef.current.placeholder = "Price is a required field";
       priceRef.current.style.background = "#ffc2c2";
+      passVal = false;
+    }
+    if (!durationRef.current.value) {
+      durationRef.current.placeholder = "Duration (days) is a required field";
+      durationRef.current.style.background = "#ffc2c2";
       passVal = false;
     }
     return passVal;
@@ -151,13 +123,10 @@ export default function EditItemForm(props) {
         id: idRef.current.value,
         name: nameRef.current.value,
         price: parseFloat(priceRef.current.value),
-        category: categoryRef.current.value,
-        status: statusRef.current.value,
-        image: imageRef.current.getAttribute('data-path'),
-        description: descriptionRef.current.value,
-        show: showRef.current.value,
+        available: availableRef.current.value,
+        duration: durationRef.current.value,
       };
-      props.updateItem(item);
+      props.updateShippingOption(item);
       setIsDirty(false);
     }
   }
@@ -167,26 +136,11 @@ export default function EditItemForm(props) {
       <input type="text" name="id" ref={idRef} value={props.item.id} readOnly />
       <input type="text" name="name" ref={nameRef} onChange={handleChange} onFocus={resetValidation} value={props.item.name} />
       <input type="text" name="price" ref={priceRef} onChange={handleChange} onFocus={resetValidation} value={props.item.price} />
-      <select name="category" ref={categoryRef} onChange={handleChange} value={props.item.category} >
-        <option value="face">{t("Face")}</option>
-        <option value="eyes">{t("Eyes")}</option>
-        <option value="brushes">{t("Brushes")}</option>
+      <select name="available" ref={availableRef} onChange={handleChange} value={props.item.available} >
+      <option value={true}>{t("Show")}</option>
+        <option value={false}>{t("Hide")}</option>
       </select>
-      <select name="available" ref={statusRef} onChange={handleChange} value={props.item.available} >
-      <option value={true}>{t("Available")}</option>
-        <option value={false}>{t("Not Available")}</option>
-      </select>
-      <StyledImageUploadDiv>
-        <label key={props.index} htmlFor={`file-input${props.index}`}>
-          <StyledImageUploadImg src={`https://res.cloudinary.com/dikuw/image/upload/${props.item.image}`} alt={props.item.image}/>
-        </label>
-        <input name="image" id={`file-input${props.index}`} type="file" accept="image/png, image/jpeg" data-path="" ref={imageRef} onChange={handleChange} />
-      </StyledImageUploadDiv>
-      <textarea name="description" ref={descriptionRef} onChange={handleChange} onFocus={resetValidation} value={props.item.description} />
-      <select name="show" ref={showRef} onChange={handleChange} value={props.item.show}>
-        <option value={true}>{t("Show Item")}</option>
-        <option value={false}>{t("Hide Item")}</option>
-      </select> 
+      <input type="text" name="duration" ref={durationRef} onChange={handleChange} onFocus={resetValidation} value={props.item.duration} />
       <StyledButton type="submit" disabled={!isDirty} >{t("Update Item")}</StyledButton>
     </StyledForm>
   );

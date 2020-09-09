@@ -5,6 +5,7 @@ const userController = require('./controllers/userController');
 const authController = require('./controllers/authController');
 const aboutController = require('./controllers/aboutController');
 const inventoryController = require('./controllers/inventoryController');
+const shippingOptionsController = require('./controllers/shippingOptionsController');
 const orderController = require('./controllers/orderController');
 const paymentController = require('./controllers/paymentController');
 
@@ -39,6 +40,15 @@ router.post('/addItem', inventoryController.addItem);
 router.post('/updateItem', inventoryController.updateItem)
 //  POST IMAGE
 router.post('/uploadImage', inventoryController.uploadImage);
+
+//  ** Shipping Option Routes **  //
+//  GET
+router.get('/getShippingOptions', shippingOptionsController.getItems);
+//  CREATE
+router.post('/addShippingOption', shippingOptionsController.addItem);
+//  UPDATE
+router.post('/updateShippingOption', shippingOptionsController.updateItem)
+
 
 //  ** Order Routes **  //
 //  GET
