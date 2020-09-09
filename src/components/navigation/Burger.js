@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import NavMenu from './NavMenu';
+import AdminNavMenu from './AdminNavMenu';
 
 const StyledBurger = styled.div`
   width: 2rem;
@@ -32,8 +33,9 @@ const StyledBurger = styled.div`
   }
 `;
 
-const Burger = (props) => {
+export default function Burger(props) {
   const [menuOpen, setOpen] = useState(false);
+  const currentRoute = props.history.location.pathname;
   return (
     <>
       <StyledBurger menuOpen={menuOpen} onClick={() => setOpen(!menuOpen)}>
@@ -41,9 +43,12 @@ const Burger = (props) => {
         <div />
         <div />
       </StyledBurger>
-      <NavMenu isLoggedIn={props.isLoggedIn} isAdmin={props.isAdmin} history={props.history} menuOpen={menuOpen} setOpen={setOpen} getCartItemCount={props.getCartItemCount} logoutUser={props.logoutUser} />
+      {(currentRoute === "/admin" || currentRoute === "/orders" || currentRoute === "/inventory" || currentRoute === "/shippingOptions") ? (
+          <AdminNavMenu isLoggedIn={props.isLoggedIn} isAdmin={props.isAdmin} history={props.history} menuOpen={menuOpen} setOpen={setOpen} />
+        ) : (
+          <NavMenu isLoggedIn={props.isLoggedIn} isAdmin={props.isAdmin} history={props.history} menuOpen={menuOpen} setOpen={setOpen} getCartItemCount={props.getCartItemCount} logoutUser={props.logoutUser} />
+       )
+      }
     </>
   );
-};
-
-export default Burger;
+}

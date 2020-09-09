@@ -52,10 +52,8 @@ const Link = styled.a`
   }
 `;
 
-export default function NavMenu(props) {
+export default function AdminNavMenu(props) {
   const { t } = useTranslation();
-  
-  const cartItemCount = props.getCartItemCount();
 
   const handleClick = (link, menuOpen) => {
     props.setOpen(!menuOpen)
@@ -64,25 +62,16 @@ export default function NavMenu(props) {
  
   return (
     <Ul menuOpen={props.menuOpen}>
-      <Li><Link onClick={() => handleClick('/', props.menuOpen) } >Home</Link></Li>
-      <Li><Link onClick={() => handleClick('/face', props.menuOpen) } >{t("Face")}</Link></Li>
-      <Li><Link onClick={() => handleClick('/eyes', props.menuOpen) } >{t("Eyes")}</Link></Li>
-      <Li><Link onClick={() => handleClick('/brushes', props.menuOpen) } >{t("Brushes")}</Link></Li>
-      <Li><Link onClick={() => handleClick('/cart', props.menuOpen) } >{t("Cart")} {cartItemCount ? `(${cartItemCount})` : ``}</Link></Li>
-      {props.isLoggedIn ? (
-          <>
-            <Li><Link onClick={() => handleClick('/account', props.menuOpen) } >{t("Account")}</Link></Li>
-            <Li><Link onClick={() => props.logoutUser() } >{t("Log Out")}</Link></Li>
-          </>
-        ) : (
+      {props.isLoggedIn ? ( "" ) : (
           <Li><Link onClick={() => handleClick('/login', props.menuOpen) } >{t("Log In")}</Link></Li>
         )
       }
       {props.isAdmin ? (
         <>
-          <Li><Link onClick={() => handleClick('/admin', props.menuOpen) } >{t("Administer")}</Link></Li>
-          {/* <Li><Link onClick={() => handleClick('/inventory', props.menuOpen) } >{t("Inventory")}</Link></Li>
-          <Li><Link onClick={() => handleClick('/orders', props.menuOpen) } >{t("Orders")}</Link></Li> */}
+          <Li><Link onClick={() => handleClick('/orders', props.menuOpen) } >{t("Orders")}</Link></Li>
+          <Li><Link onClick={() => handleClick('/inventory', props.menuOpen) } >{t("Inventory")}</Link></Li>
+          <Li><Link onClick={() => handleClick('/shippingOptions', props.menuOpen) } >{t("Shipping")}</Link></Li>
+          <Li><Link onClick={() => handleClick('/', props.menuOpen) } >{t("Back to Site")}</Link></Li>
         </>
         ) : ( "" )
       }

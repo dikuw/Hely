@@ -23,7 +23,7 @@ const StyledCountDiv = styled.div`
   text-decoraction: none;
 `;
 
-const CartIcon = (props) => {
+export default function CartIcon(props) {
   return (
     <StyledWrapperDiv>
       <StyledLinkWrapperDiv>
@@ -34,6 +34,4 @@ const CartIcon = (props) => {
       </StyledLinkWrapperDiv>     
     </StyledWrapperDiv>
   );
-};
-
-export default CartIcon;
+}

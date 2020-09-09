@@ -17,6 +17,9 @@ const SelectDiv = styled.div`
 `;
 
 const StyledSelect = styled.select`
+  position: absolute;
+  top: 8px;
+  right: 4px;
   background-color: var(--vinoTinto);
   color:  var(--almostWhite);
 `;
