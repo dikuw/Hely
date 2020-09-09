@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { NoPermissionDiv } from '../shared/index';
 import AddItemForm from './AddItemForm';
 import EditItemForm from './EditItemForm';
-import LoadingPopup from './LoadingPopup';
+import Popup from '../shared/Popup';
 
 const StyledWrapperDiv = styled.div`
   max-width: 1200px;
@@ -23,7 +23,7 @@ export default function Inventory(props) {
   }
   return (
     <StyledWrapperDiv>
-      {uploadingPhoto ? <LoadingPopup /> : null}
+      {uploadingPhoto ? <Popup popupText="Uploading image..." /> : null}
       <AddItemForm addItem={props.addItem} uploadingPhoto={uploadingPhoto} setUploadingPhoto={setUploadingPhoto} />
       {Object.values(props.inventory).map( (item, i) => 
         <EditItemForm 

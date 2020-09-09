@@ -27,31 +27,26 @@ const styleIG = {
   filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#f09433", endColorstr="#bc1888",GradientType=1 )',
 };
 
-class Login extends React.Component {
+export default function Login(props) {
 
-  localLoginClick = () => {
-    this.props.history.push("/localLogin");
+  const localLoginClick = () => {
+    props.history.push("/localLogin");
   };
   
-  render() {
-
-    return (
-      <StyledWrapperDiv>
-        <StyledButton style={{background: '#4267B2'}} onClick={() => this.props.authenticate('facebook')}>
-          Login with Facebook
-        </StyledButton>
-        <StyledButton style={styleIG} onClick={() => this.props.authenticate('instagram')}>
-          Login with Instagram
-        </StyledButton>
-        <StyledButton style={{background: '#1DA1F2'}} onClick={() => this.props.authenticate('twitter')}>
-          Login with Twitter
-        </StyledButton>
-        <StyledButton style={{background: '#657786'}} onClick={() => this.localLoginClick()}>
-          Login or Register with email
-        </StyledButton>
-      </StyledWrapperDiv>
-    )
-  }
-};
-
-export default Login;
+  return (
+    <StyledWrapperDiv>
+      <StyledButton style={{background: '#4267B2'}} onClick={() => props.authenticate('facebook')}>
+        Login with Facebook
+      </StyledButton>
+      <StyledButton style={styleIG} onClick={() => props.authenticate('instagram')}>
+        Login with Instagram
+      </StyledButton>
+      <StyledButton style={{background: '#1DA1F2'}} onClick={() => props.authenticate('twitter')}>
+        Login with Twitter
+      </StyledButton>
+      <StyledButton style={{background: '#657786'}} onClick={() => localLoginClick()}>
+        Login or Register with email
+      </StyledButton>
+    </StyledWrapperDiv>
+  );
+}

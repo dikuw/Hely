@@ -1,15 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Logo from './Logo';
 
 const StyledDiv = styled.div`
   margin-bottom: 12px;
 `;
 
-export default function Header() {
+export default function Admin() {
   return (
-    <StyledDiv>
-      <Logo />
-    </StyledDiv>
+    <StyledDiv>This is the admin page</StyledDiv>
   );
 }
