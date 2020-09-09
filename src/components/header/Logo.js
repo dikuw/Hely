@@ -10,14 +10,10 @@ const LogoImage = styled.img`
   padding: 15px;
 `;
 
-class Logo extends React.Component {
-  render() {
-    return (
-      <a href="/">
-        <LogoImage src={logo} alt="Hely Cosmetics dot com" />
-      </a>
-    )
-  }
+export default function Logo() {
+  return (
+    <a href="/">
+      <LogoImage src={logo} alt="Hely Cosmetics dot com" />
+    </a>
+  );
 };
-
-export default Logo;

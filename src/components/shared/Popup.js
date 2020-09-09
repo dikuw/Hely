@@ -49,7 +49,6 @@ const StyledSpinnerImg = styled.img`
 `;
 
 export default function Popup(props) {
-
   return (
     <StyledPopupDiv >  
       <StyledPopupWrapperDiv>  

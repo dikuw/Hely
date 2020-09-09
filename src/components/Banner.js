@@ -12,12 +12,8 @@ const StyledBannerDiv = styled.div`
   text-align: center;
 `;
 
-class Banner extends React.Component {
-  render() {
-    return (
-      <StyledBannerDiv>{this.props.bannerString}</StyledBannerDiv>
-    )
-  }
+export default function Banner(props) {
+  return (
+    <StyledBannerDiv>{props.bannerString}</StyledBannerDiv>
+  );
 }
-
-export default Banner;

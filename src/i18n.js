@@ -30,6 +30,7 @@ i18n
           "Inventory" : "Inventory",
           "Orders" : "Orders",
           "Account" : "Account",
+          "Administer" : "Administer",
           "Log In" : "Log In",
           "Log Out" : "Log Out",
           "Add to Cart" : "Add to Cart",
@@ -121,6 +122,7 @@ i18n
           "Privacy Policy": "Privacy Policy",
           "Terms of Use": "Terms of Use",
           "Created by" : "Created by",
+          "Site Administration" : "Site Administration" ,
         }
       },
       es: {
@@ -145,6 +147,7 @@ i18n
           "Inventory" : "Inventorio",
           "Orders" : "Pedidos",
           "Account" : "Cuenta",
+          "Administer" : "Administrar",
           "Log In" : "Iniciar Sesión",
           "Log Out" : "Cerrar Sesión",
           "Add to Cart" : "Añadir al Carrito",
@@ -236,6 +239,7 @@ i18n
           "Privacy Policy": "Política de Privacidad",
           "Terms of Use": "Términos de Uso",
           "Created by" : "Creado por",
+          "Site Administration" : "Administración del sitio",
         }
       }
     },
