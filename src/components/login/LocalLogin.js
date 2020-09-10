@@ -107,7 +107,7 @@ export default function LocalLogin(props) {
         <VisibleActionButton type="submit" buttonLabel={t("Log in")} />
       </StyledForm>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
-      {props.passwordIncorrect ? (<StyledWarningDiv>{t("Email or password is incorrect. Please try again")}</StyledWarningDiv>) : ( "" )}
+      {props.passwordIncorrect && <StyledWarningDiv>{t("Email or password is incorrect. Please try again")}</StyledWarningDiv>}
       <div>{t("Forgot your password")}?</div>
       <StyledForm onSubmit={forgotClick}>
         <input name="forgotEmail" ref={forgotEmailRef} type="text" placeholder={t("Email")}  />
