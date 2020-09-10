@@ -62,18 +62,14 @@ export default function AdminNavMenu(props) {
  
   return (
     <Ul menuOpen={props.menuOpen}>
-      {props.isLoggedIn ? ( "" ) : (
-          <Li><Link onClick={() => handleClick('/login', props.menuOpen) } >{t("Log In")}</Link></Li>
-        )
-      }
-      {props.isAdmin ? (
+      {!props.isLoggedIn && <Li><Link onClick={() => handleClick('/login', props.menuOpen) } >{t("Log In")}</Link></Li>}
+      {props.isAdmin &&
         <>
           <Li><Link onClick={() => handleClick('/orders', props.menuOpen) } >{t("Orders")}</Link></Li>
           <Li><Link onClick={() => handleClick('/inventory', props.menuOpen) } >{t("Inventory")}</Link></Li>
           <Li><Link onClick={() => handleClick('/shippingOptions', props.menuOpen) } >{t("Shipping")}</Link></Li>
           <Li><Link onClick={() => handleClick('/', props.menuOpen) } >{t("Back to Site")}</Link></Li>
         </>
-        ) : ( "" )
       }
     </Ul>
   );

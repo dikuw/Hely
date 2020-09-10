@@ -78,14 +78,7 @@ export default function NavMenu(props) {
           <Li><Link onClick={() => handleClick('/login', props.menuOpen) } >{t("Log In")}</Link></Li>
         )
       }
-      {props.isAdmin ? (
-        <>
-          <Li><Link onClick={() => handleClick('/admin', props.menuOpen) } >{t("Administer")}</Link></Li>
-          {/* <Li><Link onClick={() => handleClick('/inventory', props.menuOpen) } >{t("Inventory")}</Link></Li>
-          <Li><Link onClick={() => handleClick('/orders', props.menuOpen) } >{t("Orders")}</Link></Li> */}
-        </>
-        ) : ( "" )
-      }
+      {props.isAdmin && <Li><Link onClick={() => handleClick('/admin', props.menuOpen) } >{t("Administer")}</Link></Li>}
     </Ul>
   );
 }
