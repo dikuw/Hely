@@ -9,26 +9,25 @@ const StyledWrapperDiv = styled.div`
   flex-direction: column;
   margin: 30px auto;
   padding: 4px;
-`;
-
-const StyledForm = styled.form`
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  input, select {
-    margin: 0.25rem;
-    padding: 10px;
-    font-size: 1rem;
-  }
-  input:focus, textarea:focus, select:focus {
-    outline: 0;
-    background: #fef2de;
-  }
-  textarea {
-    width: 100%;
-  }
-  button {
-    border: 0;
+  form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    input, select {
+      margin: 0.25rem;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: 0;
+      background: #fef2de;
+    }
+    textarea {
+      width: 100%;
+    }
+    button {
+      border: 0;
+    }
   }
 `;
 
@@ -101,21 +100,21 @@ export default function LocalLogin(props) {
   return (
     <StyledWrapperDiv>
       <div>{t("Log in")}</div>
-      <StyledForm onSubmit={loginClick}>
+      <form onSubmit={loginClick}>
         <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
         <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
         <VisibleActionButton type="submit" buttonLabel={t("Log in")} />
-      </StyledForm>
+      </form>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       {props.isPasswordIncorrect && <StyledWarningDiv>{t("Email or password is incorrect. Please try again")}</StyledWarningDiv>}
       <div>{t("Forgot your password")}?</div>
-      <StyledForm onSubmit={forgotClick}>
+      <form onSubmit={forgotClick}>
         <input name="forgotEmail" ref={forgotEmailRef} type="text" placeholder={t("Email")}  />
         <VisibleActionButton type="submit" buttonLabel={t("Send a Reset")} />
-      </StyledForm>
-      <StyledForm>
+      </form>
+      <form>
         <InvisibleActionButton clickHandler={registerClick} buttonLabel={t("No account? Register here!")} />
-      </StyledForm>
+      </form>
     </StyledWrapperDiv>
   )
 };
