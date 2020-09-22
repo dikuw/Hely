@@ -83,19 +83,17 @@ const StyledFormRowDiv = styled.div`
     flex-direction: column;
     align-items: flex-start;
   }
-`;
-
-const StyledLabel = styled.label`
-  flex-basis: 20%;
-  margin-bottom: 0px;
-  @media (max-width: 768px) {
-    text-align: left;
-    flex-basis: 25%;
+  label {
+    flex-basis: 20%;
+    margin-bottom: 0px;
+    @media (max-width: 768px) {
+      text-align: left;
+      flex-basis: 25%;
+    }
   }
-`;
-
-const StyledUl = styled.ul`
-  width: 100%;
+  ul {
+    width: 100%;
+  }
 `;
 
 export default function EditOrderForm(props) {
@@ -121,53 +119,53 @@ export default function EditOrderForm(props) {
     <StyledDiv>
       <StyledOverviewColDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="id">{t("Order ID")}: </StyledLabel>
+            <label htmlFor="id">{t("Order ID")}: </label>
             <input type="text" name="id" value={props.item._id} readOnly />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="email">{t("Email")}: </StyledLabel>
+            <label htmlFor="email">{t("Email")}: </label>
             <input type="text" name="email" onChange={handleChange} value={props.item.customer.email} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingName">{t("Name")}: </StyledLabel>
+            <label htmlFor="shippingName">{t("Name")}: </label>
             <input type="text" name="shippingName" onChange={handleChange} value={props.item.customer.firstName} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingAddressLine1">{t("Address Line")} 1: </StyledLabel>
+            <label htmlFor="shippingAddressLine1">{t("Address Line")} 1: </label>
             <input type="text" name="shippingAddressLine1" onChange={handleChange} value={props.item.customer.address1} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingAddressLine2">{t("Address Line")} 2: </StyledLabel>
+            <label htmlFor="shippingAddressLine2">{t("Address Line")} 2: </label>
             <input type="text" name="shippingAddressLine2" onChange={handleChange} value={props.item.customer.address2} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingAddressCity">{t("City")}: </StyledLabel>
+            <label htmlFor="shippingAddressCity">{t("City")}: </label>
             <input type="text" name="shippingAddressCity" onChange={handleChange} value={props.item.customer.city} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingAddressState">{t("State")}: </StyledLabel>
+            <label htmlFor="shippingAddressState">{t("State")}: </label>
             <input type="text" name="shippingAddressState" onChange={handleChange} value={props.item.customer.state} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingAddressZip">{t("Postal Code")}: </StyledLabel>
+            <label htmlFor="shippingAddressZip">{t("Postal Code")}: </label>
             <input type="text" name="shippingAddressZip" onChange={handleChange} value={props.item.customer.postalCode} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-            <StyledLabel htmlFor="shippingAddressCountryCode">{t("Country Code")}: </StyledLabel>
+            <label htmlFor="shippingAddressCountryCode">{t("Country Code")}: </label>
             <input type="text" name="shippingAddressCountryCode" onChange={handleChange} value={props.item.customer.country} />
         </StyledFormRowDiv>
       </StyledOverviewColDiv>
       <StyledProcessingColDiv>
         <StyledFormRowDiv>
-          <StyledLabel htmlFor="paymentId">{t("Payment ID")}: </StyledLabel>
+          <label htmlFor="paymentId">{t("Payment ID")}: </label>
           <input type="text" name="paymentId" value={props.item.paymentId} readOnly />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-          <StyledLabel htmlFor="orderDate">{t("Order Date")}: </StyledLabel>
+          <label htmlFor="orderDate">{t("Order Date")}: </label>
           <input type="text" name="orderDate" value={format(new Date(props.item.orderDate), 'MMMM dd, yyyy')} readOnly />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-          <StyledLabel htmlFor="status">{t("Status")}: </StyledLabel>
+          <label htmlFor="status">{t("Status")}: </label>
           <select name="status" onChange={handleChange} value={props.item.status} >
             <option value={true}>{t("In progress")}</option>
             <option value={false}>{t("Shipped")}</option>
@@ -178,11 +176,11 @@ export default function EditOrderForm(props) {
           <CartHeader total={props.item.total} />
         </StyledFormRowDiv>
         <StyledFormRowDiv>
-          <StyledUl>
+          <ul>
             {props.item.cart.map((cartItem) => (
               <CartItem key={cartItem.item.id} index={cartItem.item.id} qty={cartItem.qty} item={cartItem.item} />
             ))}
-          </StyledUl>
+          </ul>
         </StyledFormRowDiv>
       </StyledProcessingColDiv>
       <StyledButton onClick={() => props.updateOrder(props.index)} >{t("Update Order")}</StyledButton>
