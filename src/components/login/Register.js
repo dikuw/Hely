@@ -9,23 +9,22 @@ const StyledWrapperDiv = styled.div`
   flex-direction: column;
   margin: 30px auto;
   padding: 4px;
-`;
-
-const StyledForm = styled.form`
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  input, select {
-    margin: 0.25rem;
-    padding: 10px;
-    font-size: 1rem;
-  }
-  input:focus, textarea:focus, select:focus {
-    outline: 0;
-    background: #fef2de;
-  }
-  button {
-    border: 0;
+  form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    input, select {
+      margin: 0.25rem;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: 0;
+      background: #fef2de;
+    }
+    button {
+      border: 0;
+    }
   }
 `;
 
@@ -96,13 +95,13 @@ export default function Register(props) {
 
   return (
     <StyledWrapperDiv>
-      <StyledForm onSubmit={registerClick}>
+      <form onSubmit={registerClick}>
         <input name="name" ref={nameRef} type="text" placeholder={t("Name")} onFocus={resetValidation} />
         <input name="email" ref={emailRef} type="text" placeholder={t("Email")} onFocus={resetValidation} />
         <input name="password" ref={passwordRef} type="password" placeholder={t("Password")} onFocus={resetValidation} />
         <input name="confirmPassword" ref={confirmPasswordRef} type="password" placeholder={t("Confirm Password")} onFocus={resetValidation} />
         <VisibleActionButton type="submit" buttonLabel={t("Register")} />
-      </StyledForm>
+      </form>
       <StyledWarningDiv ref={warningRef}></StyledWarningDiv>
       <InvisibleActionButton clickHandler={goBack} buttonLabel={t("Back to Log In")} />
     </StyledWrapperDiv>
