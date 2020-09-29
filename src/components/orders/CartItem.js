@@ -13,22 +13,21 @@ const StyledGridWrapperDiv = styled.div`
   border: 1px solid lightgray;
   background: white;
   position: relative;
-`;
-
-const StyledItemDiv = styled.div`
-  @media (max-width: 768px) {
-    font-size: 0.8em;
+  img {
+    width: 3vw;
+    object-fit: contain;
+    @media (max-width: 768px) {
+      width: 60px;
+    }
   }
-`;
-const StyledGridPhotoImg = styled.img`
-  width: 3vw;
-  @media (max-width: 768px) {
-    width: 60px;
+  .item {
+    @media (max-width: 768px) {
+      font-size: 0.8em;
+    }
   }
-`;
-
-const StyledGridNameDiv = styled.div`
-  text-align: center;
+  .name {
+    text-align: center;
+  }
 `;
 
 export default function CartItem(props) {
@@ -37,15 +36,15 @@ export default function CartItem(props) {
   
   return (
     <StyledGridWrapperDiv>
-      <StyledItemDiv>
-        <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
-      </StyledItemDiv>
-      <StyledItemDiv>
-        <StyledGridNameDiv>{item.name}</StyledGridNameDiv>
-      </StyledItemDiv>
-      <StyledItemDiv>
-        <StyledGridNameDiv>{qty} @ {formatPrice(item.price)} {t("each")}</StyledGridNameDiv>
-      </StyledItemDiv>
+      <div className="item">
+        <img src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`}  alt={item.name} />
+      </div>
+      <div className="item">
+        <div className="name">{item.name}</div>
+      </div>
+      <div className="item">
+        <div className="name">{qty} @ {formatPrice(item.price)} {t("each")}</div>
+      </div>
     </StyledGridWrapperDiv>
   );
 };
