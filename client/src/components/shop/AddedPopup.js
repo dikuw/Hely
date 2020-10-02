@@ -35,6 +35,9 @@ const StyledPopupHeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 1rem;
+  h1 {
+    font-size: 1em;
+  }
 `;
 
 const StyledPopupHeaderH1 = styled.h1`
@@ -90,7 +93,7 @@ export default function AddedPopup(props) {
     <StyledPopupDiv >  
       <StyledPopupWrapperDiv>  
         <StyledPopupHeaderDiv>
-          <StyledPopupHeaderH1>{t("Added to Cart!")}</StyledPopupHeaderH1>  
+          <h1>{t("Added to Cart!")}</h1>  
         </StyledPopupHeaderDiv>
         <StyledButton onClick={() => handleClick()}>{t("Go to Cart")}</StyledButton>
         <StyledButtonInvisible onClick={closePopup}>{t("Keep Shopping")}</StyledButtonInvisible>
