@@ -37,15 +37,13 @@ const StyledPopupHeaderDiv = styled.div`
   justify-content: space-between;
   margin: 1rem;
   background: white;
-`;
-
-const StyledPopupHeaderH1 = styled.h1`
-  text-align: center;
-  font-size: 1em;
-`;
-
-const StyledSpinnerImg = styled.img`
-  width: 14rem;
+  h1 {
+    text-align: center;
+    font-size: 1em;
+  }
+  img {
+    width: 14rem;
+  }
 `;
 
 export default function Popup(props) {
@@ -53,8 +51,8 @@ export default function Popup(props) {
     <StyledPopupDiv >  
       <StyledPopupWrapperDiv>  
         <StyledPopupHeaderDiv>
-          <StyledPopupHeaderH1>{props.popupText}</StyledPopupHeaderH1>  
-          <StyledSpinnerImg src="images/spinner.gif" alt="uploading" />
+          <h1>{props.popupText}</h1>  
+          <img src="images/spinner.gif" alt="uploading" />
         </StyledPopupHeaderDiv>
       </StyledPopupWrapperDiv>  
     </StyledPopupDiv>  
