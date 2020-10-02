@@ -18,14 +18,13 @@ const StyledGridFigure = styled.figure`
 
 const StyledGridPhotoWrapDiv = styled.div`
   position: relative;
-`;
-
-const StyledGridPhotoImg = styled.img`
-  width: calc(100% + 4rem);
-  margin-left: -2rem;
-  margin-top: -2rem;
-  margin-bottom: 1rem;
-  max-width: none;
+  img {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-top: -2rem;
+    margin-bottom: 1rem;
+    max-width: none;
+  }
 `;
 
 const StyledAddToCartWrapperDiv = styled.div`
@@ -68,7 +67,7 @@ export default function Card(props) {
   return (
   <StyledGridFigure>
     <StyledGridPhotoWrapDiv>
-      <StyledGridPhotoImg src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
+      <img src={`https://res.cloudinary.com/dikuw/image/upload/${item.image}`} alt={item.name} />
     </StyledGridPhotoWrapDiv>
     <figcaption>
       <p>{item.description}</p>
