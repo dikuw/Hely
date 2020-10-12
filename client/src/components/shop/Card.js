@@ -31,26 +31,25 @@ const StyledAddToCartWrapperDiv = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-`;
-
-const StyledAddToCartButton = styled.button`
-  font-size: 1rem;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  background: var(--vinoTinto);
-  border-color: var(--vinoTinto);
-  border-radius: 2px;
-  border: 0;
-  color: var(--almostWhite);
-  display: inline-block;
-  height: 45px;
-  letter-spacing: 1px;
-  line-height: 45px;
-  margin: 0;
-  padding: 0 25px;
-  transition: background-color 300ms ease-out;
-  width: auto;
+  button {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-style: normal;
+    background: var(--vinoTinto);
+    border-color: var(--vinoTinto);
+    border-radius: 2px;
+    border: 0;
+    color: var(--almostWhite);
+    display: inline-block;
+    height: 45px;
+    letter-spacing: 1px;
+    line-height: 45px;
+    margin: 0;
+    padding: 0 25px;
+    transition: background-color 300ms ease-out;
+    width: auto;
+  }
 `;
 
 export default function Card(props) {
@@ -74,7 +73,7 @@ export default function Card(props) {
       <p>{formatPrice(item.price)}</p>
     </figcaption>
     <StyledAddToCartWrapperDiv>
-      <StyledAddToCartButton disabled={!isAvailable} onClick={() => handleClick(item)}>{isAvailable ? t('Add to Cart') : t('Sold Out')}</StyledAddToCartButton>
+      <button disabled={!isAvailable} onClick={() => handleClick(item)}>{isAvailable ? t('Add to Cart') : t('Sold Out')}</button>
     </StyledAddToCartWrapperDiv>
   </StyledGridFigure>
   );

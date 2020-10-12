@@ -40,10 +40,6 @@ const StyledPopupHeaderDiv = styled.div`
   }
 `;
 
-const StyledPopupHeaderH1 = styled.h1`
-  font-size: 1em;
-`;
-
 const StyledButton = styled.button`
   font-size: 0.8em;
   text-transform: uppercase;
