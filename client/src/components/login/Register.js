@@ -54,6 +54,18 @@ export default function Register(props) {
 
   const validateForm = () => {
     let passVal = true;
+    if (!passwordRef.current.value) {
+      passwordRef.current.style.background = "#ffc2c2";
+      confirmPasswordRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Password cannot be blank! Please try again.");
+      passVal = false;
+    }
+    if (!confirmPasswordRef.current.value) {
+      passwordRef.current.style.background = "#ffc2c2";
+      confirmPasswordRef.current.style.background = "#ffc2c2";
+      warningRef.current.innerHTML = t("Confirm Password cannot be blank! Please try again.");
+      passVal = false;
+    }
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       passwordRef.current.style.background = "#ffc2c2";
       confirmPasswordRef.current.style.background = "#ffc2c2";
