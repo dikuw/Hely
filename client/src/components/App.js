@@ -113,10 +113,14 @@ export default function App(props) {
         setIsLoggedIn(true);
         props.history.push("/");
       } else {
+        //  TODO Surface errors to user (e.g. account is already registered)
+        //  🏭 🏭 🏭 🏭 🏭 🏭
         console.log('error', res);
       }
     });
   }
+
+   
 
   const loginUser = async (user) => {
     const payload = { ...user };
