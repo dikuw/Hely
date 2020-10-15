@@ -56,8 +56,6 @@ export default function App(props) {
   const [isPasswordIncorrect, setIsPasswordIncorrect] = useState(false);
 
   useEffect(() => {
-    //  TODO show a loading div while isLoading is true //
-    //  ** ⏰ ⏰ ⏰  ** //
     setIsLoading(true);
 
     async function initialize() {
