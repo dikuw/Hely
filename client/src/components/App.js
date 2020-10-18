@@ -118,8 +118,6 @@ export default function App(props) {
     });
   }
 
-   
-
   const loginUser = async (user) => {
     const payload = { ...user };
     await apis.login(payload).then(res => {
