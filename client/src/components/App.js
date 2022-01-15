@@ -42,7 +42,7 @@ export default function App(props) {
     city: "",
     state: "",
     country: "",
-    postalCode: " ",
+    postalCode: "",
     mobile: "",
   });
   const [user, setUser] = useState({
